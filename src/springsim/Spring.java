@@ -8,8 +8,17 @@ public class Spring {
 	int originalLen;
 	int k;
 	
-	public Spring(){
+	public Spring(int x, int y, int originalLen, int k){
 		// constructor
+		this.x = x;
+		this.y = y;
+		this.originalLen = originalLen;
+		this.currentLen = this.originalLen;
+		this.k = k;
+	}
+	
+	public void draw() {
+		
 	}
 	
 }
