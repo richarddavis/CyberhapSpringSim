@@ -11,9 +11,10 @@ public class SpringCollection {
 		springs = new ArrayList<Spring>();
 	}
 	
-	public void draw() {
+	public void draw(int x, int y) {
 		for (Spring s : springs) {
 			s.draw();
+			s.update(x, y);
 		}
 	}
 	

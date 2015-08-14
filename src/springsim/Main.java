@@ -20,6 +20,7 @@ public class Main extends PApplet {
 		s1.bind(hand.getX(), hand.getY(), hand);
 		
 		sc = new SpringCollection();
+		sc.add(s1);
 		
 		size(1000,800);
 		background(100, 100, 100);
@@ -32,7 +33,7 @@ public class Main extends PApplet {
 			hand.setH(0.5);
 			hand.setW(0.5);
 		}
-		sc.draw();
+		sc.draw(mouseX, mouseY);
 		hand.draw();
 	}
 	
