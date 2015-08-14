@@ -14,7 +14,7 @@ public class Main extends PApplet {
 		box2d = new Box2DProcessing(this);
 		box2d.createWorld();
 		
-		hand = new Hand(this, 300, 300, box2d);
+		hand = new Hand(this, box2d, 300, 300);
 
 		s1 = new Spring(100, 100, 40, 200, this, box2d);
 		s1.bind(hand.getX(), hand.getY(), hand);
