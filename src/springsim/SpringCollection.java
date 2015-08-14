@@ -11,4 +11,12 @@ public class SpringCollection {
 		springs = new ArrayList<Spring>();
 	}
 	
+	public boolean add(Spring s){
+		return springs.add(s);
+	}
+	
+	public void setActive(Spring s){
+		activeSpring = s;
+	}
+	
 }
