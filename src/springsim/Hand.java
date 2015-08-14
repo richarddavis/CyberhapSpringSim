@@ -31,6 +31,8 @@ public class Hand {
 		this.x = x;
 		this.y = y;
 		hand_img = p.loadImage("hand.png");
+		this.w = hand_img.width;
+		this.h = hand_img.height;
 		
 		BodyDef bd = new BodyDef();
 	    bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
@@ -73,12 +75,12 @@ public class Hand {
 		return this.y;
 	}
 	
-	public void setW(float scale) {
+	public void setW(double scale) {
 		this.w *= scale;
 		hand_img.resize(this.w, this.h);
 	}
 	
-	public void setH(float scale) {
+	public void setH(double scale) {
 		this.h *= scale;
 		hand_img.resize(this.w, this.h);
 	}

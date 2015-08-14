@@ -29,6 +29,8 @@ public class Main extends PApplet {
 		stroke(255);
 		if (mousePressed) {
 			line(mouseX,mouseY,pmouseX,pmouseY);
+			hand.setH(0.5);
+			hand.setW(0.5);
 		}
 		sc.draw();
 		hand.draw();
