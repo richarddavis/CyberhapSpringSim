@@ -8,17 +8,15 @@ public class Spring {
 	int originalLen;
 	int k;
 	
-	public Spring(int x, int y, int originalLen, int k){
-		// constructor
-		this.x = x;
-		this.y = y;
-		this.originalLen = originalLen;
-		this.currentLen = this.originalLen;
-		this.k = k;
+	public Spring(int _x, int _y, int _k, int _length){
+		x = _x;
+		y = _y;
+		k = _k;
+		originalLen = _length;
 	}
 	
-	public void draw() {
-		
+	void draw(){
+		//TODO
 	}
 	
 }
