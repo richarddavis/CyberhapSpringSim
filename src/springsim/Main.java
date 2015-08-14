@@ -14,12 +14,13 @@ public class Main extends PApplet {
 		box2d = new Box2DProcessing(this);
 		box2d.createWorld();
 		
-		hand = new Hand(this, 300, 300);
+		hand = new Hand(this, 300, 300, box2d);
 
 		s1 = new Spring(100, 100, 40, 200, this, box2d);
 		s1.bind(hand.getX(), hand.getY(), hand);
 		
 		sc = new SpringCollection();
+		sc.add(s1);
 		
 		size(1000,800);
 		background(100, 100, 100);
@@ -30,7 +31,7 @@ public class Main extends PApplet {
 		if (mousePressed) {
 			line(mouseX,mouseY,pmouseX,pmouseY);
 		}
-		sc.draw();
+		sc.draw(mouseX, mouseY);
 		hand.draw();
 	}
 	

@@ -1,7 +1,15 @@
 package springsim;
 
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.FixtureDef;
+
 import processing.core.PApplet;
 import processing.core.PImage;
+import shiffman.box2d.Box2DProcessing;
 
 public class Hand {
 	
@@ -10,15 +18,43 @@ public class Hand {
 	int y;
 	PImage hand_img;
 	PApplet parent;
-
-	public Hand(PApplet p, int x, int y){
+	Box2DProcessing box2d;
+	Body body;
+	
+	public Hand(PApplet p, int x, int y, Box2DProcessing b){
+		
 		//constructor
 		this.touchingSpring = null;
 		this.x = x;
 		this.y = y;
 		this.parent = p;
+		this.box2d = b;
 		hand_img = p.loadImage("hand.png");
 		hand_img.resize(hand_img.width/2, hand_img.height/2);
+		
+		BodyDef bd = new BodyDef();
+	    bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
+	    bd.type = BodyType.DYNAMIC;
+	    bd.fixedRotation = true;
+	    
+		body = box2d.createBody(bd);
+	    body.setGravityScale(0);
+	    
+	    PolygonShape sd = new PolygonShape();
+	    float box2dW = box2d.scalarPixelsToWorld(hand_img.width/2);
+	    float box2dH = box2d.scalarPixelsToWorld(hand_img.height/2);
+	    sd.setAsBox(box2dW, box2dH);
+	    
+	    // Define a fixture
+	    FixtureDef fd = new FixtureDef();
+	    fd.shape = sd;
+	    
+	    // Parameters that affect physics
+	    fd.density = 1f;
+	    fd.friction = 0.3f;
+	    fd.restitution = 0.5f;
+	    
+	    body.createFixture(fd);
 	}
 	
 	private double calculateForce(){
