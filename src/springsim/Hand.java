@@ -29,7 +29,6 @@ public class Hand {
 		//constructor
 		this.parent = p;
 		this.box2d = b2;
-		this.touchingSpring = null;
 		this.x = x;
 		this.y = y;
 
@@ -43,7 +42,6 @@ public class Hand {
 	    bd.type = BodyType.DYNAMIC;
 	    bd.fixedRotation = true;
 	    
-
 	    body = box2d.createBody(bd);
 	    body.setGravityScale(0);
 	    
@@ -79,6 +77,14 @@ public class Hand {
 	
 	public int getY() {
 		return this.y;
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
 	}
 	
 	public void setW(double scale) {
