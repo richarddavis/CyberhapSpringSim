@@ -22,7 +22,7 @@ public class Main extends PApplet {
 		box2d.createWorld();
 		
 		// Initialize Serial Comms
-		myPort = new Serial(this, Serial.list()[4], 9600); 
+		myPort = new Serial(this, Serial.list()[0], 9600); 
 		myPort.bufferUntil('\n');
 
 		s1 = new Spring(100, 100, 40, 200, this, box2d);
