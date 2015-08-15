@@ -29,8 +29,8 @@ public class Hand {
 		this.parent = p;
 
 		this.box2d = b2;
-		this.x = x;
-		this.y = y;
+		this.x = _x;
+		this.y = _y;
 
 		hand_img = p.loadImage("hand.png");
 		this.w = hand_img.width;
