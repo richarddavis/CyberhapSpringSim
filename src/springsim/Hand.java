@@ -23,14 +23,15 @@ public class Hand {
 	int w;
 	int h;
 
-	public Hand(int _x, int _y, PApplet p, Box2DProcessing b2d){
+	public Hand(int _x, int _y, PApplet p, Box2DProcessing b2){
 		
 		//constructor
 		this.parent = p;
-		this.box2d = b2d;
-		this.x = _x;
-		this.y = _y;
-		
+
+		this.box2d = b2;
+		this.x = x;
+		this.y = y;
+
 		hand_img = p.loadImage("hand.png");
 		this.w = hand_img.width;
 		this.h = hand_img.height;
@@ -76,6 +77,14 @@ public class Hand {
 	
 	public int getY() {
 		return this.y;
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
 	}
 	
 	public void setW(double scale) {
