@@ -19,6 +19,7 @@ public class Spring {
 	MouseJoint mouseJoint;
 	Box2DProcessing box2d;
 	PApplet parent;
+	Hand hand;
 	
 	public Spring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
 		x = _x;
@@ -28,8 +29,10 @@ public class Spring {
 		parent = p;
 	    mouseJoint = null;
 	    box2d = b2;
+	    hand = new Hand(getHandX(), getHandY(), parent, box2d);
 	}
 	
+	//TODO: update hand drawing as well. 
 	void draw(){
 		
 		parent.line(this.x, this.y, this.x, (float)(this.y + originalLen));
@@ -50,6 +53,8 @@ public class Spring {
 			parent.strokeWeight(1);
 			parent.line(v1.x,v1.y,v2.x,v2.y);
 		}
+		
+		hand.draw();
 	}
 	
 	// If it exists we set its target to the mouse location 
@@ -64,7 +69,7 @@ public class Spring {
 	// This is the key function where
 	// we attach the spring to an x,y location
 	// and the Box object's location
-	void bind(float x, float y, Hand hand) {
+	void bind(float x, float y) {
 		// Define the joint
 		MouseJointDef md = new MouseJointDef();
 		
@@ -92,6 +97,14 @@ public class Spring {
 	    	box2d.world.destroyJoint(mouseJoint);
 	    	mouseJoint = null;
 	    }
+	}
+	
+	int getHandX(){
+		return this.x;
+	}
+	
+	int getHandY(){
+		return this.y;
 	}
 	
 }

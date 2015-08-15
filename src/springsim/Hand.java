@@ -15,7 +15,6 @@ public class Hand {
 	
 	PApplet parent;
 	Box2DProcessing box2d;
-	Spring touchingSpring; 
 	PImage hand_img;
 	Body body;
 	
@@ -24,15 +23,14 @@ public class Hand {
 	int w;
 	int h;
 
-	public Hand(PApplet p, Box2DProcessing b2, int x, int y){
-
+	public Hand(int _x, int _y, PApplet p, Box2DProcessing b2d){
+		
 		//constructor
 		this.parent = p;
-		this.box2d = b2;
-		this.touchingSpring = null;
-		this.x = x;
-		this.y = y;
-
+		this.box2d = b2d;
+		this.x = _x;
+		this.y = _y;
+		
 		hand_img = p.loadImage("hand.png");
 		this.w = hand_img.width;
 		this.h = hand_img.height;
@@ -43,7 +41,6 @@ public class Hand {
 	    bd.type = BodyType.DYNAMIC;
 	    bd.fixedRotation = true;
 	    
-
 	    body = box2d.createBody(bd);
 	    body.setGravityScale(0);
 	    
@@ -55,7 +52,7 @@ public class Hand {
 	    // Define a fixture
 	    FixtureDef fd = new FixtureDef();
 	    fd.shape = sd;
-
+	    
 	    // Parameters that affect physics
 	    fd.density = 1f;
 	    fd.friction = 0.3f;
