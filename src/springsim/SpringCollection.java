@@ -25,4 +25,8 @@ public class SpringCollection {
 		activeSpring = s;
 	}
 	
+	public void updateActive(int mx, int my, boolean pressed) {
+		this.activeSpring.mouseUpdate(mx, my, pressed);
+	}
+	
 }
