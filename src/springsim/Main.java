@@ -11,6 +11,7 @@ public class Main extends PApplet {
 	NewSpring s2;
 	NewSpring s3;
 	SpringCollection sc;
+
 	Hand hand;
 	Boundary ceiling;
 	Boundary floor;
@@ -27,6 +28,7 @@ public class Main extends PApplet {
 		
 		box2d = new Box2DProcessing(this);
 		box2d.createWorld();
+
 		//box2d.setGravity(0, 10);
 
 		// Initialize Serial Comms
@@ -51,15 +53,12 @@ public class Main extends PApplet {
 		background(255);
 		this.box2d.step();
 		stroke(255);
-//		if (mousePressed) {
-//			line(mouseX,mouseY,pmouseX,pmouseY);
-//			hand.setH(0.5);
-//			hand.setW(0.5);
-//		}
+
 		sc.draw();
 		floor.draw();
 		//ceiling.draw();
 	}
+
 	
 	public void mousePressed() {
 		sc.updateActive(this.mouseX, this.mouseY, true);

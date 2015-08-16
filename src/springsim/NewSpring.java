@@ -11,6 +11,7 @@ import org.jbox2d.dynamics.joints.MouseJoint;
 import org.jbox2d.dynamics.joints.MouseJointDef;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
 public class NewSpring {
@@ -25,9 +26,11 @@ public class NewSpring {
 	DistanceJointDef djd;
 	DistanceJoint dj;
 	Box2DProcessing box2d;
+	
 	PApplet parent;
 	Hand hand;
 	Anchor anchor;
+	PImage spring_img;
 
 	public NewSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
 		this.x = _x;
@@ -38,17 +41,20 @@ public class NewSpring {
 		this.box2d = b2;
 		this.hand = new Hand(getX(), getY() + this.originalLen + 10, parent, box2d);
 		this.anchor = new Anchor(getX(), 20, parent, box2d);
-
+		
+		// Import photo
+		this.spring_img = parent.loadImage("spring.jpg");
+		
 		// Define the joint
 		this.djd = new DistanceJointDef();
-
+		
 		djd.bodyA = this.anchor.body;
 		// Body 2 is the Hand's object
 		djd.bodyB = this.hand.body;
 		// Get the mouse location in world coordinates
 		djd.collideConnected = false;
 		djd.length = box2d.scalarPixelsToWorld(this.originalLen);
-
+		
 		//Vec2 mp = box2d.coordPixelsToWorld(x,y);
 		
 		// And that's the target
@@ -58,7 +64,7 @@ public class NewSpring {
 		djd.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/this.hand.body.m_mass)));
 		parent.println(djd.frequencyHz);
 		djd.dampingRatio = 0.01f;
-
+		
 		// Make the joint
 		dj = (DistanceJoint) box2d.world.createJoint(djd);
 	}
@@ -79,10 +85,16 @@ public class NewSpring {
 			v1 = box2d.coordWorldToPixels(v1);
 			v2 = box2d.coordWorldToPixels(v2);
 
+			// And draw the spring
+			int height = (int) (v2.y - v1.y);
+			int width = 30;
+			spring_img.resize(width, height);
+			parent.image(spring_img, v1.x, v1.y);
+			
 			// And just draw a line
-			parent.stroke(0);
-			parent.strokeWeight(1);
-			parent.line(v1.x,v1.y,v2.x,v2.y);
+//			parent.stroke(0);
+//			parent.strokeWeight(3);
+//			parent.line(v1.x,v1.y,v2.x,v2.y);
 		}
 
 		this.anchor.draw();
