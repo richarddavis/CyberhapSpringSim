@@ -104,6 +104,10 @@ public class NewSpring {
 	void bind(float x, float y) {
 
 	}
+	
+	public void mouseUpdate(int mx, int my, boolean pressed) {
+		this.hand.mouseUpdate(mx, my, pressed);
+	}
 
 	//TODO: Consider moving this with hapkit incorporation
 	void destroy() {

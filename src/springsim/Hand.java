@@ -5,26 +5,30 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.dynamics.joints.MouseJoint;
+import org.jbox2d.dynamics.joints.MouseJointDef;
 
 import processing.core.PApplet;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
 public class Hand {
-	
+
 	PApplet parent;
 	Box2DProcessing box2d;
 	PImage hand_img;
 	Body body;
-	
+	MouseJoint mj;
+
 	int x;
 	int y;
 	int w;
 	int h;
 
 	public Hand(int _x, int _y, PApplet p, Box2DProcessing b2){
-		
+
 		//constructor
 		this.parent = p;
 		this.box2d = b2;
@@ -35,70 +39,132 @@ public class Hand {
 		this.w = this.hand_img.width;
 		this.h = this.hand_img.height;
 		this.hand_img.resize(this.hand_img.width/2, this.hand_img.height/2);
-		
+
 		BodyDef bd = new BodyDef();
-	    bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
-	    bd.type = BodyType.DYNAMIC;
-	    bd.fixedRotation = true;
-	    
-	    this.body = box2d.createBody(bd);
-	    //body.setGravityScale(0);
-	    
-	    PolygonShape sd = new PolygonShape();
-	    float box2dW = box2d.scalarPixelsToWorld(this.w/6);
-	    float box2dH = box2d.scalarPixelsToWorld(this.h/6);
-	    sd.setAsBox(box2dW, box2dH);
-	    
-	    // Define a fixture
-	    FixtureDef fd = new FixtureDef();
-	    fd.shape = sd;
-	    
-	    // Parameters that affect physics
-	    fd.density = 1f; // Changing this doesn't seem to do anything.
-	    fd.friction = 0.3f;
-	    fd.restitution = 0.1f;
-	    
-	    this.body.createFixture(fd);
-	    //parent.println(this.body.m_mass);
+		bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
+		bd.type = BodyType.DYNAMIC;
+		bd.fixedRotation = true;
+
+		this.body = box2d.createBody(bd);
+		//body.setGravityScale(0);
+
+		PolygonShape sd = new PolygonShape();
+		float box2dW = box2d.scalarPixelsToWorld(this.w/6);
+		float box2dH = box2d.scalarPixelsToWorld(this.h/6);
+		sd.setAsBox(box2dW, box2dH);
+
+		// Define a fixture
+		FixtureDef fd = new FixtureDef();
+		fd.shape = sd;
+
+		// Parameters that affect physics
+		fd.density = 1f; // Changing this doesn't seem to do anything.
+		fd.friction = 0.3f;
+		fd.restitution = 0.1f;
+
+		this.body.createFixture(fd);
+		parent.println(this.body.m_mass);
+
+		//this.body.setMassData(100);
 	}
-	
+
 	private double calculateForce(){
 		//TODO
 		return 0.0;
 	}
-	
+
 	public void draw() {
+		if (mj != null) {
+			this.mousePosUpdate(parent.mouseX, parent.mouseY);
+			
+			// We can get the two anchor points
+			Vec2 v1 = new Vec2(0,0);
+			mj.getAnchorA(v1);
+			Vec2 v2 = new Vec2(0,0);
+			mj.getAnchorB(v2);
+			// Convert them to screen coordinates
+			v1 = box2d.coordWorldToPixels(v1);
+			v2 = box2d.coordWorldToPixels(v2);
+			// And just draw a line
+			parent.stroke(0);
+			parent.strokeWeight(1);
+			parent.line(v1.x,v1.y,v2.x,v2.y);
+		}
+
 		//parent.image(hand_img, this.x, this.y);
 		Vec2 pos = this.box2d.getBodyPixelCoord(this.body);
 		this.x = (int)pos.x;
 		this.y = (int)pos.y;
 		parent.image(hand_img, this.x, this.y);
 	}
-	
+
 	public int getX() {
 		return this.x;
 	}
-	
+
 	public int getY() {
 		return this.y;
 	}
-	
+
 	public void setX(int x) {
 		this.x = x;
 	}
-	
+
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 	public void setW(double scale) {
 		this.w *= scale;
 		hand_img.resize(this.w, this.h);
 	}
-	
+
 	public void setH(double scale) {
 		this.h *= scale;
 		hand_img.resize(this.w, this.h);
 	}
+
+	public void bind(float mx, float my) {
+		MouseJointDef mjd = new MouseJointDef();
+		mjd.bodyA = box2d.getGroundBody();
+		mjd.bodyB = this.body;
+		Vec2 mp = this.box2d.coordPixelsToWorld(mx, my);
+		mjd.target.set(mp);
+		//mjd.maxForce = (float) (1000.0 * this.body.m_mass);
+		mjd.frequencyHz = 3000;
+		mjd.dampingRatio = (float) 0.1;
+		this.mj = (MouseJoint) box2d.world.createJoint(mjd);
+	}
+
+	public void mouseUpdate(int mx, int my, boolean pressed) {
+		if (pressed == false) {
+			this.destroy();
+		} else if (this.contains(mx, my)) {
+			this.bind(mx, my);
+		}
+	}
 	
+	public void mousePosUpdate(int mx, int my) {
+		// Update the position
+		System.out.println("Updating");
+		Vec2 mouseWorld = box2d.coordPixelsToWorld(mx,my);
+		this.mj.setTarget(mouseWorld);
+	}
+
+	public void destroy() {
+		// We can get rid of the joint when the mouse is released
+		if (this.mj != null) {
+			box2d.world.destroyJoint(this.mj);
+			this.mj = null;
+			System.out.println("Mouse Joint Destroyed");
+		}
+	}
+
+	public boolean contains(int x, int y) {
+		Vec2 worldPoint = this.box2d.coordPixelsToWorld(x, y);
+		Fixture f = this.body.getFixtureList();
+		boolean inside = f.testPoint(worldPoint);
+		return inside;
+	}
+
 }
