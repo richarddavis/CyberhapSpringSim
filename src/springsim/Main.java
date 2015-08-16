@@ -9,21 +9,23 @@ public class Main extends PApplet {
 	Box2DProcessing box2d;
 	Spring s1;
 	SpringCollection sc;
-	Hand hand;
 	
 	//serialports 
 	// Arduino board serial port index, machine-dependent:
 	int serialPortIndex = 0;
 	int SERIAL_WRITE_LENGTH = 32;
 	Serial myPort;
+	private boolean locked;
+	private int xOffset;
+	private int yOffset;
 	
 	public void setup() {
 		box2d = new Box2DProcessing(this);
 		box2d.createWorld();
 		
 		// Initialize Serial Comms
-		myPort = new Serial(this, Serial.list()[4], 9600); 
-		myPort.bufferUntil('\n');
+		//myPort = new Serial(this, Serial.list()[0], 9600); 
+		//myPort.bufferUntil('\n');
 
 		s1 = new Spring(100, 100, 40, 200, this, box2d);
 		s1.bind(mouseX, mouseY);
@@ -46,6 +48,27 @@ public class Main extends PApplet {
 //			hand.setW(0.5);
 //		}
 		sc.draw();
+	}
+	
+	public void mousePressed() {
+		 
+		  locked = true;
+		  
+		  xOffset = mouseX-sc.activeSpring.hand.getX(); 
+		  yOffset = mouseY-sc.activeSpring.hand.getY(); 
+	}
+
+
+	public void mouseDragged() {
+		  if(locked) {
+		    //finger.setPosition(mouseX-xOffset, mouseY-yOffset);
+			//springOffset = mouseY-yOffset;
+		    sc.activeSpring.update(mouseX-xOffset, mouseY-yOffset);
+		  }
+	}
+
+	public void mouseReleased() {
+		  locked = false;
 	}
 	
 //	/**
