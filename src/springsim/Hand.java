@@ -36,21 +36,21 @@ public class Hand {
 		this.y = _y;
 
 		this.hand_img = p.loadImage("hand.png");
-		this.w = this.hand_img.width;
-		this.h = this.hand_img.height;
-		this.hand_img.resize(this.hand_img.width/2, this.hand_img.height/2);
+		this.w = this.hand_img.width/4;
+		this.h = this.hand_img.height/4;
+		this.hand_img.resize(this.w, this.h);
 
 		BodyDef bd = new BodyDef();
 		bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
 		bd.type = BodyType.DYNAMIC;
-		bd.fixedRotation = true;
+		//bd.fixedRotation = true;
 
 		this.body = box2d.createBody(bd);
 		//body.setGravityScale(0);
 
 		PolygonShape sd = new PolygonShape();
-		float box2dW = box2d.scalarPixelsToWorld(this.w/6);
-		float box2dH = box2d.scalarPixelsToWorld(this.h/6);
+		float box2dW = box2d.scalarPixelsToWorld(this.w/2);
+		float box2dH = box2d.scalarPixelsToWorld(this.h/2);
 		sd.setAsBox(box2dW, box2dH);
 
 		// Define a fixture
@@ -58,14 +58,12 @@ public class Hand {
 		fd.shape = sd;
 
 		// Parameters that affect physics
-		fd.density = 1f; // Changing this doesn't seem to do anything.
-		fd.friction = 0.3f;
-		fd.restitution = 0.1f;
+		fd.density = 0.1f; 
+		fd.friction = 0.1f;
+		fd.restitution = 0.5f;
 
 		this.body.createFixture(fd);
-		parent.println(this.body.m_mass);
-
-		//this.body.setMassData(100);
+		this.body.resetMassData();
 	}
 
 	private double calculateForce(){
@@ -130,9 +128,9 @@ public class Hand {
 		mjd.bodyB = this.body;
 		Vec2 mp = this.box2d.coordPixelsToWorld(mx, my);
 		mjd.target.set(mp);
-		//mjd.maxForce = (float) (1000.0 * this.body.m_mass);
-		mjd.frequencyHz = 3000;
-		mjd.dampingRatio = (float) 0.1;
+		mjd.maxForce = (float) (1000.0 * this.body.m_mass);
+		mjd.frequencyHz = 10;
+		mjd.dampingRatio = (float) 1;
 		this.mj = (MouseJoint) box2d.world.createJoint(mjd);
 	}
 
@@ -146,7 +144,6 @@ public class Hand {
 	
 	public void mousePosUpdate(int mx, int my) {
 		// Update the position
-		System.out.println("Updating");
 		Vec2 mouseWorld = box2d.coordPixelsToWorld(mx,my);
 		this.mj.setTarget(mouseWorld);
 	}

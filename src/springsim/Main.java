@@ -33,14 +33,14 @@ public class Main extends PApplet {
 		//myPort = new Serial(this, Serial.list()[0], 9600); 
 		//myPort.bufferUntil('\n');
 
-		s1 = new NewSpring(100, 100, 3000, 100, this, box2d);
-		s2 = new NewSpring(200, 100, 3000, 100, this, box2d);
-		s3 = new NewSpring(300, 100, 5000, 100, this, box2d);
+		s1 = new NewSpring(100, 100, 1000, 100, this, box2d);
+		s2 = new NewSpring(200, 100, 1000, 100, this, box2d);
+		s3 = new NewSpring(300, 100, 1000, 100, this, box2d);
 		
 		sc = new SpringCollection();
 		sc.add(s1);
-		sc.add(s2);
-		sc.add(s3);
+		//sc.add(s2);
+		//sc.add(s3);
 		sc.setActive(s1);
 		
 		floor = new Boundary(10, this.height - 20, this.width - 20, 20, this, box2d);
