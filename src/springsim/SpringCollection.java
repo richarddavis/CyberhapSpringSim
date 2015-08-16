@@ -4,24 +4,24 @@ import java.util.ArrayList;
 
 public class SpringCollection {
 	
-	ArrayList<Spring> springs;
-	Spring activeSpring; 
+	ArrayList<NewSpring> springs;
+	NewSpring activeSpring; 
 	
 	public SpringCollection(){
-		springs = new ArrayList<Spring>();
+		springs = new ArrayList<NewSpring>();
 	}
 	
 	public void draw() {
-		for (Spring s : springs) {
+		for (NewSpring s : springs) {
 			s.draw();
 		}
 	}
 	
-	public boolean add(Spring s){
+	public boolean add(NewSpring s){
 		return springs.add(s);
 	}
 	
-	public void setActive(Spring s){
+	public void setActive(NewSpring s){
 		activeSpring = s;
 	}
 	

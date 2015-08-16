@@ -11,9 +11,9 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
-public class Hand {
+public class Anchor {
 	
-	PApplet parent;
+	PApplet proc;
 	Box2DProcessing box2d;
 	PImage hand_img;
 	Body body;
@@ -23,30 +23,27 @@ public class Hand {
 	int w;
 	int h;
 
-	public Hand(int _x, int _y, PApplet p, Box2DProcessing b2){
+	public Anchor(int _x, int _y, PApplet p, Box2DProcessing b2){
 		
 		//constructor
-		this.parent = p;
+		this.proc = p;
 		this.box2d = b2;
 		this.x = _x;
 		this.y = _y;
-
-		this.hand_img = p.loadImage("hand.png");
-		this.w = this.hand_img.width;
-		this.h = this.hand_img.height;
-		this.hand_img.resize(this.hand_img.width/2, this.hand_img.height/2);
+		this.w = 20;
+		this.h = 20;
 		
 		BodyDef bd = new BodyDef();
-	    bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
-	    bd.type = BodyType.DYNAMIC;
+	    bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) this.x,(int) this.y)));
+	    bd.type = BodyType.STATIC;
 	    bd.fixedRotation = true;
 	    
 	    this.body = box2d.createBody(bd);
 	    //body.setGravityScale(0);
 	    
 	    PolygonShape sd = new PolygonShape();
-	    float box2dW = box2d.scalarPixelsToWorld(this.w/6);
-	    float box2dH = box2d.scalarPixelsToWorld(this.h/6);
+	    float box2dW = box2d.scalarPixelsToWorld(this.w);
+	    float box2dH = box2d.scalarPixelsToWorld(this.h);
 	    sd.setAsBox(box2dW, box2dH);
 	    
 	    // Define a fixture
@@ -54,25 +51,22 @@ public class Hand {
 	    fd.shape = sd;
 	    
 	    // Parameters that affect physics
-	    fd.density = 1f; // Changing this doesn't seem to do anything.
+	    fd.density = 1f;
 	    fd.friction = 0.3f;
 	    fd.restitution = 0.1f;
 	    
 	    this.body.createFixture(fd);
-	    //parent.println(this.body.m_mass);
-	}
-	
-	private double calculateForce(){
-		//TODO
-		return 0.0;
 	}
 	
 	public void draw() {
-		//parent.image(hand_img, this.x, this.y);
+		//proc.image(hand_img, this.x, this.y);
 		Vec2 pos = this.box2d.getBodyPixelCoord(this.body);
 		this.x = (int)pos.x;
 		this.y = (int)pos.y;
-		parent.image(hand_img, this.x, this.y);
+		proc.fill(255);
+		proc.stroke(0);
+		proc.strokeWeight(1);
+		proc.rect(this.x, this.y, this.w, this.h);
 	}
 	
 	public int getX() {
@@ -81,24 +75,6 @@ public class Hand {
 	
 	public int getY() {
 		return this.y;
-	}
-	
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	public void setW(double scale) {
-		this.w *= scale;
-		hand_img.resize(this.w, this.h);
-	}
-	
-	public void setH(double scale) {
-		this.h *= scale;
-		hand_img.resize(this.w, this.h);
 	}
 	
 }
