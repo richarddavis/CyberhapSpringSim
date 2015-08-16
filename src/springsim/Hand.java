@@ -62,9 +62,9 @@ public class Hand {
 		fd.shape = sd;
 
 		// Parameters that affect physics
-		fd.density = 0.1f; 
-		fd.friction = 0.1f;
-		fd.restitution = 0.5f;
+		fd.density = 0.7f; 
+		fd.friction = 0.01f;
+		fd.restitution = 0.9f;
 
 		this.body.createFixture(fd);
 		this.body.resetMassData();
