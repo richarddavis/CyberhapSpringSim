@@ -97,37 +97,12 @@ public class NewSpring {
 //			parent.line(v1.x,v1.y,v2.x,v2.y);
 		}
 
-		this.hand.draw();
 		this.anchor.draw();
-	}
-
-	// If it exists we set its target to the mouse location 
-//	void update(float x, float y) {
-//		if (djd != null) {
-//			// Always convert to world coordinates!
-//			Vec2 mouseWorld = box2d.coordPixelsToWorld(x,y);
-//			djd.setTarget(mouseWorld);
-//		}	
-//	}
-
-	// This is the key function where
-	// we attach the spring to an x,y location
-	// and the Box object's location
-	void bind(float x, float y) {
-
+		this.hand.draw();
 	}
 	
 	public void mouseUpdate(int mx, int my, boolean pressed) {
 		this.hand.mouseUpdate(mx, my, pressed);
-	}
-
-	//TODO: Consider moving this with hapkit incorporation
-	void destroy() {
-		// We can get rid of the joint when the mouse is released
-		if (dj != null) {
-			box2d.world.destroyJoint(dj);
-			dj = null;
-		}
 	}
 
 	public int getX(){
