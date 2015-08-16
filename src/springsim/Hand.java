@@ -36,9 +36,9 @@ public class Hand {
 		this.y = _y;
 
 		this.hand_img = p.loadImage("hand.png");
-		this.w = this.hand_img.width;
-		this.h = this.hand_img.height;
-		this.hand_img.resize(this.hand_img.width/2, this.hand_img.height/2);
+		this.w = this.hand_img.width / 6;
+		this.h = this.hand_img.height / 6;
+		this.hand_img.resize(this.w, this.h);
 
 		BodyDef bd = new BodyDef();
 		bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
@@ -49,8 +49,8 @@ public class Hand {
 		//body.setGravityScale(0);
 
 		PolygonShape sd = new PolygonShape();
-		float box2dW = box2d.scalarPixelsToWorld(this.w/6);
-		float box2dH = box2d.scalarPixelsToWorld(this.h/6);
+		float box2dW = box2d.scalarPixelsToWorld(this.w);
+		float box2dH = box2d.scalarPixelsToWorld(this.h);
 		sd.setAsBox(box2dW, box2dH);
 
 		// Define a fixture
@@ -133,6 +133,9 @@ public class Hand {
 		//mjd.maxForce = (float) (1000.0 * this.body.m_mass);
 		mjd.frequencyHz = 3000;
 		mjd.dampingRatio = (float) 0.1;
+	    mjd.maxForce = (float) (1000.0 * this.body.m_mass);
+
+	    
 		this.mj = (MouseJoint) box2d.world.createJoint(mjd);
 	}
 
