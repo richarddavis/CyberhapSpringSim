@@ -23,6 +23,7 @@ public class Hand {
 	MouseJoint mj;
 
 	int x;
+	int fixed_x;
 	int y;
 	int w;
 	int h;
@@ -33,6 +34,7 @@ public class Hand {
 		this.parent = p;
 		this.box2d = b2;
 		this.x = _x;
+		this.fixed_x = this.x;
 		this.y = _y;
 
 		this.hand_img = p.loadImage("hand.png");
@@ -45,7 +47,9 @@ public class Hand {
 		BodyDef bd = new BodyDef();
 		bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
 		bd.type = BodyType.DYNAMIC;
-		//bd.fixedRotation = true;
+		bd.fixedRotation = true;
+		//bd.angularDamping = 0;
+		bd.linearDamping = (float) 0.3;
 
 		this.body = box2d.createBody(bd);
 		//body.setGravityScale(0);
@@ -65,6 +69,7 @@ public class Hand {
 		fd.density = 0.7f; 
 		fd.friction = 0.01f;
 		fd.restitution = 0.9f;
+		//fd.setSensor(true);
 
 		this.body.createFixture(fd);
 		this.body.resetMassData();
@@ -77,7 +82,7 @@ public class Hand {
 
 	public void draw() {
 		if (mj != null) {
-			this.mousePosUpdate(parent.mouseX, parent.mouseY);
+			this.mousePosUpdate(this.fixed_x, parent.mouseY);
 			
 			// We can get the two anchor points
 			Vec2 v1 = new Vec2(0,0);
@@ -135,7 +140,7 @@ public class Hand {
 
 		mjd.frequencyHz = 3000;
 		mjd.dampingRatio = (float) 0.1;
-	    mjd.maxForce = (float) (1000.0 * this.body.m_mass);
+	    mjd.maxForce = (float) (10000.0 * this.body.m_mass);
 
 		this.mj = (MouseJoint) box2d.world.createJoint(mjd);
 	}
@@ -144,7 +149,7 @@ public class Hand {
 		if (pressed == false) {
 			this.destroy();
 		} else if (this.contains(mx, my)) {
-			this.bind(mx, my);
+			this.bind(this.fixed_x, my);
 		}
 	}
 	

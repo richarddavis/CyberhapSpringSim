@@ -42,8 +42,8 @@ public class Anchor {
 	    //body.setGravityScale(0);
 	    
 	    PolygonShape sd = new PolygonShape();
-	    float box2dW = box2d.scalarPixelsToWorld(this.w);
-	    float box2dH = box2d.scalarPixelsToWorld(this.h);
+	    float box2dW = box2d.scalarPixelsToWorld(this.w/2);
+	    float box2dH = box2d.scalarPixelsToWorld(this.h/2);
 	    sd.setAsBox(box2dW, box2dH);
 	    
 	    // Define a fixture

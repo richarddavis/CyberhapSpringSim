@@ -41,8 +41,8 @@ public class Main extends PApplet {
 		
 		sc = new SpringCollection();
 		sc.add(s1);
-		//sc.add(s2);
-		//sc.add(s3);
+		sc.add(s2);
+		sc.add(s3);
 		sc.setActive(s1);
 		
 		floor = new Boundary(10, this.height - 20, this.width - 20, 20, this, box2d);
