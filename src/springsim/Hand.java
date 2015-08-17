@@ -45,7 +45,7 @@ public class Hand {
 		BodyDef bd = new BodyDef();
 		bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
 		bd.type = BodyType.DYNAMIC;
-		//bd.fixedRotation = true;
+		bd.fixedRotation = true;
 
 		this.body = box2d.createBody(bd);
 		//body.setGravityScale(0);
@@ -77,7 +77,7 @@ public class Hand {
 
 	public void draw() {
 		if (mj != null) {
-			this.mousePosUpdate(parent.mouseX, parent.mouseY);
+			this.mousePosUpdate(this.x, parent.mouseY);
 			
 			// We can get the two anchor points
 			Vec2 v1 = new Vec2(0,0);
