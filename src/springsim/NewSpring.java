@@ -39,8 +39,8 @@ public class NewSpring {
 		this.originalLen = _length;
 		this.parent = p;
 		this.box2d = b2;
-		this.hand = new Hand(getX(), getY() + this.originalLen + 10, parent, box2d);
-		this.anchor = new Anchor(getX(), 20, parent, box2d);
+		this.hand = new Hand(this.x, this.y + this.originalLen + 10, parent, box2d);
+		this.anchor = new Anchor(getX(), getY(), parent, box2d);
 		
 		// Import photo
 		this.spring_img = parent.loadImage("spring.jpg");
@@ -52,17 +52,12 @@ public class NewSpring {
 		// Body 2 is the Hand's object
 		djd.bodyB = this.hand.body;
 		// Get the mouse location in world coordinates
-		djd.collideConnected = false;
+		djd.collideConnected = true;
 		djd.length = box2d.scalarPixelsToWorld(this.originalLen);
 		
-		//Vec2 mp = box2d.coordPixelsToWorld(x,y);
-		
-		// And that's the target
-		//djd.target.set(mp);
 		// Some stuff about how strong and bouncy the spring should be
 		//djd.maxForce = (float) (1000.0 * hand.body.m_mass);
 		djd.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/this.hand.body.m_mass)));
-		parent.println(djd.frequencyHz);
 		djd.dampingRatio = 0.01f;
 		
 		// Make the joint
@@ -86,15 +81,18 @@ public class NewSpring {
 			v2 = box2d.coordWorldToPixels(v2);
 
 			// And draw the spring
-			int height = (int) (v2.y - v1.y);
-			int width = 30;
-			spring_img.resize(width, height);
-			parent.image(spring_img, v1.x, v1.y);
+			//int height = (int) (v2.y - v1.y);
+			//int width = 30;
+			//spring_img.resize(width, height);
+			//parent.image(spring_img, v1.x, v1.y);
 			
 			// And just draw a line
-//			parent.stroke(0);
-//			parent.strokeWeight(3);
-//			parent.line(v1.x,v1.y,v2.x,v2.y);
+			parent.stroke(0);
+			parent.strokeWeight(3);
+			parent.line(v1.x,v1.y,v2.x,v2.y);
+			
+			//System.out.println(this.getLength());
+			//System.out.println(this.getForce());
 		}
 
 		this.anchor.draw();
@@ -103,6 +101,23 @@ public class NewSpring {
 	
 	public void mouseUpdate(int mx, int my, boolean pressed) {
 		this.hand.mouseUpdate(mx, my, pressed);
+	}
+	
+	public float getLength() {
+		Vec2 v1 = new Vec2(0,0);
+		dj.getAnchorA(v1);
+		Vec2 v2 = new Vec2(0,0);
+		dj.getAnchorB(v2);
+
+		// Convert them to screen coordinates
+		//v1 = box2d.coordWorldToPixels(v1);
+		//v2 = box2d.coordWorldToPixels(v2);
+		
+		return (v2.sub(v1)).length();
+	}
+	
+	public float getForce() {
+		return (this.k * (this.getLength() - dj.getLength()));
 	}
 
 	public int getX(){

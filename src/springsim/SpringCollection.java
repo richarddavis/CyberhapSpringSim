@@ -26,6 +26,12 @@ public class SpringCollection {
 	}
 	
 	public void updateActive(int mx, int my, boolean pressed) {
+		for (NewSpring s : springs) {
+			if (s.hand.contains(mx, my)) {
+				this.setActive(s);
+				break;
+			}
+		}
 		this.activeSpring.mouseUpdate(mx, my, pressed);
 	}
 	
