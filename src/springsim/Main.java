@@ -28,6 +28,7 @@ public class Main extends PApplet {
 		
 		box2d = new Box2DProcessing(this);
 		box2d.createWorld();
+		box2d.setScaleFactor(500);
 
 		//box2d.setGravity(0, 10);
 
@@ -35,9 +36,9 @@ public class Main extends PApplet {
 		//myPort = new Serial(this, Serial.list()[0], 9600); 
 		//myPort.bufferUntil('\n');
 
-		s1 = new NewSpring(100, 100, 1000, 100, this, box2d);
-		s2 = new NewSpring(200, 100, 1000, 100, this, box2d);
-		s3 = new NewSpring(300, 100, 1000, 100, this, box2d);
+		s1 = new NewSpring(100, 100, 1, 100, this, box2d);
+		s2 = new NewSpring(200, 100, 3, 100, this, box2d);
+		s3 = new NewSpring(300, 100, 5, 100, this, box2d);
 		
 		sc = new SpringCollection();
 		sc.add(s1);

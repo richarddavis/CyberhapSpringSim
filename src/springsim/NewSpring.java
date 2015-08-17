@@ -91,6 +91,7 @@ public class NewSpring {
 			parent.strokeWeight(3);
 			parent.line(v1.x,v1.y,v2.x,v2.y);
 			
+			//System.out.println(this.getLength());
 			//System.out.println(this.getForce());
 		}
 
