@@ -75,11 +75,6 @@ public class Hand {
 		this.body.resetMassData();
 	}
 
-	private double calculateForce(){
-		//TODO
-		return 0.0;
-	}
-
 	public void draw() {
 		if (mj != null) {
 			this.mousePosUpdate(this.fixed_x, parent.mouseY);

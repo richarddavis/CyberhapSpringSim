@@ -90,6 +90,8 @@ public class NewSpring {
 			parent.stroke(0);
 			parent.strokeWeight(3);
 			parent.line(v1.x,v1.y,v2.x,v2.y);
+			
+			//System.out.println(this.getForce());
 		}
 
 		this.anchor.draw();
@@ -98,6 +100,23 @@ public class NewSpring {
 	
 	public void mouseUpdate(int mx, int my, boolean pressed) {
 		this.hand.mouseUpdate(mx, my, pressed);
+	}
+	
+	public float getLength() {
+		Vec2 v1 = new Vec2(0,0);
+		dj.getAnchorA(v1);
+		Vec2 v2 = new Vec2(0,0);
+		dj.getAnchorB(v2);
+
+		// Convert them to screen coordinates
+		//v1 = box2d.coordWorldToPixels(v1);
+		//v2 = box2d.coordWorldToPixels(v2);
+		
+		return (v2.sub(v1)).length();
+	}
+	
+	public float getForce() {
+		return (this.k * (this.getLength() - dj.getLength()));
 	}
 
 	public int getX(){
