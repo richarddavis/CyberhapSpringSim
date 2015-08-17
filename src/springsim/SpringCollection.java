@@ -15,6 +15,7 @@ public class SpringCollection {
 		for (NewSpring s : springs) {
 			s.draw();
 		}
+		printActiveForce();
 	}
 	
 	public boolean add(NewSpring s){
@@ -33,6 +34,10 @@ public class SpringCollection {
 			}
 		}
 		this.activeSpring.mouseUpdate(mx, my, pressed);
+	}
+	
+	public void printActiveForce() {
+		System.out.println(this.activeSpring.getForce());
 	}
 	
 }

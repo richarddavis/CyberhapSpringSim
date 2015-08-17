@@ -1,14 +1,8 @@
 package springsim;
 
-import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
-import org.jbox2d.dynamics.joints.MouseJoint;
-import org.jbox2d.dynamics.joints.MouseJointDef;
 
 import processing.core.PApplet;
 import processing.core.PImage;

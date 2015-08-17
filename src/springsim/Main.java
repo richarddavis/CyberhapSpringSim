@@ -29,8 +29,7 @@ public class Main extends PApplet {
 		box2d = new Box2DProcessing(this);
 		box2d.createWorld();
 		box2d.setScaleFactor(500);
-
-		//box2d.setGravity(0, 10);
+		box2d.setGravity(0, -1);
 
 		// Initialize Serial Comms
 		//myPort = new Serial(this, Serial.list()[0], 9600); 
