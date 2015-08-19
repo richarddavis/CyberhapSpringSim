@@ -37,7 +37,7 @@ public class SpringCollection {
 	}
 	
 	public void printActiveForce() {
-		System.out.println(this.activeSpring.getForce());
+		//System.out.println(this.activeSpring.getForce());
 	}
 	
 }

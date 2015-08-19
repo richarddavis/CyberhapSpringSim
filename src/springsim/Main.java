@@ -1,5 +1,7 @@
 package springsim;
 
+import java.util.Random;
+
 import processing.core.PApplet;
 import processing.serial.Serial;
 import shiffman.box2d.Box2DProcessing;
@@ -11,10 +13,12 @@ public class Main extends PApplet {
 	NewSpring s2;
 	NewSpring s3;
 	SpringCollection sc;
+	HookCollection hc;
 
 	Hand hand;
 	Boundary ceiling;
 	Boundary floor;
+	Hook hook;
 	
 	//serialports 
 	// Arduino board serial port index, machine-dependent:
@@ -30,10 +34,21 @@ public class Main extends PApplet {
 		box2d.createWorld();
 		box2d.setScaleFactor(500);
 		box2d.setGravity(0, -1);
-
+		
+		// This prevents dynamic bodies from sticking to static ones
+		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
+		
 		// Initialize Serial Comms
 		//myPort = new Serial(this, Serial.list()[0], 9600); 
 		//myPort.bufferUntil('\n');
+		
+		hc = new HookCollection();
+		Random rg = new Random();
+		
+		for (int i = 0; i < 100; i++) {
+			hook = new Hook((int) rg.nextGaussian() + this.width/2, 50 + rg.nextInt(10), this, box2d);
+			hc.add(hook);
+		}
 
 		s1 = new NewSpring(100, 100, 1, 100, this, box2d);
 		s2 = new NewSpring(200, 100, 3, 100, this, box2d);
@@ -45,7 +60,7 @@ public class Main extends PApplet {
 		sc.add(s3);
 		sc.setActive(s1);
 		
-		floor = new Boundary(10, this.height - 20, this.width - 20, 20, this, box2d);
+		floor = new Boundary(this.width/2, this.height - 20, this.width - 20, 20, this, box2d);
 		ceiling = new Boundary(10, 10, this.width - 20, 20, this, box2d);
 	}
 
@@ -56,6 +71,7 @@ public class Main extends PApplet {
 
 		sc.draw();
 		floor.draw();
+		hc.draw();
 		//ceiling.draw();
 	}
 

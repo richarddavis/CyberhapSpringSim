@@ -11,39 +11,33 @@ import org.jbox2d.dynamics.joints.MouseJoint;
 import org.jbox2d.dynamics.joints.MouseJointDef;
 
 import processing.core.PApplet;
-import processing.core.PConstants;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
-public class Hand implements PConstants {
+public class Weight {
 
 	PApplet parent;
 	Box2DProcessing box2d;
-	PImage hand_img;
 	Body body;
 	MouseJoint mj;
 
 	int x;
-	int fixed_x;
 	int y;
 	int w;
 	int h;
+	float mass;
 
-	public Hand(int _x, int _y, PApplet p, Box2DProcessing b2) {
+	public Weight(int _x, int _y, float mass, PApplet p, Box2DProcessing b2){
 
 		//constructor
 		this.parent = p;
 		this.box2d = b2;
 		this.x = _x;
-		this.fixed_x = this.x;
 		this.y = _y;
+		this.mass = mass;
 
-		this.hand_img = p.loadImage("hand.png");
-
-		this.w = this.hand_img.width / 6;
-		this.h = this.hand_img.height / 6;
-
-		this.hand_img.resize(this.w, this.h);
+		this.w = 25;
+		this.h = 25;
 
 		BodyDef bd = new BodyDef();
 		bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
@@ -80,7 +74,7 @@ public class Hand implements PConstants {
 	public void draw() {
 		if (mj != null) {
 
-			this.mousePosUpdate(this.fixed_x, parent.mouseY);
+			this.mousePosUpdate(parent.mouseX, parent.mouseY);
 			
 			// We can get the two anchor points
 			Vec2 v1 = new Vec2(0,0);
@@ -100,8 +94,7 @@ public class Hand implements PConstants {
 		Vec2 pos = this.box2d.getBodyPixelCoord(this.body);
 		this.x = (int)pos.x;
 		this.y = (int)pos.y;
-		parent.imageMode(PConstants.CENTER);
-		parent.image(hand_img, this.x, this.y);
+		parent.rect(this.x,  this.y,  this.w,  this.h);
 	}
 
 	public int getX() {
@@ -118,16 +111,6 @@ public class Hand implements PConstants {
 
 	public void setY(int y) {
 		this.y = y;
-	}
-
-	public void setW(double scale) {
-		this.w *= scale;
-		hand_img.resize(this.w, this.h);
-	}
-
-	public void setH(double scale) {
-		this.h *= scale;
-		hand_img.resize(this.w, this.h);
 	}
 
 	public void bind(float mx, float my) {
@@ -148,7 +131,7 @@ public class Hand implements PConstants {
 		if (pressed == false) {
 			this.destroy();
 		} else if (this.contains(mx, my)) {
-			this.bind(this.fixed_x, my);
+			this.bind(mx, my);
 		}
 	}
 	
