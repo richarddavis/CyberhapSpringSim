@@ -13,12 +13,12 @@ public class Main extends PApplet {
 	NewSpring s2;
 	NewSpring s3;
 	SpringCollection sc;
-	HookCollection hc;
+	WeightCollection hc;
 
 	Hand hand;
 	Boundary ceiling;
 	Boundary floor;
-	Hook hook;
+	Weight hook;
 	
 	//serialports 
 	// Arduino board serial port index, machine-dependent:
@@ -42,11 +42,11 @@ public class Main extends PApplet {
 		//myPort = new Serial(this, Serial.list()[0], 9600); 
 		//myPort.bufferUntil('\n');
 		
-		hc = new HookCollection();
+		hc = new WeightCollection();
 		Random rg = new Random();
 		
 		for (int i = 0; i < 100; i++) {
-			hook = new Hook((int) rg.nextGaussian() + this.width/2, 50 + rg.nextInt(10), this, box2d);
+			hook = new Weight((int) rg.nextGaussian() + this.width/2, 50 + rg.nextInt(10), this, box2d);
 			hc.add(hook);
 		}
 
