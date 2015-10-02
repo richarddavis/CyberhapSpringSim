@@ -13,12 +13,12 @@ public class Main extends PApplet {
 	NewSpring s2;
 	NewSpring s3;
 	SpringCollection sc;
-	WeightCollection hc;
+	WeightCollection wc;
 
 	Hand hand;
 	Boundary ceiling;
 	Boundary floor;
-	Weight hook;
+	Weight weight;
 	
 	//serialports 
 	// Arduino board serial port index, machine-dependent:
@@ -33,7 +33,7 @@ public class Main extends PApplet {
 		box2d = new Box2DProcessing(this);
 		box2d.createWorld();
 		box2d.setScaleFactor(500);
-		box2d.setGravity(0, -1);
+		box2d.setGravity(0, -2);
 		
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
@@ -42,12 +42,12 @@ public class Main extends PApplet {
 		//myPort = new Serial(this, Serial.list()[0], 9600); 
 		//myPort.bufferUntil('\n');
 		
-		hc = new WeightCollection();
+		wc = new WeightCollection();
 		Random rg = new Random();
 		
-		for (int i = 0; i < 100; i++) {
-			hook = new Weight((int) rg.nextGaussian() + this.width/2, 50 + rg.nextInt(10), this, box2d);
-			hc.add(hook);
+		for (int i = 0; i < 20; i++) {
+			weight = new Weight((int) rg.nextGaussian() + this.width/2, 50 + rg.nextInt(10), this, box2d);
+			wc.add(weight);
 		}
 
 		s1 = new NewSpring(100, 100, 1, 100, this, box2d);
@@ -71,7 +71,7 @@ public class Main extends PApplet {
 
 		sc.draw();
 		floor.draw();
-		hc.draw();
+		wc.draw();
 		//ceiling.draw();
 	}
 
