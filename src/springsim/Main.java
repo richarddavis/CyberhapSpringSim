@@ -2,6 +2,10 @@ package springsim;
 
 import java.util.Random;
 
+//import jssc.SerialPort;
+//import jssc.SerialPortEvent;
+//import jssc.SerialPortEventListener;
+//import jssc.SerialPortException;
 import processing.core.PApplet;
 import processing.serial.Serial;
 import shiffman.box2d.Box2DProcessing;
@@ -20,11 +24,10 @@ public class Main extends PApplet {
 	Boundary floor;
 	Weight weight;
 	
-	//serialports 
-	// Arduino board serial port index, machine-dependent:
-	int serialPortIndex = 0;
-	int SERIAL_WRITE_LENGTH = 32;
-	Serial myPort;
+	//Serial Data
+	int serialPortIndex = 7;
+	SerialComm serialData;
+	double hapkitPos;
 	
 	public void setup() {
 		size(500, 800);
@@ -39,8 +42,7 @@ public class Main extends PApplet {
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
 		// Initialize Serial Comms
-		//myPort = new Serial(this, Serial.list()[0], 9600); 
-		//myPort.bufferUntil('\n');
+		serialData = new SerialComm(this, Serial.list(), serialPortIndex);
 		
 		wc = new WeightCollection();
 		Random rg = new Random();
@@ -62,6 +64,8 @@ public class Main extends PApplet {
 		
 		floor = new Boundary(this.width/2, this.height - 20, this.width - 20, 20, this, box2d);
 		ceiling = new Boundary(10, 10, this.width - 20, 20, this, box2d);
+		
+		println("yes");
 	}
 
 	public void draw() {
@@ -73,9 +77,19 @@ public class Main extends PApplet {
 		floor.draw();
 		wc.draw();
 		//ceiling.draw();
+		
+		readHapkitPos();
+		println(hapkitPos);
+	}
+	
+	public void readHapkitPos() {
+		double rawValue = serialData.readIn();
+		
+		if(rawValue != 0.0){
+			hapkitPos = rawValue;
+		}
 	}
 
-	
 	public void mousePressed() {
 		sc.updateActive(this.mouseX, this.mouseY, true);
 	}
@@ -83,42 +97,6 @@ public class Main extends PApplet {
 	public void mouseReleased() {
 		sc.updateActive(this.mouseX, this.mouseY, false);
 	}
-	
-//	/**
-//	* TODO: Document
-//	*/
-//	public void serialEvent(Serial port) {
-//		String inString = "";
-//		
-//		while(myPort.available() > 0)
-//		{
-//		  inString = myPort.readStringUntil('\n');
-//		}
-//		
-//		if (inString != null)
-//		{
-//		   try {
-//		    
-//		    String[] list = split(inString, ',');
-//		    
-//		    // trim off whitespaces.
-//			String xString = trim(list[0]); 
-//		 
-//			// convert to a number.
-//		    int xByte = Integer.valueOf(xString);  
-//
-//		    if(!Float.isNaN(xByte) && xByte != 0){
-//		      double inputX = xByte;
-//		      
-//		      sc.activeSpring.update(sc.activeSpring.x, xByte);
-//		      // TODO: Set spring X value to be target of virtual spring?
-//		      //sector_pulley_position = updated_x;
-//		      // Spring.update() here or similar... 
-//		    }       
-//		    
-//		   } catch (Exception e) {}
-//		
-//		 }
-//	}
+
 	
 }
