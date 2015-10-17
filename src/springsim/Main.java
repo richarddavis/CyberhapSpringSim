@@ -60,6 +60,8 @@ public class Main extends PApplet {
 		sc.add(s1);
 		sc.add(s2);
 		sc.add(s3);
+		
+		//set initial active spring
 		sc.setActive(s1);
 		
 		floor = new Boundary(this.width/2, this.height - 20, this.width - 20, 20, this, box2d);
@@ -79,9 +81,14 @@ public class Main extends PApplet {
 		//ceiling.draw();
 		
 		readHapkitPos();
-		println(hapkitPos);
+		
+		updateSpringPosition();
 	}
 	
+	private void updateSpringPosition() {
+		sc.updateActiveSpringY(hapkitPos);
+	}
+
 	public void readHapkitPos() {
 		double rawValue = serialData.readIn();
 		
@@ -91,11 +98,11 @@ public class Main extends PApplet {
 	}
 
 	public void mousePressed() {
-		sc.updateActive(this.mouseX, this.mouseY, true);
+		sc.updateActiveSpring(this.mouseX, this.mouseY, true, false);
 	}
 	
 	public void mouseReleased() {
-		sc.updateActive(this.mouseX, this.mouseY, false);
+		sc.updateActiveSpring(this.mouseX, this.mouseY, false, false);
 	}
 
 	

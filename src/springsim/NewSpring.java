@@ -97,6 +97,10 @@ public class NewSpring {
 		this.hand.mouseUpdate(mx, my, pressed);
 	}
 	
+	public void hapkitUpdate(int my) {
+		this.hand.hapkitUpdate(my);
+	}
+	
 	public float getLength() {
 		Vec2 v1 = new Vec2(0,0);
 		dj.getAnchorA(v1);

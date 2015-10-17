@@ -80,6 +80,7 @@ public class Hand implements PConstants {
 	public void draw() {
 		if (mj != null) {
 
+			//??
 			this.mousePosUpdate(this.fixed_x, parent.mouseY);
 			
 			// We can get the two anchor points
@@ -152,7 +153,17 @@ public class Hand implements PConstants {
 		}
 	}
 	
+	public void hapkitUpdate(int my){
+		this.bind(this.fixed_x, my);
+	}
+	
 	public void mousePosUpdate(int mx, int my) {
+		// Update the position
+		Vec2 mouseWorld = box2d.coordPixelsToWorld(mx,my);
+		this.mj.setTarget(mouseWorld);
+	}
+	
+	public void hapkitPosUpdate(int mx, int my) {
 		// Update the position
 		Vec2 mouseWorld = box2d.coordPixelsToWorld(mx,my);
 		this.mj.setTarget(mouseWorld);

@@ -26,18 +26,35 @@ public class SpringCollection {
 		activeSpring = s;
 	}
 	
-	public void updateActive(int mx, int my, boolean pressed) {
+	
+	/**
+	 * 
+	 * @param mx
+	 * @param my
+	 * @param updatePosition
+	 */
+	public void updateActiveSpring(int mx, int my, boolean pressed, boolean updatePosition) {
 		for (NewSpring s : springs) {
 			if (s.hand.contains(mx, my)) {
 				this.setActive(s);
 				break;
 			}
 		}
-		this.activeSpring.mouseUpdate(mx, my, pressed);
+		if(updatePosition){
+			this.activeSpring.mouseUpdate(mx, my, pressed);
+		}
 	}
 	
 	public void printActiveForce() {
 		//System.out.println(this.activeSpring.getForce());
+	}
+
+	public void updateActiveSpringY(double hapkitPos) {
+
+		int currentY = this.activeSpring.getY();
+		int newY = (int) (currentY + hapkitPos);
+		this.activeSpring.hapkitUpdate(newY);
+		
 	}
 	
 }
