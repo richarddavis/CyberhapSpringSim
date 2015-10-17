@@ -103,13 +103,14 @@ public class Main extends PApplet {
 		}
 	}
 
-//	public void mousePressed() {
-//		sc.updateActiveSpring(this.mouseX, this.mouseY, true, false);
-//	}
-//	
-//	public void mouseReleased() {
-//		sc.updateActiveSpring(this.mouseX, this.mouseY, false, false);
-//	}
+	public void mousePressed() {
+		sc.updateActiveSpring(this.mouseX, this.mouseY, true, false);
+		//sc.updateActiveSpring(this.mouseX, this.mouseY, true, false);
+	}
+	
+	public void mouseReleased() {
+		sc.updateActiveSpring(this.mouseX, this.mouseY, false, false);
+	}
 
 	
 }
