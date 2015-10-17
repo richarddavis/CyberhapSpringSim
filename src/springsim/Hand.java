@@ -19,7 +19,9 @@ public class Hand implements PConstants {
 
 	PApplet parent;
 	Box2DProcessing box2d;
-	PImage hand_img;
+	PImage inactive_hand_img;
+	PImage active_hand_img;
+	PImage current_hand_img;
 	Body body;
 	MouseJoint mj;
 
@@ -38,12 +40,15 @@ public class Hand implements PConstants {
 		this.fixed_x = this.x;
 		this.y = _y;
 
-		this.hand_img = p.loadImage("hand.png");
+		this.inactive_hand_img = p.loadImage("hand.png");
+		this.active_hand_img = p.loadImage("active_hand.png");
+		this.current_hand_img = inactive_hand_img;
 
-		this.w = this.hand_img.width / 6;
-		this.h = this.hand_img.height / 6;
+		this.w = this.inactive_hand_img.width / 6;
+		this.h = this.inactive_hand_img.height / 6;
 
-		this.hand_img.resize(this.w, this.h);
+		this.inactive_hand_img.resize(this.w, this.h);
+		this.active_hand_img.resize(this.w, this.h);
 
 		BodyDef bd = new BodyDef();
 		bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
@@ -99,7 +104,7 @@ public class Hand implements PConstants {
 		this.x = (int)pos.x;
 		this.y = (int)pos.y;
 		parent.imageMode(PConstants.CENTER);
-		parent.image(hand_img, this.x, this.y);
+		parent.image(current_hand_img, this.x, this.y);
 	}
 
 	public int getX() {
@@ -120,12 +125,12 @@ public class Hand implements PConstants {
 
 	public void setW(double scale) {
 		this.w *= scale;
-		hand_img.resize(this.w, this.h);
+		current_hand_img.resize(this.w, this.h);
 	}
 
 	public void setH(double scale) {
 		this.h *= scale;
-		hand_img.resize(this.w, this.h);
+		current_hand_img.resize(this.w, this.h);
 	}
 
 	public void bind(float mx, float my) {
@@ -186,6 +191,16 @@ public class Hand implements PConstants {
 		Fixture f = this.body.getFixtureList();
 		boolean inside = f.testPoint(worldPoint);
 		return inside;
+	}
+
+	public void swapIcon() {
+		if(current_hand_img == inactive_hand_img){
+			current_hand_img = active_hand_img;
+		}else{
+			current_hand_img = inactive_hand_img;
+		}
+		
+		
 	}
 
 }

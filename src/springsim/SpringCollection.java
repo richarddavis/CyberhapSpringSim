@@ -23,7 +23,14 @@ public class SpringCollection {
 	}
 	
 	public void setActive(NewSpring s){
-		activeSpring = s;
+		if(activeSpring == null){
+			activeSpring = s;
+			activeSpring.hand.swapIcon();
+		}else{
+			activeSpring.hand.swapIcon();
+			s.hand.swapIcon();
+			activeSpring = s;
+		}
 	}
 	
 	
