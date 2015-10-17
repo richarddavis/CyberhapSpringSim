@@ -154,7 +154,13 @@ public class Hand implements PConstants {
 	}
 	
 	public void hapkitUpdate(int my){
-		this.bind(this.fixed_x, my);
+		
+		if(this.mj !=null){
+			Vec2 mp = this.box2d.coordPixelsToWorld(this.fixed_x, my);
+			this.mj.setTarget(mp);
+		}else{
+			this.bind(this.fixed_x, my);
+		}
 	}
 	
 	public void mousePosUpdate(int mx, int my) {
