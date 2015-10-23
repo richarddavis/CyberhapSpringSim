@@ -31,6 +31,7 @@ public class SpringCollection {
 			s.hand.swapIcon();
 			activeSpring = s;
 		}
+		
 	}
 	
 	
@@ -39,11 +40,13 @@ public class SpringCollection {
 	 * @param mx
 	 * @param my
 	 * @param updatePosition
+	 * @param serialData 
 	 */
-	public void updateActiveSpring(int mx, int my, boolean pressed, boolean updatePosition) {
+	public void updateActiveSpring(int mx, int my, boolean pressed, boolean updatePosition, SerialComm serialData) {
 		for (NewSpring s : springs) {
 			if (s.hand.contains(mx, my)) {
 				this.setActive(s);
+				serialData.writeToArduino(s.k);
 				break;
 			}
 		}

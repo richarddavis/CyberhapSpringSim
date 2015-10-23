@@ -32,18 +32,26 @@ public class SerialComm {
 	        String[] list = inString.split(",");
 	        
 	        String xString = list[0].replaceAll("\\s",""); // trim off whitespaces.
+	        PApplet.println(xString);
+	        double xByte = Double.parseDouble(xString);         // convert to a number.
 
-	        int xByte = Integer.parseInt(xString);         // convert to a number.
-
-	        if(!Float.isNaN(xByte) && xByte != 0){
-	          value = map(xByte, -3000, 3000, -1000, 1000);
-	          
+	        if(!Double.isNaN(xByte) && xByte != 0){
+	          int pixelsPerMeter = 500;
+	          value = xByte * pixelsPerMeter;
 	        }       
-	       } finally {}
+	        
+	       } catch(NumberFormatException e){
+	    	   PApplet.println("data parse error");
+	       }
 	    
 	     }
 	    
 	    return value;
+	}
+	
+	public void writeToArduino(int x){
+		myPort.write(x);
+		myPort.write(255);
 	}
 	
 	/**

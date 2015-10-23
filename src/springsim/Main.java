@@ -55,9 +55,9 @@ public class Main extends PApplet {
 //			wc.add(weight);
 //		}
 
-		s1 = new NewSpring(100, 100, 1, 100, this, box2d);
-		s2 = new NewSpring(200, 100, 3, 100, this, box2d);
-		s3 = new NewSpring(300, 100, 5, 100, this, box2d);
+		s1 = new NewSpring(100, 100, 10, 100, this, box2d);
+		s2 = new NewSpring(200, 100, 40, 100, this, box2d);
+		s3 = new NewSpring(300, 100, 70, 100, this, box2d);
 		
 		sc = new SpringCollection();
 		sc.add(s1);
@@ -104,12 +104,12 @@ public class Main extends PApplet {
 	}
 
 	public void mousePressed() {
-		sc.updateActiveSpring(this.mouseX, this.mouseY, true, false);
+		sc.updateActiveSpring(this.mouseX, this.mouseY, true, false, serialData);
 		//sc.updateActiveSpring(this.mouseX, this.mouseY, true, false);
 	}
 	
 	public void mouseReleased() {
-		sc.updateActiveSpring(this.mouseX, this.mouseY, false, false);
+		sc.updateActiveSpring(this.mouseX, this.mouseY, false, false, serialData);
 	}
 
 	
