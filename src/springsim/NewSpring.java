@@ -16,6 +16,8 @@ public class NewSpring {
 	int originalLen;
 	int k;
 
+	int spring_img_w = 35;
+	
 	//BOX2D
 	DistanceJointDef djd;
 	DistanceJoint dj;
@@ -81,9 +83,10 @@ public class NewSpring {
 			//parent.image(spring_img, v1.x, v1.y);
 			
 			// And just draw a line
-			parent.stroke(0);
-			parent.strokeWeight(3);
-			parent.line(v1.x,v1.y,v2.x,v2.y);
+//			parent.stroke(0);
+//			parent.strokeWeight(3);
+			//parent.line(v1.x,v1.y,v2.x,v2.y);
+			parent.image(spring_img, this.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
 			
 			//System.out.println(this.getLength());
 			//System.out.println(this.getForce());
