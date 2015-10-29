@@ -96,6 +96,7 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="SpringSim/lib/user/box2d_processing"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/controlP5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

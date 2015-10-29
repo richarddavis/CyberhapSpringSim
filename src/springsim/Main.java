@@ -6,6 +6,8 @@ import java.util.Random;
 
 
 
+
+import controlP5.ControlP5;
 //import jssc.SerialPort;
 //import jssc.SerialPortEvent;
 //import jssc.SerialPortEventListener;
@@ -66,6 +68,7 @@ public class Main extends PApplet {
 	
 	List<Component> components = new ArrayList<Component>();
 	
+	ControlP5 cp5;
 	
 	public void setup() {
 		size(width, height);
@@ -83,7 +86,7 @@ public class Main extends PApplet {
 		components.add(forceDisplayOutput);
 		components.add(physicsPlayground);
 		
-		
+		cp5 = new ControlP5(this);
 	}
 
 	public void draw() {
