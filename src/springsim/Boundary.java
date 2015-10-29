@@ -13,17 +13,17 @@ import shiffman.box2d.Box2DProcessing;
 public class Boundary implements PConstants {
 
 	// A boundary is a simple rectangle with x,y,width,and height
-	float x;
-	float y;
-	float w;
-	float h;
+	int x;
+	int y;
+	int w;
+	int h;
 	PApplet parent;
 	Box2DProcessing box2d;
 
 	// But we also have to make a body for box2d to know about it
 	Body body;
 
-	Boundary(float x_,float y_, float w_, float h_,PApplet p, Box2DProcessing b2) {
+	Boundary(int x_,int y_, int w_, int h_,PApplet p, Box2DProcessing b2) {
 
 		parent = p;
 		box2d = b2;

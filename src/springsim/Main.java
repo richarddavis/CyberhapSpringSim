@@ -1,6 +1,10 @@
 package springsim;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+
 
 //import jssc.SerialPort;
 //import jssc.SerialPortEvent;
@@ -12,104 +16,95 @@ import shiffman.box2d.Box2DProcessing;
 
 public class Main extends PApplet {
 
-	Box2DProcessing box2d;
-	NewSpring s1;
-	NewSpring s2;
-	NewSpring s3;
-	SpringCollection sc;
-	//WeightCollection wc;
-
-	Hand hand;
-	Boundary ceiling;
-	Boundary floor;
-	//Weight weight;
+	//Container properties, dynamic generated from overall width, height
+	int width = 1000;
+	int height = 600;
 	
-	//Serial Data
-	int serialPortIndex = 7;
-	SerialComm serialData;
-	double hapkitPos;
+	int spacing = (int) (width*0.02);
 	
-	int step;
+	//component widths
+	int leftColWidth = (int) (width*0.22);
+	int centerColWidth = (int) (width*0.45);
+	int rightColWidth = (int) (width*0.22);
+	
+	//designPalette coordinates
+	int dPX = leftColWidth+(2*spacing);
+	int dPY = spacing;
+	int dPW = centerColWidth;
+	int dPH = 100;
+	
+	//forceFeedbackOption coordinates
+	int fFOX = spacing;
+	int fFOY = spacing;
+	int fFOW = leftColWidth;
+	int fFOH = 100;
+	
+	//expSettings coord
+	int eSX = spacing;
+	int eSY = (spacing*2)+fFOH;
+	int eSW = leftColWidth;
+	int eSH = 200;
+	
+	//forceDisplayOutput coord
+	int fDOX = (spacing*3)+leftColWidth+centerColWidth;
+	int fDOY = spacing;
+	int fDOW = rightColWidth;
+	int fDOH = 200;
+	
+	//physicsPlayground coord
+	int pPX = (spacing*3)+leftColWidth+centerColWidth;
+	int pPY = (spacing*2)+fDOH;
+	int pPW = rightColWidth;
+	int pPH = 200;
+	
+	//Components
+	Canvas designPalette;
+	ForceFeedbackOption forceFeedbackOption;
+	ExperimentSettings expSettings;
+	ForceDisplayOutput forceDisplayOutput;
+	PhysicsPlayground physicsPlayground;
+	
+	List<Component> components = new ArrayList<Component>();
+	
 	
 	public void setup() {
-		size(500, 800);
+		size(width, height);
 		background(255);
 		
-		box2d = new Box2DProcessing(this);
-		box2d.createWorld();
-		box2d.setScaleFactor(500);
-		box2d.setGravity(0, -2);
+		designPalette = new Canvas(this, dPX, dPY, dPW, dPH);
+		forceFeedbackOption = new ForceFeedbackOption(this, fFOX, fFOY, fFOW, fFOH);
+		expSettings = new ExperimentSettings(this, eSX, eSY, eSW, eSH);
+		forceDisplayOutput = new ForceDisplayOutput(this, fDOX, fDOY, fDOW, fDOH);
+		physicsPlayground = new PhysicsPlayground(this, pPX, pPY, pPW, pPH);
 		
-		// This prevents dynamic bodies from sticking to static ones
-		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
+		components.add(designPalette);
+		components.add(forceFeedbackOption);
+		components.add(expSettings);
+		components.add(forceDisplayOutput);
+		components.add(physicsPlayground);
 		
-		// Initialize Serial Comms
-		serialData = new SerialComm(this, Serial.list(), serialPortIndex);
 		
-// Ignore weights for now (study1)
-//		wc = new WeightCollection();
-//		Random rg = new Random();
-//		
-//		for (int i = 0; i < 20; i++) {
-//			weight = new Weight((int) rg.nextGaussian() + this.width/2, 50 + rg.nextInt(10), this, box2d);
-//			wc.add(weight);
-//		}
-
-		s1 = new NewSpring(100, 100, 10, 100, this, box2d);
-		s2 = new NewSpring(200, 100, 40, 100, this, box2d);
-		s3 = new NewSpring(300, 100, 70, 100, this, box2d);
-		
-		sc = new SpringCollection();
-		sc.add(s1);
-		sc.add(s2);
-		sc.add(s3);
-		
-		//set initial active spring
-		sc.setActive(s1);
-		
-		floor = new Boundary(this.width/2, this.height - 20, this.width - 20, 20, this, box2d);
-		ceiling = new Boundary(10, 10, this.width - 20, 20, this, box2d);
-		
-		println("yes");
-		
-		step = 0;
 	}
 
 	public void draw() {
 		background(255);
-		this.box2d.step();
 		stroke(255);
-
-		sc.draw();
-		floor.draw();
-		//wc.draw();
-		//ceiling.draw();
 		
-		readHapkitPos();
-		    
-		updateSpringPosition();
-	}
-	
-	private void updateSpringPosition() {
-		
-		sc.updateActiveSpringY(hapkitPos);
-	}
-
-	public void readHapkitPos() {
-		double rawValue = serialData.readIn();
-		
-		if(rawValue != 0.0){
-			hapkitPos = rawValue;
+		for(int i=0; i<components.size(); i++){
+			Component c = components.get(i);
+			c.draw();
+			c.step();	
 		}
-	}
+		
+	}	
 
 	public void mousePressed() {
-		sc.updateActiveSpring(this.mouseX, this.mouseY, true, false, serialData);
-		//sc.updateActiveSpring(this.mouseX, this.mouseY, true, false);
+		designPalette.mousePressed();
+		
 	}
 	
 	public void mouseReleased() {
-		sc.updateActiveSpring(this.mouseX, this.mouseY, false, false, serialData);
+		designPalette.mouseReleased();
 	}
 
 	

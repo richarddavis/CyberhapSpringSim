@@ -8,7 +8,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
-public class NewSpring {
+public class Spring {
 
 	int x;
 	int y;
@@ -28,7 +28,7 @@ public class NewSpring {
 	Anchor anchor;
 	PImage spring_img;
 
-	public NewSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
+	public Spring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
 		this.x = _x;
 		this.y = _y;
 		this.k = _k;

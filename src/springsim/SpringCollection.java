@@ -4,25 +4,25 @@ import java.util.ArrayList;
 
 public class SpringCollection {
 	
-	ArrayList<NewSpring> springs;
-	NewSpring activeSpring; 
+	ArrayList<Spring> springs;
+	Spring activeSpring; 
 	
 	public SpringCollection(){
-		springs = new ArrayList<NewSpring>();
+		springs = new ArrayList<Spring>();
 	}
 	
 	public void draw() {
-		for (NewSpring s : springs) {
+		for (Spring s : springs) {
 			s.draw();
 		}
 		printActiveForce();
 	}
 	
-	public boolean add(NewSpring s){
+	public boolean add(Spring s){
 		return springs.add(s);
 	}
 	
-	public void setActive(NewSpring s){
+	public void setActive(Spring s){
 		if(activeSpring == null){
 			activeSpring = s;
 			activeSpring.hand.swapIcon();
@@ -42,8 +42,8 @@ public class SpringCollection {
 	 * @param updatePosition
 	 * @param serialData 
 	 */
-	public void updateActiveSpring(int mx, int my, boolean pressed, boolean updatePosition, SerialComm serialData) {
-		for (NewSpring s : springs) {
+	public void updateActiveSpring(int mx, int my, boolean pressed, boolean updatePosition, Hapkit serialData) {
+		for (Spring s : springs) {
 			if (s.hand.contains(mx, my)) {
 				this.setActive(s);
 				serialData.writeToArduino(s.k);

@@ -4,13 +4,13 @@ import processing.core.PApplet;
 import processing.serial.Serial;
 
 
-public class SerialComm {
+public class Hapkit {
 
 	Serial myPort;
 	int SERIAL_WRITE_LENGTH = 32; 
 	PApplet p;
 	
-	public SerialComm(PApplet p, String[] serialPorts, int index){
+	public Hapkit(PApplet p, String[] serialPorts, int index){
 		this.p = p;
 		myPort = new Serial(this.p, serialPorts[index], 9600);
 		myPort.bufferUntil('\n');
