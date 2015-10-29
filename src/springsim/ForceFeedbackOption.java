@@ -1,5 +1,8 @@
 package springsim;
 
+import controlP5.ControlEvent;
+import controlP5.ControlP5;
+import controlP5.RadioButton;
 import processing.core.PApplet;
 
 public class ForceFeedbackOption implements Component {
@@ -11,14 +14,32 @@ public class ForceFeedbackOption implements Component {
 	
 	PApplet parent;
 	
-	public ForceFeedbackOption(Main main, int _x, int _y, int _w, int _h) {
+	ControlP5 cp5;
+	RadioButton r;
+	
+	public ForceFeedbackOption(Main main, ControlP5 _cp5, int _x, int _y, int _w, int _h) {
 		this.x = _x;
 		this.y = _y;
 		this.w = _w;
 		this.h = _h;
+		this.cp5 = _cp5;
 		parent = main;
+		
+		// if we need to implement listeners, consider constructing radio
+		// buttons, etc. in main class so that listener can be handed
+		// all necessary instances of classes to handle input events appropriately. 
+		r = cp5.addRadioButton("radioButton")
+		         .setPosition(x,y)
+		         .setSize(40,20)
+		         .setColorForeground(parent.color(120))
+		         .setColorActive(parent.color(200))
+		         .setColorLabel(parent.color(0))
+		         .setItemsPerRow(5)
+		         .setSpacingColumn(50)
+		         .addItem("ON",1)
+		         .addItem("OFF",2);
 	}
-
+	
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
@@ -36,4 +57,15 @@ public class ForceFeedbackOption implements Component {
 		parent.text("Force Feedback Option", x, y);
 	}
 
+	//TODO: this doesn't seem to work. looks like will need to either handle
+	//from main class, or implement listeners. 
+	//see: https://code.google.com/p/controlp5/source/browse/trunk/examples/use/ControlP5listenerForSingleController/ControlP5listenerForSingleController.pde?r=46
+	
+	void controlEvent(ControlEvent theEvent) {
+		  if(theEvent.isFrom(r)) {
+		    //Handle event here?
+			parent.println("yes");
+			 
+		  }
+		}
 }

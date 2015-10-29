@@ -74,8 +74,10 @@ public class Main extends PApplet {
 		size(width, height);
 		background(255);
 		
+		cp5 = new ControlP5(this);
+		
 		designPalette = new Canvas(this, dPX, dPY, dPW, dPH);
-		forceFeedbackOption = new ForceFeedbackOption(this, fFOX, fFOY, fFOW, fFOH);
+		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH);
 		expSettings = new ExperimentSettings(this, eSX, eSY, eSW, eSH);
 		forceDisplayOutput = new ForceDisplayOutput(this, fDOX, fDOY, fDOW, fDOH);
 		physicsPlayground = new PhysicsPlayground(this, pPX, pPY, pPW, pPH);
@@ -86,7 +88,6 @@ public class Main extends PApplet {
 		components.add(forceDisplayOutput);
 		components.add(physicsPlayground);
 		
-		cp5 = new ControlP5(this);
 	}
 
 	public void draw() {
