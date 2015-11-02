@@ -12,6 +12,10 @@ public class Canvas implements Component {
 	Spring s3;
 	SpringCollection sc;
 	
+	//Serial Data
+	//int serialPortIndex = 0;
+	Hapkit serialData;
+	
 	double hapkitPos;
 	
 	Hand hand;
@@ -25,16 +29,13 @@ public class Canvas implements Component {
 	int w;
 	int h;
 	
-	//Serial Data
-	int serialPortIndex = 0;
-	Hapkit serialData;
-	
-	public Canvas(Main main, int _x, int _y, int _w, int _h) {
+	public Canvas(Main main, int _x, int _y, int _w, int _h, Hapkit _hapkit) {
 		
 		this.x = _x;
 		this.y = _y;
 		this.w = _w;
 		this.h = _h;
+		this.serialData = _hapkit;
 		
 		parent = main; 
 		
@@ -62,7 +63,7 @@ public class Canvas implements Component {
 		ceiling = new Boundary(10, 10, this.w - 20, 20, parent, box2d);
 		
 		// Initialize Serial Comms
-		serialData = new Hapkit(parent, Serial.list(), serialPortIndex);
+		// serialData = new Hapkit(parent, Serial.list(), serialPortIndex);
 	}
 	
 	public void step(){

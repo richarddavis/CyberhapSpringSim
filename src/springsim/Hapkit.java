@@ -16,6 +16,25 @@ public class Hapkit {
 		myPort.bufferUntil('\n');
 	}
 	
+	public void setFeedback(boolean on) {
+		if (on == true) {
+			this.p.println("Hapkit feedback turned on.");
+		} else {
+			this.p.println("Hapkit feedback turned off.");
+		}
+	}
+	
+	public void setGain(int gain) {
+		if (gain == 1) {
+			this.p.println("Setting Hapkit gain to 1x.");
+		} else if (gain == 2) {
+			this.p.println("Setting Hapkit gain to 2x.");
+		} else if (gain == 3) {
+			this.p.println("Setting Hapkit gain to 3x.");
+		} else {
+			this.p.println("Unknown gain requested.");
+		}
+	}
 	
 	public double readIn(){
 		String inString = "";

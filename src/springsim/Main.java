@@ -56,9 +56,17 @@ public class Main extends PApplet {
 	int pPW = rightColWidth;
 	int pPH = 200;
 	
+	//hapkitFeedbackPanel coord
+	int hfx = spacing;
+	int hfy = (spacing*3)+fFOH+eSH;
+	int hfw = leftColWidth;
+	int hfh = 200;
+	
 	//Components
+	Hapkit hapkit;
 	Canvas designPalette;
 	ForceFeedbackOption forceFeedbackOption;
+	HapkitFeedback hapkitFeedbackPanel;
 	ExperimentSettings expSettings;
 	ForceDisplayOutput forceDisplayOutput;
 	PhysicsPlayground physicsPlayground;
@@ -73,17 +81,20 @@ public class Main extends PApplet {
 		
 		cp5 = new ControlP5(this);
 		
-		designPalette = new Canvas(this, dPX, dPY, dPW, dPH);
+		hapkit = new Hapkit(this, Serial.list(), 0);
+		designPalette = new Canvas(this, dPX, dPY, dPW, dPH, hapkit);
 		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH, designPalette);
 		expSettings = new ExperimentSettings(this, eSX, eSY, eSW, eSH);
 		forceDisplayOutput = new ForceDisplayOutput(this, fDOX, fDOY, fDOW, fDOH);
 		physicsPlayground = new PhysicsPlayground(this, pPX, pPY, pPW, pPH);
+		hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit);
 		
 		components.add(designPalette);
 		components.add(forceFeedbackOption);
 		components.add(expSettings);
 		components.add(forceDisplayOutput);
 		components.add(physicsPlayground);
+		components.add(hapkitFeedbackPanel);
 		
 	}
 
