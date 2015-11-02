@@ -38,6 +38,8 @@ public class ForceFeedbackOption implements Component {
 		         .setSpacingColumn(50)
 		         .addItem("ON",1)
 		         .addItem("OFF",2);
+		// This line tells the radio button where to find the callback function: in this object.
+		r.plugTo(this);
 	}
 	
 	@Override
@@ -57,15 +59,8 @@ public class ForceFeedbackOption implements Component {
 		parent.text("Force Feedback Option", x, y);
 	}
 
-	//TODO: this doesn't seem to work. looks like will need to either handle
-	//from main class, or implement listeners. 
-	//see: https://code.google.com/p/controlp5/source/browse/trunk/examples/use/ControlP5listenerForSingleController/ControlP5listenerForSingleController.pde?r=46
+	public void radioButton(int buttonValue) {
+		parent.println("Got button event.");
+	}
 	
-	void controlEvent(ControlEvent theEvent) {
-		  if(theEvent.isFrom(r)) {
-		    //Handle event here?
-			parent.println("yes");
-			 
-		  }
-		}
 }
