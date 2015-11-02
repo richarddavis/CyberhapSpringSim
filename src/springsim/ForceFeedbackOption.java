@@ -11,18 +11,20 @@ public class ForceFeedbackOption implements Component {
 	int y;
 	int w;
 	int h;
+	Canvas c;
 	
 	PApplet parent;
 	
 	ControlP5 cp5;
 	RadioButton r;
 	
-	public ForceFeedbackOption(Main main, ControlP5 _cp5, int _x, int _y, int _w, int _h) {
+	public ForceFeedbackOption(Main main, ControlP5 _cp5, int _x, int _y, int _w, int _h, Canvas _c) {
 		this.x = _x;
 		this.y = _y;
 		this.w = _w;
 		this.h = _h;
 		this.cp5 = _cp5;
+		this.c = _c;
 		parent = main;
 		
 		// if we need to implement listeners, consider constructing radio
@@ -60,7 +62,8 @@ public class ForceFeedbackOption implements Component {
 	}
 
 	public void radioButton(int buttonValue) {
-		parent.println("Got button event.");
+		//parent.println("Got button event.");
+		this.c.displayForces(true);
 	}
 	
 }

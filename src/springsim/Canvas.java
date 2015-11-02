@@ -26,7 +26,7 @@ public class Canvas implements Component {
 	int h;
 	
 	//Serial Data
-	int serialPortIndex = 7;
+	int serialPortIndex = 0;
 	Hapkit serialData;
 	
 	public Canvas(Main main, int _x, int _y, int _w, int _h) {
@@ -84,7 +84,6 @@ public class Canvas implements Component {
 	}
 	
 	private void updateSpringPosition() {
-		
 		sc.updateActiveSpringY(hapkitPos);
 	}
 	
@@ -93,6 +92,14 @@ public class Canvas implements Component {
 		
 		if(rawValue != 0.0){
 			hapkitPos = rawValue;
+		}
+	}
+	
+	public void displayForces(boolean on) {
+		if (on == true) {
+			parent.println("Displaying forces in the canvas.");
+		} else {
+			parent.println("Not displaying forces in the canvas.");
 		}
 	}
 	

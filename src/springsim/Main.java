@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
-
-
 import controlP5.ControlP5;
 //import jssc.SerialPort;
 //import jssc.SerialPortEvent;
@@ -77,7 +74,7 @@ public class Main extends PApplet {
 		cp5 = new ControlP5(this);
 		
 		designPalette = new Canvas(this, dPX, dPY, dPW, dPH);
-		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH);
+		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH, designPalette);
 		expSettings = new ExperimentSettings(this, eSX, eSY, eSW, eSH);
 		forceDisplayOutput = new ForceDisplayOutput(this, fDOX, fDOY, fDOW, fDOH);
 		physicsPlayground = new PhysicsPlayground(this, pPX, pPY, pPW, pPH);
