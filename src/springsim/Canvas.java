@@ -29,6 +29,8 @@ public class Canvas implements Component {
 	int w;
 	int h;
 	
+	int numSprings;
+	
 	public Canvas(Main main, int _x, int _y, int _w, int _h, Hapkit _hapkit) {
 		
 		this.x = _x;
@@ -36,6 +38,7 @@ public class Canvas implements Component {
 		this.w = _w;
 		this.h = _h;
 		this.serialData = _hapkit;
+		this.numSprings = 3;
 		
 		parent = main; 
 		
@@ -47,9 +50,9 @@ public class Canvas implements Component {
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new Spring(100, 100, 10, 100, parent, box2d);
-		s2 = new Spring(200, 100, 40, 100, parent, box2d);
-		s3 = new Spring(300, 100, 70, 100, parent, box2d);
+		s1 = new Spring(this.x+1*(this.w/4), 100, 10, 100, parent, box2d);
+		s2 = new Spring(this.x+2*(this.w/4), 100, 40, 100, parent, box2d);
+		s3 = new Spring(this.x+3*(this.w/4), 100, 70, 100, parent, box2d);
 		
 		sc = new SpringCollection();
 		sc.add(s1);
@@ -59,8 +62,8 @@ public class Canvas implements Component {
 		//set initial active spring
 		sc.setActive(s1);
 		
-		floor = new Boundary(this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
-		ceiling = new Boundary(10, 10, this.w - 20, 20, parent, box2d);
+		floor = new Boundary(this.x + this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
+		ceiling = new Boundary(this.x, this.y, this.w - 20, 20, parent, box2d);
 		
 		// Initialize Serial Comms
 		// serialData = new Hapkit(parent, Serial.list(), serialPortIndex);
