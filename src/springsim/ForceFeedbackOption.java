@@ -16,7 +16,7 @@ public class ForceFeedbackOption implements Component {
 	PApplet parent;
 	
 	ControlP5 cp5;
-	RadioButton r;
+	RadioButton r2;
 	
 	public ForceFeedbackOption(Main main, ControlP5 _cp5, int _x, int _y, int _w, int _h, Canvas _c) {
 		this.x = _x;
@@ -30,18 +30,19 @@ public class ForceFeedbackOption implements Component {
 		// if we need to implement listeners, consider constructing radio
 		// buttons, etc. in main class so that listener can be handed
 		// all necessary instances of classes to handle input events appropriately. 
-		r = cp5.addRadioButton("radioButton")
-		         .setPosition(x,y)
+		r2 = cp5.addRadioButton("radioButtonOnOff")
+		         .setPosition(x+10,y+25)
 		         .setSize(40,20)
 		         .setColorForeground(parent.color(120))
 		         .setColorActive(parent.color(200))
 		         .setColorLabel(parent.color(0))
-		         .setItemsPerRow(5)
+		         .setItemsPerRow(1)
 		         .setSpacingColumn(50)
-		         .addItem("ON",1)
-		         .addItem("OFF",2);
+		         .addItem("Display ON",1)
+		         .addItem("Display OFF",2);
+		
 		// This line tells the radio button where to find the callback function: in this object.
-		r.plugTo(this);
+		r2.plugTo(this);
 	}
 	
 	@Override
@@ -58,7 +59,7 @@ public class ForceFeedbackOption implements Component {
 		parent.fill(255);
 		parent.rect(xRect, yRect, w, h);
 		parent.fill(0);
-		parent.text("Force Feedback Option", x, y);
+		parent.text("Display Forces", x+10, y+15);
 	}
 
 	public void radioButton(int buttonValue) {

@@ -43,12 +43,10 @@ double OFFSET_NEG = 15;
 double b;
 double m =  0.0133;
 
-// Variables that can be changed by processing code:
-int hapticFeedback = 0;  
-double k_spring = 0; // define the stiffness of a virtual spring in N/m
-
+double k_spring = 80; // define the stiffness of a virtual spring in N/m
 char serialInputBuffer[2]; 
 int lengthInputBuffer = 2; //need to flush out the ENTIRE transmission! Otherwise it gets super confused
+int sendInterval = 0;
 
 // --------------------------------------------------------------
 // Setup function -- NO NEED TO EDIT
@@ -175,23 +173,27 @@ void loop()
   output = (int)(duty* 255);   // convert duty cycle to output signal
   analogWrite(pwmPin,output);  // output the signal
   
-  
+   
   //*************************************************************
   //*** Section 5. Send data to Processing      *****************
   //*************************************************************
+  sendInterval++;
+  if(sendInterval > 8){
+  Serial.println(xh, 6);
+  sendInterval = 0;
+  }
+}
+
+//*************************************************************
+//*** Section 6. Send data to Processing      *****************
+//*************************************************************
+void serialEvent() {
+  while (Serial.available()) {
+     // read the incoming buffer:
+      Serial.readBytesUntil(225,serialInputBuffer,lengthInputBuffer);
+      k_spring = serialInputBuffer[0];
+  }
   
-  Serial.println(xh, 8);
-  
-  //*************************************************************
-  //*** Section 5. Receive data from Processing *****************
-  //*************************************************************
-   if (Serial.available() ) 
-    {
-        // read the incoming buffer:
-        Serial.readBytesUntil(225,serialInputBuffer,lengthInputBuffer);
-        k_spring = serialInputBuffer[0];
-     }
-   
 }
 
 // --------------------------------------------------------------

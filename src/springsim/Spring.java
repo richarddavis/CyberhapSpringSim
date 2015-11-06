@@ -88,6 +88,9 @@ public class Spring {
 			//parent.line(v1.x,v1.y,v2.x,v2.y);
 			parent.image(spring_img, this.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
 			
+			//(float) (this.y + (0.5*(v2.y-v1.y)))
+			//v2.y-v1.y-(hand.current_hand_img.height/2)
+			
 			//System.out.println(this.getLength());
 			//System.out.println(this.getForce());
 		}

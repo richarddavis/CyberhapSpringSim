@@ -30,19 +30,13 @@ public class Main extends PApplet {
 	int dPX = leftColWidth+(2*spacing);
 	int dPY = spacing;
 	int dPW = centerColWidth;
-	int dPH = 100;
+	int dPH = height-(spacing*2);
 	
 	//forceFeedbackOption coordinates
 	int fFOX = spacing;
 	int fFOY = spacing;
 	int fFOW = leftColWidth;
-	int fFOH = 100;
-	
-	//expSettings coord
-	int eSX = spacing;
-	int eSY = (spacing*2)+fFOH;
-	int eSW = leftColWidth;
-	int eSH = 200;
+	int fFOH = 80;
 	
 	//forceDisplayOutput coord
 	int fDOX = (spacing*3)+leftColWidth+centerColWidth;
@@ -50,17 +44,23 @@ public class Main extends PApplet {
 	int fDOW = rightColWidth;
 	int fDOH = 200;
 	
-	//physicsPlayground coord
-	int pPX = (spacing*3)+leftColWidth+centerColWidth;
-	int pPY = (spacing*2)+fDOH;
-	int pPW = rightColWidth;
-	int pPH = 200;
-	
 	//hapkitFeedbackPanel coord
 	int hfx = spacing;
-	int hfy = (spacing*3)+fFOH+eSH;
+	int hfy = (spacing*2)+fFOH;
 	int hfw = leftColWidth;
-	int hfh = 200;
+	int hfh = 160;
+	
+	//physicsPlayground coord
+	int pPX = spacing;
+	int pPY = (spacing*3)+fFOH+hfh;
+	int pPW = leftColWidth;
+	int pPH = 100;
+	
+	//expSettings coord
+	int eSX = spacing;
+	int eSY = (spacing*4)+fFOH+hfh+pPH;
+	int eSW = leftColWidth;
+	int eSH = 160;
 	
 	//Components
 	Hapkit hapkit;
@@ -80,14 +80,13 @@ public class Main extends PApplet {
 		background(255);
 		
 		cp5 = new ControlP5(this);
-		
-		hapkit = new Hapkit(this, Serial.list(), 0);
+		hapkit = new Hapkit(this, Serial.list(), 7);
 		designPalette = new Canvas(this, dPX, dPY, dPW, dPH, hapkit);
-		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH, designPalette);
-		expSettings = new ExperimentSettings(this, eSX, eSY, eSW, eSH);
-		forceDisplayOutput = new ForceDisplayOutput(this, fDOX, fDOY, fDOW, fDOH);
-		physicsPlayground = new PhysicsPlayground(this, pPX, pPY, pPW, pPH);
-		hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit);
+		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
+		expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
+		forceDisplayOutput = new ForceDisplayOutput(this, cp5, fDOX, fDOY, fDOW, fDOH);
+		physicsPlayground = new PhysicsPlayground(this, cp5, pPX, pPY, pPW, pPH);
+		hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh,hapkit);
 		
 		components.add(designPalette);
 		components.add(forceFeedbackOption);

@@ -1,6 +1,7 @@
 package springsim;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 import processing.serial.Serial;
 import shiffman.box2d.Box2DProcessing;
 
@@ -24,6 +25,8 @@ public class Canvas implements Component {
 	
 	PApplet parent;
 	
+	PImage wood_plank_img;
+	
 	int x;
 	int y;
 	int w;
@@ -42,6 +45,8 @@ public class Canvas implements Component {
 		
 		parent = main; 
 		
+		wood_plank_img = parent.loadImage("wood-plank.jpg");
+		
 		box2d = new Box2DProcessing(parent);
 		box2d.createWorld();
 		box2d.setScaleFactor(500);
@@ -50,9 +55,9 @@ public class Canvas implements Component {
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new Spring(this.x+1*(this.w/4), 100, 10, 100, parent, box2d);
-		s2 = new Spring(this.x+2*(this.w/4), 100, 40, 100, parent, box2d);
-		s3 = new Spring(this.x+3*(this.w/4), 100, 70, 100, parent, box2d);
+		s1 = new Spring(this.x+1*(this.w/4), 100, 10, 200, parent, box2d);
+		s2 = new Spring(this.x+2*(this.w/4), 100, 40, 200, parent, box2d);
+		s3 = new Spring(this.x+3*(this.w/4), 100, 70, 200, parent, box2d);
 		
 		sc = new SpringCollection();
 		sc.add(s1);
@@ -63,7 +68,7 @@ public class Canvas implements Component {
 		sc.setActive(s1);
 		
 		floor = new Boundary(this.x + this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
-		ceiling = new Boundary(this.x, this.y, this.w - 20, 20, parent, box2d);
+		ceiling = new Boundary(this.x+10, this.y+30, this.w - 20, 30, parent, box2d);
 		
 		// Initialize Serial Comms
 		// serialData = new Hapkit(parent, Serial.list(), serialPortIndex);
@@ -73,6 +78,7 @@ public class Canvas implements Component {
 		this.box2d.step();
 		updateSpringPosition();
 		readHapkitPos();
+		parent.println(hapkitPos);
 	}
 	
 	public void draw(){
@@ -84,6 +90,8 @@ public class Canvas implements Component {
 		parent.rect(xRect, yRect, w, h);
 		
 		sc.draw();
+		parent.image(wood_plank_img, ceiling.x+(ceiling.w/2), ceiling.y+((ceiling.h/2)), ceiling.w, ceiling.h);
+		
 		floor.draw();
 	}
 	
@@ -95,7 +103,8 @@ public class Canvas implements Component {
 		double rawValue = serialData.readIn();
 		
 		if(rawValue != 0.0){
-			hapkitPos = rawValue;
+			hapkitPos = rawValue*4;
+			this.parent.println(rawValue);
 		}
 	}
 	

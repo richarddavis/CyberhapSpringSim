@@ -104,7 +104,7 @@ public class Hand implements PConstants {
 		this.x = (int)pos.x;
 		this.y = (int)pos.y;
 		parent.imageMode(PConstants.CENTER);
-		parent.image(current_hand_img, this.x, this.y);
+		parent.image(current_hand_img, this.x, this.y+10);
 	}
 
 	public int getX() {
