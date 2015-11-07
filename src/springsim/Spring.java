@@ -17,6 +17,7 @@ public class Spring {
 	int k;
 
 	int spring_img_w = 35;
+	boolean display_forces = true;
 	
 	//BOX2D
 	DistanceJointDef djd;
@@ -93,6 +94,13 @@ public class Spring {
 			
 			//System.out.println(this.getLength());
 			//System.out.println(this.getForce());
+			if (this.display_forces == true) {
+				int dfx = this.hand.x - this.hand.w/2;
+				int dfy = this.hand.y + this.hand.h + 5;
+				parent.fill(100);
+				parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
+				//parent.rect(this.hand.x, this.hand.y + 100, 100, 100);
+			}
 		}
 
 		this.anchor.draw();
@@ -122,6 +130,16 @@ public class Spring {
 	
 	public float getForce() {
 		return (this.k * (this.getLength() - dj.getLength()));
+	}
+	
+	public void displayForce(boolean on) {
+		if (on == true) {
+			this.display_forces = true;
+			System.out.println("Turning on force display under spring.");
+		} else if (on == false) {
+			this.display_forces = false;
+			System.out.println("Turning off force display under spring.");
+		}
 	}
 
 	public int getX(){

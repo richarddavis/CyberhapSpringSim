@@ -44,8 +44,8 @@ double b;
 double m =  0.0133;
 
 int k_spring = 80; // define the stiffness of a virtual spring in N/m
-int feedback_on;
-int gain_multiplier;
+int feedback_on = 1;
+int gain_multiplier = 1;
 const int lengthInputBuffer = 4; //need to flush out the ENTIRE transmission! Otherwise it gets super confused
 char serialInputBuffer[lengthInputBuffer]; 
 int sendInterval = 0;
@@ -172,9 +172,18 @@ void loop()
   } else if (duty < 0) { 
     duty = 0;
   }  
+
+  // Turn on/off feedback
   output = (int)(duty* 255);   // convert duty cycle to output signal
   if (feedback_on == 0) {
     output = 0;
+  }
+  
+  // Modify force based on gain variable
+  if (gain_multiplier == 2) {
+    output = output * 2;
+  } else if (gain_multiplier == 3) {
+    output = output * 3;
   }
   analogWrite(pwmPin,output);  // output the signal
   

@@ -30,7 +30,7 @@ public class ForceFeedbackOption implements Component {
 		// if we need to implement listeners, consider constructing radio
 		// buttons, etc. in main class so that listener can be handed
 		// all necessary instances of classes to handle input events appropriately. 
-		r2 = cp5.addRadioButton("radioButtonOnOff")
+		r2 = cp5.addRadioButton("displayForcesOnCanvasButton")
 		         .setPosition(x+10,y+25)
 		         .setSize(40,20)
 		         .setColorForeground(parent.color(120))
@@ -39,7 +39,7 @@ public class ForceFeedbackOption implements Component {
 		         .setItemsPerRow(1)
 		         .setSpacingColumn(50)
 		         .addItem("Display ON",1)
-		         .addItem("Display OFF",2);
+		         .addItem("Display OFF",0);
 		
 		// This line tells the radio button where to find the callback function: in this object.
 		r2.plugTo(this);
@@ -62,9 +62,17 @@ public class ForceFeedbackOption implements Component {
 		parent.text("Display Forces", x+10, y+15);
 	}
 
-	public void radioButton(int buttonValue) {
-		//parent.println("Got button event.");
-		this.c.displayForces(true);
+	public void displayForcesOnCanvasButton(int buttonValue) {
+		if (buttonValue == 1) {
+			this.c.displayForces(true);
+			// Tell spring collection to turn on force display
+		} else if (buttonValue == 0) {
+			// Tell spring collection to turn off force display
+			this.c.displayForces(false);
+		} else {
+			// Bad value passed to the function.
+			System.out.println("Bad value sent from radiobutton.");
+		}
 	}
 	
 }

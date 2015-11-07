@@ -72,4 +72,10 @@ public class SpringCollection {
 		
 	}
 	
+	public void displayForces(boolean display_on) {
+		for (Spring s : springs) {
+			s.displayForce(display_on);
+		}
+	}
+	
 }

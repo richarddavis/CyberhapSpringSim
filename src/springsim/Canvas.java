@@ -109,11 +109,7 @@ public class Canvas implements Component {
 	}
 	
 	public void displayForces(boolean on) {
-		if (on == true) {
-			parent.println("Displaying forces in the canvas.");
-		} else {
-			parent.println("Not displaying forces in the canvas.");
-		}
+		this.sc.displayForces(on);
 	}
 	
 	public void mousePressed() {
