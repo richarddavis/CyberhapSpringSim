@@ -78,7 +78,7 @@ public class Canvas implements Component {
 		this.box2d.step();
 		updateSpringPosition();
 		readHapkitPos();
-		parent.println(hapkitPos);
+		//parent.println(hapkitPos);
 	}
 	
 	public void draw(){
@@ -104,7 +104,7 @@ public class Canvas implements Component {
 		
 		if(rawValue != 0.0){
 			hapkitPos = rawValue*4;
-			this.parent.println(rawValue);
+			//this.parent.println(rawValue);
 		}
 	}
 	
@@ -124,6 +124,9 @@ public class Canvas implements Component {
 	public void mouseReleased() {
 		sc.updateActiveSpring(parent.mouseX, parent.mouseY, false, false, serialData);
 	}
-
+	
+	public SpringCollection getSpringCollection() {
+		return this.sc;
+	}
 
 }

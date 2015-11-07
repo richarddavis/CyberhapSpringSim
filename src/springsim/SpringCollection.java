@@ -42,11 +42,12 @@ public class SpringCollection {
 	 * @param updatePosition
 	 * @param serialData 
 	 */
-	public void updateActiveSpring(int mx, int my, boolean pressed, boolean updatePosition, Hapkit serialData) {
+	public void updateActiveSpring(int mx, int my, boolean pressed, boolean updatePosition, Hapkit hapkit) {
 		for (Spring s : springs) {
 			if (s.hand.contains(mx, my)) {
 				this.setActive(s);
-				serialData.writeToArduino(s.k);
+				hapkit.setKConstant(s.k);
+				//serialData.writeToArduino();
 				break;
 			}
 		}
@@ -57,6 +58,10 @@ public class SpringCollection {
 	
 	public void printActiveForce() {
 		//System.out.println(this.activeSpring.getForce());
+	}
+	
+	public float getActiveForce() {
+		return this.activeSpring.getForce();
 	}
 
 	public void updateActiveSpringY(double hapkitPos) {

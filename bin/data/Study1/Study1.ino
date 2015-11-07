@@ -43,9 +43,11 @@ double OFFSET_NEG = 15;
 double b;
 double m =  0.0133;
 
-double k_spring = 80; // define the stiffness of a virtual spring in N/m
-char serialInputBuffer[2]; 
-int lengthInputBuffer = 2; //need to flush out the ENTIRE transmission! Otherwise it gets super confused
+int k_spring = 80; // define the stiffness of a virtual spring in N/m
+int feedback_on;
+int gain_multiplier;
+const int lengthInputBuffer = 4; //need to flush out the ENTIRE transmission! Otherwise it gets super confused
+char serialInputBuffer[lengthInputBuffer]; 
 int sendInterval = 0;
 
 // --------------------------------------------------------------
@@ -171,6 +173,9 @@ void loop()
     duty = 0;
   }  
   output = (int)(duty* 255);   // convert duty cycle to output signal
+  if (feedback_on == 0) {
+    output = 0;
+  }
   analogWrite(pwmPin,output);  // output the signal
   
    
@@ -192,6 +197,8 @@ void serialEvent() {
      // read the incoming buffer:
       Serial.readBytesUntil(225,serialInputBuffer,lengthInputBuffer);
       k_spring = serialInputBuffer[0];
+      feedback_on = serialInputBuffer[1];
+      gain_multiplier = serialInputBuffer[2];
   }
   
 }

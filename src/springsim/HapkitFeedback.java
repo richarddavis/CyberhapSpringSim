@@ -5,6 +5,7 @@ import controlP5.ControlP5;
 import controlP5.RadioButton;
 import controlP5.Textfield;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PImage;
 
 public class HapkitFeedback implements Component {
@@ -18,10 +19,9 @@ public class HapkitFeedback implements Component {
 	ControlP5 cp5;
 	RadioButton r, r2;
 	PImage hand_img;
-	Textfield tf1;
-	
+	SpringCollection springs;
 		
-	public HapkitFeedback(Main main, ControlP5 _cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit) {
+	public HapkitFeedback(Main main, ControlP5 _cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, SpringCollection _springs) {
 		this.x = _x;
 		this.y = _y;
 		this.w = _w;
@@ -30,6 +30,7 @@ public class HapkitFeedback implements Component {
 		this.hapkit = _hapkit;
 		parent = main;
 		this.hand_img = parent.loadImage("hand.png");
+		this.springs = _springs;
 		
 		// if we need to implement listeners, consider constructing radio
 		// buttons, etc. in main class so that listener can be handed
@@ -43,7 +44,7 @@ public class HapkitFeedback implements Component {
 		         .setItemsPerRow(1)
 		         .setSpacingColumn(50)
 		         .addItem("ON",1)
-		         .addItem("OFF",2);
+		         .addItem("OFF",0);
 		
 		r2 = cp5.addRadioButton("GainOption")
 		         .setPosition(x+50,y+130)
@@ -55,20 +56,13 @@ public class HapkitFeedback implements Component {
 		         .setSpacingColumn(20)
 		         .addItem("1x",1)
 		         .addItem("2x",2)
-		         .addItem("3x",2);
-		
-		  tf1 = cp5.addTextfield("Force")
-			      .setPosition(x+110,y+90)
-			      .setSize(60,25)
-			      .setFocus(true)
-			      ;
-		
+		         .addItem("3x",3);
 		
 		// This line tells the radio button where to find the callback function: in this object.
 		r.plugTo(this);
 		r2.plugTo(this);
 	}
-	
+
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
@@ -87,12 +81,20 @@ public class HapkitFeedback implements Component {
 		parent.text("Gain", x+10, y+145);
 		parent.image(hand_img, x+50, y+50, hand_img.width / 6, hand_img.height / 6);
 		
-		parent.text("Spring Force = ", x+10, y+105);
+		parent.text("Spring Force = " + String.format("%.2f", this.springs.getActiveForce()), x+10, y+105);
 	}
 
 	public void feedbackButton(int buttonValue) {
 		//parent.println("Got button event.");
-		this.hapkit.setFeedback(false);
+		if (buttonValue == 1) {
+			this.hapkit.setFeedback(true);
+		} else if (buttonValue == 0) {
+			this.hapkit.setFeedback(false);
+		} 
+	}
+	
+	public void GainOption(int buttonValue) {
+		this.hapkit.setGain(buttonValue);
 	}
 	
 }
