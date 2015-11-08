@@ -42,7 +42,7 @@ public class Main extends PApplet {
 	int fDOX = (spacing*3)+leftColWidth+centerColWidth;
 	int fDOY = spacing;
 	int fDOW = rightColWidth;
-	int fDOH = 200;
+	int fDOH = 500;
 	
 	//hapkitFeedbackPanel coord
 	int hfx = spacing;
@@ -80,12 +80,17 @@ public class Main extends PApplet {
 		background(255);
 		
 		cp5 = new ControlP5(this);
-		hapkit = new Hapkit(this, Serial.list(), 2);
+		//TODO consider changing colors
+		//cp5.setColorForeground(50);
+		//cp5.setColorBackground(150);
+		//cp5.setColorActive(200);
+		
+		hapkit = new Hapkit(this, Serial.list(), 7);
 		designPalette = new Canvas(this, dPX, dPY, dPW, dPH, hapkit);
 		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
 		expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
 		forceDisplayOutput = new ForceDisplayOutput(this, cp5, fDOX, fDOY, fDOW, fDOH);
-		physicsPlayground = new PhysicsPlayground(this, cp5, pPX, pPY, pPW, pPH);
+		physicsPlayground = new PhysicsPlayground(this, cp5, designPalette, pPX, pPY, pPW, pPH);
 		hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit, designPalette.getSpringCollection());
 		
 		components.add(designPalette);

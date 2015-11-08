@@ -12,6 +12,7 @@ public class PhysicsPlayground implements Component{
 	int h;
 	
 	PApplet parent;
+	Canvas c; 
 	
 	Textfield tf1;
 	Textfield tf2;
@@ -19,12 +20,13 @@ public class PhysicsPlayground implements Component{
 	
 	int spacing = 40; 
 	
-	public PhysicsPlayground(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h) {
+	public PhysicsPlayground(Main main, ControlP5 cp5, Canvas _c, int _x, int _y, int _w, int _h) {
 		this.x = _x;
 		this.y = _y;
 		this.w = _w;
 		this.h = _h;
 		parent = main;
+		this.c = _c;
 		
 		tf1 = cp5.addTextfield("MassInput")
 	      .setPosition(x+60,y+25)
@@ -43,7 +45,7 @@ public class PhysicsPlayground implements Component{
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
-		
+		tf2.setText(Integer.toString(c.sc.activeSpring.k));
 	}
 
 	@Override

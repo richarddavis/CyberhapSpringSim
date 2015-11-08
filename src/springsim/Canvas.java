@@ -33,6 +33,7 @@ public class Canvas implements Component {
 	int h;
 	
 	int numSprings;
+	private Ruler ruler;
 	
 	public Canvas(Main main, int _x, int _y, int _w, int _h, Hapkit _hapkit) {
 		
@@ -88,6 +89,8 @@ public class Canvas implements Component {
 		parent.fill(255);
 		parent.stroke(0);
 		parent.rect(xRect, yRect, w, h);
+		
+		ruler = new Ruler(parent, this.x+20, this.y+80, 30, 400, 12);
 		
 		sc.draw();
 		parent.image(wood_plank_img, ceiling.x+(ceiling.w/2), ceiling.y+((ceiling.h/2)), ceiling.w, ceiling.h);

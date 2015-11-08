@@ -43,7 +43,7 @@ double OFFSET_NEG = 15;
 double b;
 double m =  0.0133;
 
-int k_spring = 80; // define the stiffness of a virtual spring in N/m
+int k_spring = 50; // define the stiffness of a virtual spring in N/m
 int feedback_on = 1;
 int gain_multiplier = 1;
 const int lengthInputBuffer = 4; //need to flush out the ENTIRE transmission! Otherwise it gets super confused
