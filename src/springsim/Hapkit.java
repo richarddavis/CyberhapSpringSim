@@ -3,8 +3,7 @@ package springsim;
 import processing.core.PApplet;
 import processing.serial.Serial;
 
-
-public class Hapkit {
+public class Hapkit extends PApplet {
 
 	Serial myPort;
 	int SERIAL_WRITE_LENGTH = 32; 
@@ -14,6 +13,8 @@ public class Hapkit {
 	int feedback_on; // 1 for on, 0 for off
 	int min_k = 0;
 	int max_k = 10000;
+	double hapkit_pos = 0.0;
+	boolean firstContact = false;
 	
 	public Hapkit(PApplet p, String[] serialPorts, int index){
 		this.p = p;
@@ -22,14 +23,14 @@ public class Hapkit {
 			System.out.println("The device on port " + i + " is: " + serialPorts[i]);
 		}
 		System.out.println("The selected device is: " + serialPorts[index]);
-		myPort = new Serial(this.p, serialPorts[index], 9600);
-		myPort.bufferUntil('\n');
+		myPort = new Serial(this, serialPorts[index], 9600);
+		//myPort.bufferUntil('\n');
 		
 		// Initialize Hapkit with sensible values
 		this.k_constant = 10;
 		this.gain_val = 1;
 		this.feedback_on = 1;
-		
+
 		this.writeToArduino();
 	}
 	
@@ -98,38 +99,107 @@ public class Hapkit {
 	}
 	
 	public double readIn(){
+//		this.hapkit_pos = value;
+//		return this.hapkit_pos;
+//		if (myPort.available() == 0) {
+//			myPort.write(0xaa);
+//			return this.hapkit_pos;
+//		}
+		double value = 0.0;
 		String inString = "";
-	    double value = 0.0;
-	    while(myPort.available() > 0)
-	    {
-	      inString = myPort.readStringUntil('\n');
-	    }
-	    //PApplet.println(inString);
-	    if (inString != "" && inString != null)
-	    {
-	       try {
-	        
-	        String[] list = inString.split(",");
-	        
-	        String xString = list[0].replaceAll("\\s",""); // trim off whitespaces.
-	        //PApplet.println(xString);
-	        double xByte = Double.parseDouble(xString);         // convert to a number.
+		while (myPort.available() > 0) {
+			inString = myPort.readStringUntil('\n');
+		}
+		// PApplet.println(inString);
+		if (inString != "" && inString != null) {
+			try {
+				String[] list = inString.split(",");
+				String xString = list[0].replaceAll("\\s", ""); // trim off whitespace
+				// PApplet.println(xString);
+				double xByte = Double.parseDouble(xString); // convert to a float
 
-	        if(!Double.isNaN(xByte) && xByte != 0){
-	          int pixelsPerMeter = 500;
-	          value = xByte * pixelsPerMeter;
-	        }       
-	        
-	       } catch(NumberFormatException e){
-	    	   PApplet.println("data parse error");
-	       }
-	    
-	     }
-	    
-	    return value;
+				if (!Double.isNaN(xByte) && xByte != 0) {
+					int pixelsPerMeter = 500;
+					value = xByte * pixelsPerMeter;
+				}
+			} catch (NumberFormatException e) {
+				PApplet.println("data parse error");
+			}
+		}
+		// Ask Hapkit for new data.
+		myPort.write(0xaa);
+		this.hapkit_pos = value;
+		return value;
+		
+//		String inString = "";
+//	    double value = 0.0;
+//	    while(myPort.available() > 0)
+//	    {
+//	      inString = myPort.readStringUntil('\n');
+//	    }
+//	    //PApplet.println(inString);
+//	    if (inString != "" && inString != null)
+//	    {
+//	       try {
+//	        
+//	        String[] list = inString.split(",");
+//	        
+//	        String xString = list[0].replaceAll("\\s",""); // trim off whitespaces.
+//	        //PApplet.println(xString);
+//	        double xByte = Double.parseDouble(xString);         // convert to a number.
+//
+//	        if(!Double.isNaN(xByte) && xByte != 0){
+//	          int pixelsPerMeter = 500;
+//	          value = xByte * pixelsPerMeter;
+//	        }       
+//	        
+//	       } catch(NumberFormatException e){
+//	    	   PApplet.println("data parse error");
+//	       }
+//	    
+//	     }
+//	    
+//	    return value;
+	}
+	
+	public void SerialEvent(Serial myport) {
+		System.out.println("Got serial event.");
+		int inByte = myPort.read();
+		if (firstContact == false) {
+			if (inByte == 'A') {
+				myPort.clear(); // clear the serial port buffer
+				firstContact = true; // you've had first contact from the microcontroller
+				myPort.write(0xaa); // ask for more
+			}
+		} else {
+			double value = 0.0;
+			String inString = "";
+			while (myPort.available() > 0) {
+				inString = myPort.readStringUntil('\n');
+			}
+			// PApplet.println(inString);
+			if (inString != "" && inString != null) {
+				try {
+					String[] list = inString.split(",");
+					String xString = list[0].replaceAll("\\s", ""); // trim off whitespace
+					// PApplet.println(xString);
+					double xByte = Double.parseDouble(xString); // convert to a float
+
+					if (!Double.isNaN(xByte) && xByte != 0) {
+						int pixelsPerMeter = 500;
+						value = xByte * pixelsPerMeter;
+					}
+				} catch (NumberFormatException e) {
+					PApplet.println("data parse error");
+				}
+			}
+			this.hapkit_pos = value;
+		}
+
 	}
 	
 	public void writeToArduino(){
+		myPort.write(0xbb);
 		myPort.write(this.k_constant);
 		myPort.write(this.feedback_on);
 		myPort.write(this.gain_val);

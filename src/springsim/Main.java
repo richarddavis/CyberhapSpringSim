@@ -85,7 +85,7 @@ public class Main extends PApplet {
 		//cp5.setColorBackground(150);
 		//cp5.setColorActive(200);
 		
-		hapkit = new Hapkit(this, Serial.list(), 7);
+		hapkit = new Hapkit(this, Serial.list(), 2);
 		designPalette = new Canvas(this, dPX, dPY, dPW, dPH, hapkit);
 		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
 		expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
@@ -122,6 +122,5 @@ public class Main extends PApplet {
 	public void mouseReleased() {
 		designPalette.mouseReleased();
 	}
-
 	
 }
