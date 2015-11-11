@@ -135,16 +135,22 @@ public class Hapkit {
 			if(inBytes != null && inBytes.length > 3){
 				int asInt; 
 						
-				asInt = (inBytes[0] & 0xFF) 
-			            | ((inBytes[1] & 0xFF) << 8) 
-			            | ((inBytes[2] & 0xFF) << 16) 
+				asInt = 
+						(inBytes[0] & 0xFF) 
+			            | ((inBytes[1] & 0xFF) << 8)
+			            |  ((inBytes[2] & 0xFF) << 16) 
 			            | ((inBytes[3] & 0xFF) << 24);
 				
 				float asFloat = Float.intBitsToFloat(asInt);
 				
 				this.p.println(asFloat);
 				
-				current_pos = (double) asFloat * 100;
+				// check for rogue numbers...
+				if(Math.abs(asFloat) > 1000+(Math.abs(current_pos))){
+					// do nothing
+				}else{
+					current_pos = (double) asFloat * 2000;
+				}
 			}
 		}catch(Exception e){
 			this.p.println(e);

@@ -207,9 +207,8 @@ void loop()
 //  unsigned long start, finished, elapsed;
 //  
 //  start=millis();
-  if(sendInterval > 8){
-  //Serial.println(xh, 6);
-  int xxh = xh * 1000000;
+  if(sendInterval > 6){
+  sendInterval = 0;
   send_float(xh);
   }
 //  finished=millis();
