@@ -123,5 +123,8 @@ public class Main extends PApplet {
 		designPalette.mouseReleased();
 	}
 
+	public void serialEvent(Serial p){
+		hapkit.serialEvent(p);
+    }
 	
 }

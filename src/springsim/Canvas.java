@@ -103,12 +103,7 @@ public class Canvas implements Component {
 	}
 	
 	public void readHapkitPos() {
-		double rawValue = serialData.readIn();
-		
-		if(rawValue != 0.0){
-			hapkitPos = rawValue*4;
-			//this.parent.println(rawValue);
-		}
+		hapkitPos = this.serialData.getPos();
 	}
 	
 	public void displayForces(boolean on) {

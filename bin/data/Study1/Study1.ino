@@ -2,6 +2,13 @@
 // Includes
 #include <math.h>
 
+typedef struct {
+    short int force;
+    double pos;
+} data_hapkit;
+
+data_hapkit hapkit_tx;
+
 // Pin declares
 int pwmPin = 5; // PWM output pin for motor 1
 int dirPin = 8; // direction output pin for motor 1
@@ -191,11 +198,37 @@ void loop()
   //*************************************************************
   //*** Section 5. Send data to Processing      *****************
   //*************************************************************
+  
+  hapkit_tx.force = 12;
+  hapkit_tx.pos = xh;
+  
   sendInterval++;
+  
+//  unsigned long start, finished, elapsed;
+//  
+//  start=millis();
   if(sendInterval > 8){
-  Serial.println(xh, 6);
-  sendInterval = 0;
+  //Serial.println(xh, 6);
+  int xxh = xh * 1000000;
+  send_float(xh);
   }
+//  finished=millis();
+//  elapsed=finished-start;
+//  Serial.print(elapsed);
+//  Serial.println(" milliseconds elapsed");
+}
+
+//************************************************************
+// courtesy of http://stackoverflow.com/questions/3270967/how-to-send-float-over-serial
+//************************************************************
+void send_float (float arg)
+{
+  // get access to the float as a byte-array:
+  byte * data = (byte *) &arg; 
+
+  // write the data to the serial
+  Serial.write (data, sizeof (arg));
+  Serial.write (225);
 }
 
 //*************************************************************

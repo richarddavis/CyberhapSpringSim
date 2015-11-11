@@ -14,16 +14,22 @@ public class Hapkit {
 	int feedback_on; // 1 for on, 0 for off
 	int min_k = 0;
 	int max_k = 10000;
+	double current_pos;
 	
 	public Hapkit(PApplet p, String[] serialPorts, int index){
+		
 		this.p = p;
+		
 		System.out.println("Available serial devices:");
 		for (int i=0; i < serialPorts.length; i++) {
 			System.out.println("The device on port " + i + " is: " + serialPorts[i]);
 		}
 		System.out.println("The selected device is: " + serialPorts[index]);
+		
 		myPort = new Serial(this.p, serialPorts[index], 9600);
-		myPort.bufferUntil('\n');
+		
+		//nolonger applies -> not using Serial.println on arduino
+		//myPort.bufferUntil('\n');
 		
 		// Initialize Hapkit with sensible values
 		this.k_constant = 10;
@@ -97,38 +103,6 @@ public class Hapkit {
 		return 10;
 	}
 	
-	public double readIn(){
-		String inString = "";
-	    double value = 0.0;
-	    while(myPort.available() > 0)
-	    {
-	      inString = myPort.readStringUntil('\n');
-	    }
-	    //PApplet.println(inString);
-	    if (inString != "" && inString != null)
-	    {
-	       try {
-	        
-	        String[] list = inString.split(",");
-	        
-	        String xString = list[0].replaceAll("\\s",""); // trim off whitespaces.
-	        //PApplet.println(xString);
-	        double xByte = Double.parseDouble(xString);         // convert to a number.
-
-	        if(!Double.isNaN(xByte) && xByte != 0){
-	          int pixelsPerMeter = 500;
-	          value = xByte * pixelsPerMeter;
-	        }       
-	        
-	       } catch(NumberFormatException e){
-	    	   PApplet.println("data parse error");
-	       }
-	    
-	     }
-	    
-	    return value;
-	}
-	
 	public void writeToArduino(){
 		myPort.write(this.k_constant);
 		myPort.write(this.feedback_on);
@@ -145,10 +119,39 @@ public class Hapkit {
 	 * @param out_max
 	 * @return
 	 */
-	public long map(long x, long in_min, long in_max, long out_min, long out_max)
-	{
+	public long map(long x, long in_min, long in_max, long out_min, long out_max) {
 	  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
+
+	public double getPos() {
+		return current_pos;
+	}
 	
+	public void serialEvent(Serial p){
+
+		byte[] inBytes = p.readBytesUntil(225);
+		
+		try{
+			if(inBytes != null && inBytes.length > 3){
+				int asInt; 
+						
+				asInt = (inBytes[0] & 0xFF) 
+			            | ((inBytes[1] & 0xFF) << 8) 
+			            | ((inBytes[2] & 0xFF) << 16) 
+			            | ((inBytes[3] & 0xFF) << 24);
+				
+				float asFloat = Float.intBitsToFloat(asInt);
+				
+				this.p.println(asFloat);
+				
+				current_pos = (double) asFloat * 100;
+			}
+		}catch(Exception e){
+			this.p.println(e);
+		}
+		
+		 
+		
+	}
 }
 
