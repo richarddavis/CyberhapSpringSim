@@ -13,7 +13,9 @@ public class SpringCollection {
 	
 	public void draw() {
 		for (Spring s : springs) {
-			s.draw();
+			if(s != null){
+				s.draw();
+			}
 		}
 		printActiveForce();
 	}
@@ -32,6 +34,14 @@ public class SpringCollection {
 			activeSpring = s;
 		}
 		
+	}
+	
+	public void setSpringX(int K){
+		springs.get(0).k = K;
+	}
+	
+	public void setSpringY(int K){
+		springs.get(1).k = K;
 	}
 	
 	

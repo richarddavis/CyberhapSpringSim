@@ -1,11 +1,7 @@
 
 // Includes
 #include <math.h>
-
-typedef struct {
-    short int force;
-    double pos;
-} data_hapkit;
+#include "structDefs.h"
 
 data_hapkit hapkit_tx;
 
@@ -50,7 +46,7 @@ double OFFSET_NEG = 15;
 double b;
 double m =  0.0133;
 
-int k_spring = 50; // define the stiffness of a virtual spring in N/m
+int k_spring = 25; // define the stiffness of a virtual spring in N/m
 int feedback_on = 1;
 int gain_multiplier = 1;
 const int lengthInputBuffer = 4; //need to flush out the ENTIRE transmission! Otherwise it gets super confused
@@ -199,17 +195,18 @@ void loop()
   //*** Section 5. Send data to Processing      *****************
   //*************************************************************
   
-  hapkit_tx.force = 12;
-  hapkit_tx.pos = xh;
-  
   sendInterval++;
   
 //  unsigned long start, finished, elapsed;
 //  
 //  start=millis();
   if(sendInterval > 6){
-  sendInterval = 0;
-  send_float(xh);
+    sendInterval = 0;
+
+    send_data(xh);
+    send_data(force);
+    Serial.write(k_spring);
+    Serial.write (225);
   }
 //  finished=millis();
 //  elapsed=finished-start;
@@ -220,15 +217,28 @@ void loop()
 //************************************************************
 // courtesy of http://stackoverflow.com/questions/3270967/how-to-send-float-over-serial
 //************************************************************
-void send_float (float arg)
-{
+void send_data (float tx) {
+  
   // get access to the float as a byte-array:
-  byte * data = (byte *) &arg; 
+  byte * data = (byte *) &tx; 
 
   // write the data to the serial
-  Serial.write (data, sizeof (arg));
-  Serial.write (225);
+  Serial.write (data, (sizeof (tx)));
 }
+
+
+//************************************************************
+// courtesy ofhttp://stackoverflow.com/questions/24420246/c-function-to-convert-float-to-byte-array
+//************************************************************
+void float2Bytes(byte* bytes_temp[4],float float_variable) { 
+  union {
+    float a;
+    unsigned char bytes[4];
+  } thing;
+  thing.a = float_variable;
+  memcpy(bytes_temp, thing.bytes, 4);
+}
+
 
 //*************************************************************
 //*** Section 6. Send data to Processing      *****************

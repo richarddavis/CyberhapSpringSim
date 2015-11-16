@@ -132,32 +132,37 @@ public class Hapkit {
 		byte[] inBytes = p.readBytesUntil(225);
 		
 		try{
-			if(inBytes != null && inBytes.length > 3){
-				int asInt; 
+			if(inBytes != null && inBytes.length > 6){
+
+				int x_bits; 
+				int force_bits; 
 						
-				asInt = 
+				x_bits = 
 						(inBytes[0] & 0xFF) 
 			            | ((inBytes[1] & 0xFF) << 8)
 			            |  ((inBytes[2] & 0xFF) << 16) 
 			            | ((inBytes[3] & 0xFF) << 24);
 				
-				float asFloat = Float.intBitsToFloat(asInt);
+				force_bits = 
+						(inBytes[4] & 0xFF) 
+			            | ((inBytes[5] & 0xFF) << 8)
+			            |  ((inBytes[6] & 0xFF) << 16) 
+			            | ((inBytes[7] & 0xFF) << 24);
 				
-				this.p.println(asFloat);
+				float Force = Float.intBitsToFloat(force_bits);
+				float X = Float.intBitsToFloat(x_bits);
 				
 				// check for rogue numbers...
-				if(Math.abs(asFloat) > 1000+(Math.abs(current_pos))){
+				if(Math.abs(X) > 1000+(Math.abs(current_pos))){
 					// do nothing
 				}else{
-					current_pos = (double) asFloat * 2000;
+					current_pos = (double) X * 2000;
 				}
-			}
+			}		
+			
 		}catch(Exception e){
 			this.p.println(e);
 		}
-		
-		 
-		
 	}
 }
 

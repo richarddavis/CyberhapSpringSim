@@ -17,7 +17,7 @@ public class Spring {
 	int k;
 
 	int spring_img_w = 35;
-	boolean display_forces = true;
+	boolean display_forces = false;
 	
 	//BOX2D
 	DistanceJointDef djd;

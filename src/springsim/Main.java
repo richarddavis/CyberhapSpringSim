@@ -87,18 +87,18 @@ public class Main extends PApplet {
 		
 		hapkit = new Hapkit(this, Serial.list(), 7);
 		designPalette = new Canvas(this, dPX, dPY, dPW, dPH, hapkit);
-		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
-		expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
-		forceDisplayOutput = new ForceDisplayOutput(this, cp5, fDOX, fDOY, fDOW, fDOH);
-		physicsPlayground = new PhysicsPlayground(this, cp5, designPalette, pPX, pPY, pPW, pPH);
-		hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit, designPalette.getSpringCollection());
+		//forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
+		//expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
+		//forceDisplayOutput = new ForceDisplayOutput(this, cp5, fDOX, fDOY, fDOW, fDOH);
+		//physicsPlayground = new PhysicsPlayground(this, cp5, designPalette, pPX, pPY, pPW, pPH);
+		//hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit, designPalette.getSpringCollection());
 		
 		components.add(designPalette);
-		components.add(forceFeedbackOption);
-		components.add(expSettings);
-		components.add(forceDisplayOutput);
-		components.add(physicsPlayground);
-		components.add(hapkitFeedbackPanel);
+//		components.add(forceFeedbackOption);
+//		components.add(expSettings);
+//		components.add(forceDisplayOutput);
+//		components.add(physicsPlayground);
+//		components.add(hapkitFeedbackPanel);
 
 	}
 

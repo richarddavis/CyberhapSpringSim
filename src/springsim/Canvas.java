@@ -25,12 +25,79 @@ public class Canvas implements Component {
 	
 	PApplet parent;
 	
+	boolean showSprings;
+	int springIndex;
+	
 	PImage wood_plank_img;
+	PImage next_img;
 	
 	int x;
 	int y;
 	int w;
 	int h;
+	
+	int[] XSpring = {26,
+			45,
+			26,
+			15,
+			15,
+			26,
+			60,
+			45,
+			15,
+			15,
+			60,
+			45,
+			45,
+			45,
+			45,
+			45,
+			26,
+			15,
+			45,
+			45,
+			60,
+			45,
+			26,
+			15,
+			26,
+			45,
+			60,
+			26,
+			15,
+			26};
+	
+	
+	int[] YSpring = {45,
+			26,
+			15,
+			26,
+			26,
+			45,
+			45,
+			60,
+			26,
+			26,
+			45,
+			26,
+			60,
+			60,
+			26,
+			26,
+			15,
+			26,
+			26,
+			60,
+			45,
+			60,
+			45,
+			26,
+			15,
+			60,
+			45,
+			45,
+			26,
+			45};
 	
 	int numSprings;
 	private Ruler ruler;
@@ -46,7 +113,10 @@ public class Canvas implements Component {
 		
 		parent = main; 
 		
+
+		
 		wood_plank_img = parent.loadImage("wood-plank.jpg");
+		next_img = parent.loadImage("arrow-next.png");
 		
 		box2d = new Box2DProcessing(parent);
 		box2d.createWorld();
@@ -56,20 +126,24 @@ public class Canvas implements Component {
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new Spring(this.x+1*(this.w/4), 100, 10, 200, parent, box2d);
-		s2 = new Spring(this.x+2*(this.w/4), 100, 40, 200, parent, box2d);
-		s3 = new Spring(this.x+3*(this.w/4), 100, 70, 200, parent, box2d);
+		springIndex = 0;
+		showSprings = true;
+		
+		s1 = new Spring(this.x+1*(this.w/3), 100, XSpring[0], 200, parent, box2d);
+		s2 = new Spring(this.x+2*(this.w/3), 100, YSpring[0], 200, parent, box2d);
+		//s3 = new Spring(this.x+3*(this.w/4), 100, 70, 200, parent, box2d);
 		
 		sc = new SpringCollection();
 		sc.add(s1);
 		sc.add(s2);
-		sc.add(s3);
+		//sc.add(s3);
 		
 		//set initial active spring
 		sc.setActive(s1);
 		
 		floor = new Boundary(this.x + this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
 		ceiling = new Boundary(this.x+10, this.y+30, this.w - 20, 30, parent, box2d);
+		//ruler = new Ruler(parent, this.x+20, this.y+80, 30, 400, 12);
 		
 		// Initialize Serial Comms
 		// serialData = new Hapkit(parent, Serial.list(), serialPortIndex);
@@ -90,10 +164,14 @@ public class Canvas implements Component {
 		parent.stroke(0);
 		parent.rect(xRect, yRect, w, h);
 		
-		ruler = new Ruler(parent, this.x+20, this.y+80, 30, 400, 12);
-		
 		sc.draw();
+		parent.fill(0);
+		parent.text("Spring X", ceiling.x+100, ceiling.y-10);
+		parent.text("Spring Y", ceiling.x+260, ceiling.y-10);
+		parent.text("Spring Pair", ceiling.x+170, ceiling.y+400);
+		parent.text(springIndex+1, ceiling.x+250, ceiling.y+400);
 		parent.image(wood_plank_img, ceiling.x+(ceiling.w/2), ceiling.y+((ceiling.h/2)), ceiling.w, ceiling.h);
+		parent.image(next_img, ceiling.x+400, ceiling.y+450, 80, 80);
 		
 		floor.draw();
 	}
@@ -112,6 +190,17 @@ public class Canvas implements Component {
 	
 	public void mousePressed() {
 		sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, false, serialData);
+		if(parent.mouseX > ceiling.x+360 && parent.mouseX < ceiling.x+440
+				&& parent.mouseY > ceiling.y+410 && parent.mouseY < ceiling.y+490){
+			parent.println("next");
+			this.springIndex++;
+			if(springIndex > 14){
+				showSprings = false;
+			}
+			sc.setSpringX(XSpring[springIndex]);
+			sc.setSpringY(YSpring[springIndex]);
+			serialData.setKConstant(sc.activeSpring.k);
+		}
 		
 	}
 	
