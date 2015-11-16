@@ -75,9 +75,14 @@ public class Main extends PApplet {
 	
 	ControlP5 cp5;
 	
+	CSVLogOutput log;
+	
 	public void setup() {
 		size(width, height);
 		background(255);
+		
+		log = new CSVLogOutput("participant_log.csv");
+		log.generateLog();
 		
 		cp5 = new ControlP5(this);
 		//TODO consider changing colors
