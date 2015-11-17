@@ -149,7 +149,9 @@ void loop()
      double rp = 0.00475;   //[m]
      double rs = 0.075;   //[m] 
   
-    force = k_spring*xh;
+    //force = k_spring*xh;
+    
+    force = 1.5
 
     Tp = force*rh*rp/rs; //Torque that you want the motor to output
 

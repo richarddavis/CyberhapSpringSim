@@ -10,6 +10,7 @@ import controlP5.ControlP5;
 //import jssc.SerialPortEventListener;
 //import jssc.SerialPortException;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.serial.Serial;
 import shiffman.box2d.Box2DProcessing;
 
@@ -18,7 +19,6 @@ public class Main extends PApplet {
 	//Container properties, dynamic generated from overall width, height
 	int width = 1000;
 	int height = 600;
-	
 	int spacing = (int) (width*0.02);
 	
 	//component widths
@@ -37,6 +37,12 @@ public class Main extends PApplet {
 	int fFOY = spacing;
 	int fFOW = leftColWidth;
 	int fFOH = 80;
+	
+	//participantSelection coordinates
+	int pSX = spacing;
+	int pSY = spacing;
+	int pSW = leftColWidth;
+	int pSH = 80;
 	
 	//forceDisplayOutput coord
 	int fDOX = (spacing*3)+leftColWidth+centerColWidth;
@@ -70,19 +76,26 @@ public class Main extends PApplet {
 	ExperimentSettings expSettings;
 	ForceDisplayOutput forceDisplayOutput;
 	PhysicsPlayground physicsPlayground;
+	ParticipantSelection participantSelection;
 	
 	List<Component> components = new ArrayList<Component>();
 	
 	ControlP5 cp5;
 	
+	int participantId;
+	int[ ][ ][ ][ ] springData; //[participantId][condition][springIndex][springx/springy]
 	CSVLogOutput log;
+	CSVInputData springDataParser;
 	
 	public void setup() {
 		size(width, height);
 		background(255);
 		
 		log = new CSVLogOutput("participant_log.csv");
-		log.generateLog();
+		
+		springData = new int[19][2][16][2];
+		springDataParser = new CSVInputData("spring_pairs.csv");
+		springDataParser.readCSVFile(springData);
 		
 		cp5 = new ControlP5(this);
 		//TODO consider changing colors
@@ -90,8 +103,21 @@ public class Main extends PApplet {
 		//cp5.setColorBackground(150);
 		//cp5.setColorActive(200);
 		
+		  // change the default font to Verdana
+		  PFont p = createFont("Verdana",9); 
+		  cp5.setControlFont(p);
+		  
+		  // change the original colors
+		  cp5.setColorForeground(0xffaa0000);
+		  cp5.setColorBackground(0xff660000);
+		  cp5.setColorLabel(0xffdddddd);
+		  cp5.setColorValue(0xffff88ff);
+		  cp5.setColorActive(0xffff0000);
+		
+		participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
 		hapkit = new Hapkit(this, Serial.list(), 7);
-		designPalette = new Canvas(this, dPX, dPY, dPW, dPH, hapkit);
+		designPalette = new Canvas(this, dPX, dPY, dPW, dPH, hapkit, springData[participantId]);
+		
 		//forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
 		//expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
 		//forceDisplayOutput = new ForceDisplayOutput(this, cp5, fDOX, fDOY, fDOW, fDOH);
@@ -99,12 +125,13 @@ public class Main extends PApplet {
 		//hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit, designPalette.getSpringCollection());
 		
 		components.add(designPalette);
+		components.add(participantSelection);
 //		components.add(forceFeedbackOption);
 //		components.add(expSettings);
 //		components.add(forceDisplayOutput);
 //		components.add(physicsPlayground);
 //		components.add(hapkitFeedbackPanel);
-
+		
 	}
 
 	public void draw() {
@@ -116,7 +143,6 @@ public class Main extends PApplet {
 			c.draw();
 			c.step();	
 		}
-		
 	}	
 
 	public void mousePressed() {
@@ -132,4 +158,14 @@ public class Main extends PApplet {
 		hapkit.serialEvent(p);
     }
 	
+	/**
+	 * Generate CSV Log when program closes
+	 * 
+	 */
+	public void stop() {
+		log.generateLog();
+	} 
+	
 }
+
+

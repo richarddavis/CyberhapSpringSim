@@ -102,7 +102,7 @@ public class Canvas implements Component {
 	int numSprings;
 	private Ruler ruler;
 	
-	public Canvas(Main main, int _x, int _y, int _w, int _h, Hapkit _hapkit) {
+	public Canvas(Main main, int _x, int _y, int _w, int _h, Hapkit _hapkit, int[][][] springData) {
 		
 		this.x = _x;
 		this.y = _y;
