@@ -1,11 +1,7 @@
 package springsim;
 
 import processing.core.PApplet;
-import controlP5.ControlEvent;
-import controlP5.ControlListener;
 import controlP5.ControlP5;
-import controlP5.Controller;
-import controlP5.DropdownList;
 import controlP5.Textfield;
 
 public class ParticipantSelection implements Component{
@@ -35,7 +31,7 @@ public class ParticipantSelection implements Component{
                 .setFocus(true)
                 ;
 
-		myTextfield.plugTo(this);
+//		myTextfield.plugTo(this);
 		
 	}
 
@@ -56,10 +52,6 @@ public class ParticipantSelection implements Component{
 		parent.rect(xRect, yRect, w, h);
 		parent.fill(0);
 		parent.text("Participant ID", x+10, y+15);
-	}
-	
-	void participantId(String theValue) {
-	    parent.println(theValue);
 	}
 
 }

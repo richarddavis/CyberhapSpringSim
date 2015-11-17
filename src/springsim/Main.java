@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import controlP5.ControlEvent;
 import controlP5.ControlP5;
 //import jssc.SerialPort;
 //import jssc.SerialPortEvent;
@@ -166,6 +167,9 @@ public class Main extends PApplet {
 		log.generateLog();
 	} 
 	
+	public void controlEvent(ControlEvent theEvent) {
+	      println("yes");
+	}
 }
 
 
