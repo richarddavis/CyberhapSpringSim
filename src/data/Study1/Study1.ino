@@ -209,7 +209,7 @@ void loop()
     send_data(xh);
     send_data(force);
     Serial.write(k_spring);
-    Serial.write (225);
+    Serial.write (2205);
   }
 //  finished=millis();
 //  elapsed=finished-start;

@@ -129,7 +129,7 @@ public class Hapkit {
 	
 	public void serialEvent(Serial p){
 
-		byte[] inBytes = p.readBytesUntil(225);
+		byte[] inBytes = p.readBytesUntil(2205);
 		
 		try{
 			if(inBytes != null && inBytes.length > 6){
