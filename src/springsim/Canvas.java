@@ -1,6 +1,9 @@
 package springsim;
 
+import controlP5.Button;
+import controlP5.ControlP5;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PImage;
 import processing.serial.Serial;
 import shiffman.box2d.Box2DProcessing;
@@ -25,10 +28,10 @@ public class Canvas implements Component {
 	
 	PApplet parent;
 	
-	
-	
 	PImage wood_plank_img;
 	PImage next_img;
+	
+	Button next, X, Y;
 	
 	int x;
 	int y;
@@ -37,26 +40,19 @@ public class Canvas implements Component {
 	
 	int numSprings;
 	private Ruler ruler;
-	private int[][][] springData;
-	CSVLogOutput log;
-	int condition;
-	boolean showSprings;
-	int springIndex;
+	ResearchData rData;
 	
-	public Canvas(Main main, int _x, int _y, int _w, int _h, Hapkit _hapkit, int[][][] springData, CSVLogOutput log, int initCondition) {
+	public Canvas(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, ResearchData rData) {
 		
 		this.x = _x;
 		this.y = _y;
 		this.w = _w;
 		this.h = _h;
 		this.serialData = _hapkit;
-		this.log = log;
 		this.numSprings = 3;
-		this.condition = initCondition;
+		this.rData = rData;
 		
 		parent = main; 
-		this.springData = springData;
-
 		
 		wood_plank_img = parent.loadImage("wood-plank.jpg");
 		next_img = parent.loadImage("arrow-next.png");
@@ -66,14 +62,32 @@ public class Canvas implements Component {
 		box2d.setScaleFactor(500);
 		box2d.setGravity(0, -2);
 		
+		next = cp5.addButton("Next Springs")
+			         .setValue(4)
+			         .setPosition(this.x+300,this.y+470)
+			         .setSize(130,50)
+			         .setId(2);
+		
+		X = cp5.addButton("Spring X")
+		         .setValue(4)
+		         .setPosition(this.x+70,this.y+220)
+		         .setSize(130,50)
+		         .setVisible(false)
+		         .setId(2);
+		
+		Y = cp5.addButton("Spring Y")
+		         .setValue(4)
+		         .setPosition(this.x+250,this.y+220)
+		         .setSize(130,50)
+		         .setVisible(false)
+		         .setId(2);
+			  
+		
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		springIndex = 0;
-		showSprings = true;
-		
-		s1 = new Spring(this.x+1*(this.w/3), 100, springData[0][1][0], 200, parent, box2d);
-		s2 = new Spring(this.x+2*(this.w/3), 100, springData[0][1][1], 200, parent, box2d);
+		s1 = new Spring(this.x+1*(this.w/3), 100, rData.getCurrentXSpring(), 200, parent, box2d);
+		s2 = new Spring(this.x+2*(this.w/3), 100, rData.getCurrentYSpring(), 200, parent, box2d);
 		//s3 = new Spring(this.x+3*(this.w/4), 100, 70, 200, parent, box2d);
 		
 		sc = new SpringCollection();
@@ -105,16 +119,25 @@ public class Canvas implements Component {
 		
 		parent.fill(255);
 		parent.stroke(0);
-		parent.rect(xRect, yRect, w, h);
-		
-		sc.draw();
+		parent.rect(x, y, w, h);
+		parent.textSize(18); 
 		parent.fill(0);
-		parent.text("Spring X", ceiling.x+100, ceiling.y-10);
-		parent.text("Spring Y", ceiling.x+260, ceiling.y-10);
-		parent.text("Spring Pair", ceiling.x+170, ceiling.y+400);
-		parent.text(springIndex+1, ceiling.x+250, ceiling.y+400);
-		parent.image(wood_plank_img, ceiling.x+(ceiling.w/2), ceiling.y+((ceiling.h/2)), ceiling.w, ceiling.h);
-		parent.image(next_img, ceiling.x+400, ceiling.y+450, 80, 80);
+		parent.text("Spring Pair", this.x+170, this.y+400);
+		parent.text(rData.getSpringIndex(), this.x+275, this.y+400);
+		
+		if(rData.getCondition() == rData.CONDITION_GRAPHICS_HAPTICS){
+			X.setVisible(false);
+			Y.setVisible(false);
+			sc.draw();
+			parent.fill(0);
+			parent.text("Spring X", ceiling.x+100, ceiling.y-10);
+			parent.text("Spring Y", ceiling.x+260, ceiling.y-10);
+			parent.image(wood_plank_img, ceiling.x+(ceiling.w/2), ceiling.y+((ceiling.h/2)), ceiling.w, ceiling.h);
+		}else{
+			X.setVisible(true);
+			Y.setVisible(true);
+		}
+
 		
 		floor.draw();
 	}
@@ -133,22 +156,15 @@ public class Canvas implements Component {
 	
 	public void mousePressed() {
 		sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, false, serialData);
-		if(parent.mouseX > ceiling.x+360 && parent.mouseX < ceiling.x+440
-				&& parent.mouseY > ceiling.y+410 && parent.mouseY < ceiling.y+490){
-			
-			CSVLogEvent e = new CSVLogEvent(condition, springIndex, -1, -1);
-			e.setNotes("next spring pair requested");
-			log.addEvent(e);
-			
-			this.springIndex++;
-			if(springIndex > 14){
-				showSprings = false;
-			}
-			sc.setSpringX(springData[0][springIndex][0]);
-			sc.setSpringY(springData[0][springIndex][1]);
+	}
+	
+	public void buttonPressed(){
+			rData.logEvent(-1, -1, "next spring pair requested");
+			rData.nextSpringPair();
+
+			sc.setSpringX(rData.getCurrentXSpring());
+			sc.setSpringY(rData.getCurrentYSpring());
 			serialData.setKConstant(sc.activeSpring.k);
-		}
-		
 	}
 	
 	public void mouseReleased() {

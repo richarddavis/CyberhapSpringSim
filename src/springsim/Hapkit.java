@@ -15,12 +15,12 @@ public class Hapkit {
 	int min_k = 0;
 	int max_k = 10000;
 	double current_pos;
-	CSVLogOutput log;
+	ResearchData researchData;
 	
-	public Hapkit(PApplet p, String[] serialPorts, int index, CSVLogOutput log){
+	public Hapkit(PApplet p, String[] serialPorts, int index, ResearchData researchData){
 		
 		this.p = p;
-		this.log = log;
+		this.researchData = researchData;
 		
 		System.out.println("Available serial devices:");
 		for (int i=0; i < serialPorts.length; i++) {
@@ -110,9 +110,7 @@ public class Hapkit {
 		myPort.write(this.feedback_on);
 		myPort.write(this.gain_val);
 		
-		CSVLogEvent e = new CSVLogEvent(-1,-1,k_constant, current_pos);
-		e.setNotes("request sent to arduino to update values");
-		log.addEvent(e);
+		researchData.logEvent(k_constant, current_pos, "request sent to arduino to update values");
 	}
 	
 	/**
@@ -159,10 +157,8 @@ public class Hapkit {
 			}else if(inBytes != null && inBytes.length > 3){
 				int k_bits;
 				k_bits = ((inBytes[1] & 0xFF));
-				
-				CSVLogEvent e = new CSVLogEvent(-1,-1,k_bits, current_pos);
-				e.setNotes("Hapkit confirmed updated K-constant is rendering");
-				log.addEvent(e);
+					
+				researchData.logEvent(k_bits, current_pos, "Hapkit confirmed updated K-constant is rendering");
 			}
 			
 		}catch(Exception e){

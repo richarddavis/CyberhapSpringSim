@@ -87,7 +87,7 @@ public class Hook {
 			// And just draw a line
 			parent.stroke(0);
 			parent.strokeWeight(1);
-			parent.line(v1.x,v1.y,v2.x,v2.y);
+			//parent.line(v1.x,v1.y,v2.x,v2.y);
 		}
 
 		//parent.image(hand_img, this.x, this.y);

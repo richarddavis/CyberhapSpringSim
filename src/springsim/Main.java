@@ -75,11 +75,6 @@ public class Main extends PApplet {
 	int eSW = leftColWidth;
 	int eSH = 160;
 	
-	//
-	static int CONDITION_GRAPHICS_HAPTICS = 1;
-	static int CONDITION_GRAPHICS_ONLY = 0;
-	int initialCondition;
-	
 	//Components
 	Hapkit hapkit;
 	Canvas designPalette;
@@ -95,9 +90,7 @@ public class Main extends PApplet {
 	ControlP5 cp5;
 	
 	int participantId;
-	int[ ][ ][ ][ ] springData; //[participantId][condition][springIndex][springx/springy]
-	CSVLogOutput log;
-	CSVInputData springDataParser;
+	ResearchData researchData;
 	
 	public void setup() {
 		size(width, height);
@@ -110,22 +103,7 @@ public class Main extends PApplet {
 		
 		participantId = Integer.parseInt(pID);
 		
-		DateFormat df = new SimpleDateFormat("MM-dd-yyyy-HHmmss");
-		Date today = Calendar.getInstance().getTime(); 
-		String reportDate = df.format(today);
-		
-		log = new CSVLogOutput("participant_"+participantId+"_log_"+reportDate+".csv", participantId);
-
-		springData = new int[19][2][16][2]; //[participant][condition][springpair][left/right spring]
-		springDataParser = new CSVInputData("spring_pairs.csv");
-		springDataParser.readCSVFile(springData);
-		
-		Random rand=new Random(); 
-		int initialCondition=rand.nextInt(1); 
-		
-		CSVLogEvent e = new CSVLogEvent(initialCondition, -1, -1, -1);
-		e.setNotes("Intitial Condition: "+initialCondition+" (1=haptics+graphics 0=graphics)");
-		log.addEvent(e);
+		researchData = new ResearchData(participantId);
 		
 		cp5 = new ControlP5(this);
 		//TODO consider changing colors
@@ -147,8 +125,8 @@ public class Main extends PApplet {
 
 		  
 		participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
-		hapkit = new Hapkit(this, Serial.list(), 7, log);
-		designPalette = new Canvas(this, dPX, dPY, dPW, dPH, hapkit, springData[participantId], log, initialCondition);
+		hapkit = new Hapkit(this, Serial.list(), 7, researchData);
+		designPalette = new Canvas(this, cp5, dPX, dPY, dPW, dPH, hapkit, researchData);
 		
 		//forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
 		//expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
@@ -195,11 +173,11 @@ public class Main extends PApplet {
 	 * 
 	 */
 	public void stop() {
-		log.generateLog();
+		researchData.generateCSVLog();
 	} 
 	
 	public void controlEvent(ControlEvent theEvent) {
-	      participantSelection.submit(theEvent, participantId);
+	      designPalette.buttonPressed();
 	}
 }
 

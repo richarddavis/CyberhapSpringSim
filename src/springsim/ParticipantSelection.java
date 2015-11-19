@@ -46,7 +46,7 @@ public class ParticipantSelection implements Component{
 		//parent.rect(xRect, yRect, w, h);
 		parent.fill(0);
 		parent.text("Participant ID: ", x+10, y+15);
-		parent.text(participantId, x+93, y+15);
+		parent.text(participantId, x+140, y+15);
 	}
 
 	public void submit(ControlEvent theEvent, int participantId) {
