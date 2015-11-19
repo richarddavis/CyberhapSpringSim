@@ -15,10 +15,12 @@ public class Hapkit {
 	int min_k = 0;
 	int max_k = 10000;
 	double current_pos;
+	CSVLogOutput log;
 	
-	public Hapkit(PApplet p, String[] serialPorts, int index){
+	public Hapkit(PApplet p, String[] serialPorts, int index, CSVLogOutput log){
 		
 		this.p = p;
+		this.log = log;
 		
 		System.out.println("Available serial devices:");
 		for (int i=0; i < serialPorts.length; i++) {
@@ -107,6 +109,10 @@ public class Hapkit {
 		myPort.write(this.k_constant);
 		myPort.write(this.feedback_on);
 		myPort.write(this.gain_val);
+		
+		CSVLogEvent e = new CSVLogEvent(-1,-1,k_constant, current_pos);
+		e.setNotes("request sent to arduino to update values");
+		log.addEvent(e);
 	}
 	
 	/**
@@ -129,36 +135,35 @@ public class Hapkit {
 	
 	public void serialEvent(Serial p){
 
-		byte[] inBytes = p.readBytesUntil(2205);
+		byte[] inBytes = p.readBytesUntil(225);
 		
 		try{
-			if(inBytes != null && inBytes.length > 6){
+			if(inBytes != null && inBytes.length > 5){
 
 				int x_bits; 
-				int force_bits; 
 						
-				x_bits = 
-						(inBytes[0] & 0xFF) 
-			            | ((inBytes[1] & 0xFF) << 8)
-			            |  ((inBytes[2] & 0xFF) << 16) 
-			            | ((inBytes[3] & 0xFF) << 24);
-				
-				force_bits = 
-						(inBytes[4] & 0xFF) 
-			            | ((inBytes[5] & 0xFF) << 8)
-			            |  ((inBytes[6] & 0xFF) << 16) 
-			            | ((inBytes[7] & 0xFF) << 24);
-				
-				float Force = Float.intBitsToFloat(force_bits);
+				x_bits = (inBytes[1] & 0xFF) 
+			            | ((inBytes[2] & 0xFF) << 8)
+			            |  ((inBytes[3] & 0xFF) << 16) 
+			            | ((inBytes[4] & 0xFF) << 24);
+
 				float X = Float.intBitsToFloat(x_bits);
 				
 				// check for rogue numbers...
-				if(Math.abs(X) > 1000+(Math.abs(current_pos))){
+				if((Math.abs(X-current_pos) > 1000)){
 					// do nothing
 				}else{
 					current_pos = (double) X * 2000;
 				}
-			}		
+				
+			}else if(inBytes != null && inBytes.length > 3){
+				int k_bits;
+				k_bits = ((inBytes[1] & 0xFF));
+				
+				CSVLogEvent e = new CSVLogEvent(-1,-1,k_bits, current_pos);
+				e.setNotes("Hapkit confirmed updated K-constant is rendering");
+				log.addEvent(e);
+			}
 			
 		}catch(Exception e){
 			this.p.println(e);

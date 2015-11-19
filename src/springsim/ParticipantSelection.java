@@ -1,6 +1,8 @@
 package springsim;
 
 import processing.core.PApplet;
+import controlP5.Button;
+import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Textfield;
 
@@ -13,25 +15,17 @@ public class ParticipantSelection implements Component{
 	
 	PApplet parent;
 	ControlP5 cp5;
+	int participantId;
 	
-	Textfield myTextfield;
-	
-	public ParticipantSelection(Main parent, ControlP5 cp5, int _x, int _y, int _w, int _h, int participantId){
+	public ParticipantSelection(Main parent, ControlP5 cp5, int _x, int _y, int _w, int _h, int pID){
 		this.x = _x;
 		this.y = _y;
 		this.w = _w;
 		this.h = _h;
+		this.participantId = pID;
 		
 		this.parent = parent;
 		this.cp5 = cp5;
-		
-		myTextfield = cp5.addTextfield("participantId")
-                .setPosition(this.x+60, this.y+30)
-                .setSize(80,20)
-                .setFocus(true)
-                ;
-
-//		myTextfield.plugTo(this);
 		
 	}
 
@@ -49,9 +43,14 @@ public class ParticipantSelection implements Component{
 		
 		//parent.stroke(120);
 		parent.fill(255);
-		parent.rect(xRect, yRect, w, h);
+		//parent.rect(xRect, yRect, w, h);
 		parent.fill(0);
-		parent.text("Participant ID", x+10, y+15);
+		parent.text("Participant ID: ", x+10, y+15);
+		parent.text(participantId, x+93, y+15);
+	}
+
+	public void submit(ControlEvent theEvent, int participantId) {
+		parent.println("yee");
 	}
 
 }

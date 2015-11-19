@@ -150,9 +150,6 @@ void loop()
      double rs = 0.075;   //[m] 
   
     force = k_spring*xh;
-    
-    //force = 2.0;
-
 
     Tp = force*rh*rp/rs; //Torque that you want the motor to output
 
@@ -200,27 +197,30 @@ void loop()
   
   sendInterval++;
   
-//  unsigned long start, finished, elapsed;
-//  
-//  start=millis();
+  unsigned long start, finished, elapsed;
+  
+  
   if(sendInterval > 6){
+    start=millis();
     sendInterval = 0;
 
-    send_data(xh);
-    send_data(force);
-    Serial.write(k_spring);
-    Serial.write (2205);
-  }
-//  finished=millis();
-//  elapsed=finished-start;
+    hapkit_tx.x = xh;
+    hapkit_tx._end = 225;
+    send_data(hapkit_tx);
+    
+    finished=millis();
+    elapsed=finished-start;
+    
 //  Serial.print(elapsed);
 //  Serial.println(" milliseconds elapsed");
+  }
+  
 }
 
 //************************************************************
 // courtesy of http://stackoverflow.com/questions/3270967/how-to-send-float-over-serial
 //************************************************************
-void send_data (float tx) {
+void send_data (data_hapkit tx) {
   
   // get access to the float as a byte-array:
   byte * data = (byte *) &tx; 
@@ -229,6 +229,17 @@ void send_data (float tx) {
   Serial.write (data, (sizeof (tx)));
 }
 
+//************************************************************
+// courtesy of http://stackoverflow.com/questions/3270967/how-to-send-float-over-serial
+//************************************************************
+void send_data (data_hapkit_k tx) {
+  
+  // get access to the float as a byte-array:
+  byte * data = (byte *) &tx; 
+
+  // write the data to the serial
+  Serial.write (data, (sizeof (tx)));
+}
 
 //************************************************************
 // courtesy ofhttp://stackoverflow.com/questions/24420246/c-function-to-convert-float-to-byte-array
@@ -254,6 +265,11 @@ void serialEvent() {
       feedback_on = serialInputBuffer[1];
       gain_multiplier = serialInputBuffer[2];
   }
+  //Handshake back
+  data_hapkit_k confirm_tx;
+  confirm_tx.k = k_spring;
+  confirm_tx._end = 225;
+  send_data(confirm_tx);
   
 }
 

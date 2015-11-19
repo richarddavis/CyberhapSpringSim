@@ -25,8 +25,7 @@ public class Canvas implements Component {
 	
 	PApplet parent;
 	
-	boolean showSprings;
-	int springIndex;
+	
 	
 	PImage wood_plank_img;
 	PImage next_img;
@@ -36,83 +35,27 @@ public class Canvas implements Component {
 	int w;
 	int h;
 	
-	int[] XSpring = {26,
-			45,
-			26,
-			15,
-			15,
-			26,
-			60,
-			45,
-			15,
-			15,
-			60,
-			45,
-			45,
-			45,
-			45,
-			45,
-			26,
-			15,
-			45,
-			45,
-			60,
-			45,
-			26,
-			15,
-			26,
-			45,
-			60,
-			26,
-			15,
-			26};
-	
-	
-	int[] YSpring = {45,
-			26,
-			15,
-			26,
-			26,
-			45,
-			45,
-			60,
-			26,
-			26,
-			45,
-			26,
-			60,
-			60,
-			26,
-			26,
-			15,
-			26,
-			26,
-			60,
-			45,
-			60,
-			45,
-			26,
-			15,
-			60,
-			45,
-			45,
-			26,
-			45};
-	
 	int numSprings;
 	private Ruler ruler;
+	private int[][][] springData;
+	CSVLogOutput log;
+	int condition;
+	boolean showSprings;
+	int springIndex;
 	
-	public Canvas(Main main, int _x, int _y, int _w, int _h, Hapkit _hapkit, int[][][] springData) {
+	public Canvas(Main main, int _x, int _y, int _w, int _h, Hapkit _hapkit, int[][][] springData, CSVLogOutput log, int initCondition) {
 		
 		this.x = _x;
 		this.y = _y;
 		this.w = _w;
 		this.h = _h;
 		this.serialData = _hapkit;
+		this.log = log;
 		this.numSprings = 3;
+		this.condition = initCondition;
 		
 		parent = main; 
-		
+		this.springData = springData;
 
 		
 		wood_plank_img = parent.loadImage("wood-plank.jpg");
@@ -129,8 +72,8 @@ public class Canvas implements Component {
 		springIndex = 0;
 		showSprings = true;
 		
-		s1 = new Spring(this.x+1*(this.w/3), 100, XSpring[0], 200, parent, box2d);
-		s2 = new Spring(this.x+2*(this.w/3), 100, YSpring[0], 200, parent, box2d);
+		s1 = new Spring(this.x+1*(this.w/3), 100, springData[0][1][0], 200, parent, box2d);
+		s2 = new Spring(this.x+2*(this.w/3), 100, springData[0][1][1], 200, parent, box2d);
 		//s3 = new Spring(this.x+3*(this.w/4), 100, 70, 200, parent, box2d);
 		
 		sc = new SpringCollection();
@@ -192,13 +135,17 @@ public class Canvas implements Component {
 		sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, false, serialData);
 		if(parent.mouseX > ceiling.x+360 && parent.mouseX < ceiling.x+440
 				&& parent.mouseY > ceiling.y+410 && parent.mouseY < ceiling.y+490){
-			parent.println("next");
+			
+			CSVLogEvent e = new CSVLogEvent(condition, springIndex, -1, -1);
+			e.setNotes("next spring pair requested");
+			log.addEvent(e);
+			
 			this.springIndex++;
 			if(springIndex > 14){
 				showSprings = false;
 			}
-			sc.setSpringX(XSpring[springIndex]);
-			sc.setSpringY(YSpring[springIndex]);
+			sc.setSpringX(springData[0][springIndex][0]);
+			sc.setSpringY(springData[0][springIndex][1]);
 			serialData.setKConstant(sc.activeSpring.k);
 		}
 		

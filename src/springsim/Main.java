@@ -1,8 +1,14 @@
 package springsim;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
 
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
@@ -69,6 +75,11 @@ public class Main extends PApplet {
 	int eSW = leftColWidth;
 	int eSH = 160;
 	
+	//
+	static int CONDITION_GRAPHICS_HAPTICS = 1;
+	static int CONDITION_GRAPHICS_ONLY = 0;
+	int initialCondition;
+	
 	//Components
 	Hapkit hapkit;
 	Canvas designPalette;
@@ -92,11 +103,29 @@ public class Main extends PApplet {
 		size(width, height);
 		background(255);
 		
-		log = new CSVLogOutput("participant_log.csv");
+		String pID = JOptionPane.showInputDialog(null,
+				  "Enter Participant ID",
+				  "Participant ID",
+				  JOptionPane.QUESTION_MESSAGE);
 		
-		springData = new int[19][2][16][2];
+		participantId = Integer.parseInt(pID);
+		
+		DateFormat df = new SimpleDateFormat("MM-dd-yyyy-HHmmss");
+		Date today = Calendar.getInstance().getTime(); 
+		String reportDate = df.format(today);
+		
+		log = new CSVLogOutput("participant_"+participantId+"_log_"+reportDate+".csv", participantId);
+
+		springData = new int[19][2][16][2]; //[participant][condition][springpair][left/right spring]
 		springDataParser = new CSVInputData("spring_pairs.csv");
 		springDataParser.readCSVFile(springData);
+		
+		Random rand=new Random(); 
+		int initialCondition=rand.nextInt(1); 
+		
+		CSVLogEvent e = new CSVLogEvent(initialCondition, -1, -1, -1);
+		e.setNotes("Intitial Condition: "+initialCondition+" (1=haptics+graphics 0=graphics)");
+		log.addEvent(e);
 		
 		cp5 = new ControlP5(this);
 		//TODO consider changing colors
@@ -105,7 +134,7 @@ public class Main extends PApplet {
 		//cp5.setColorActive(200);
 		
 		  // change the default font to Verdana
-		  PFont p = createFont("Verdana",9); 
+		  PFont p = createFont("Verdana",12); 
 		  cp5.setControlFont(p);
 		  
 		  // change the original colors
@@ -115,9 +144,11 @@ public class Main extends PApplet {
 		  cp5.setColorValue(0xffff88ff);
 		  cp5.setColorActive(0xffff0000);
 		
+
+		  
 		participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
-		hapkit = new Hapkit(this, Serial.list(), 7);
-		designPalette = new Canvas(this, dPX, dPY, dPW, dPH, hapkit, springData[participantId]);
+		hapkit = new Hapkit(this, Serial.list(), 7, log);
+		designPalette = new Canvas(this, dPX, dPY, dPW, dPH, hapkit, springData[participantId], log, initialCondition);
 		
 		//forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
 		//expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
@@ -168,7 +199,7 @@ public class Main extends PApplet {
 	} 
 	
 	public void controlEvent(ControlEvent theEvent) {
-	      println("yes");
+	      participantSelection.submit(theEvent, participantId);
 	}
 }
 
