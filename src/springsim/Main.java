@@ -50,9 +50,9 @@ public class Main extends PApplet {
 			wc.add(weight);
 		}
 
-		s1 = new SerialSpring(100, 100, 1, 100, this, box2d);
-		s2 = new Spring(200, 100, 3, 100, this, box2d);
-		s3 = new Spring(300, 100, 5, 100, this, box2d);
+		s1 = new SerialSpring(100, 100, 10, 100, this, box2d);
+		s2 = new Spring(200, 100, 30, 100, this, box2d);
+		s3 = new Spring(300, 100, 50, 100, this, box2d);
 		
 		sc = new SpringCollection();
 		sc.add(s1);

@@ -26,7 +26,7 @@ public class Connector implements PConstants {
 	int w;
 	int h;
 
-	public Connector(int _x, int _y, PApplet p, Box2DProcessing b2) {
+	public Connector(int _x, int _y, boolean _dynamic, PApplet p, Box2DProcessing b2) {
 
 		//constructor
 		this.parent = p;
@@ -44,10 +44,12 @@ public class Connector implements PConstants {
 
 		BodyDef bd = new BodyDef();
 		bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
-		bd.type = BodyType.DYNAMIC;
+		if (_dynamic == true) {
+			bd.type = BodyType.DYNAMIC;
+		} else {
+			bd.type = BodyType.STATIC;
+		}
 		bd.fixedRotation = false;
-
-		//bd.angularDamping = 0;
 		bd.linearDamping = (float) 0.3;
 
 		this.body = box2d.createBody(bd);
@@ -56,7 +58,8 @@ public class Connector implements PConstants {
 		CircleShape circle = new CircleShape();
 
 		circle.m_radius = box2d.scalarPixelsToWorld(this.w/2);
-		Vec2 offset = new Vec2(0,this.h/2);
+		//Vec2 offset = new Vec2(this.w/2,this.h/2);
+		Vec2 offset = new Vec2(0, 0);
 	    offset = box2d.vectorPixelsToWorld(offset);
 	    circle.m_p.set(offset.x,offset.y);
 
@@ -66,7 +69,7 @@ public class Connector implements PConstants {
 
 		// Parameters that affect physics
 		fd.density = 0.7f; 
-		fd.friction = 0.01f;
+		fd.friction = 0.1f;
 		fd.restitution = 0.9f;
 		//fd.setSensor(true);
 

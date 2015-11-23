@@ -70,7 +70,7 @@ public class Hand implements PConstants {
 		fd.shape = sd;
 
 		// Parameters that affect physics
-		fd.density = 0.7f; 
+		fd.density = 0.3f; 
 		fd.friction = 0.01f;
 		fd.restitution = 0.9f;
 		//fd.setSensor(true);

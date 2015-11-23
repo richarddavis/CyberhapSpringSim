@@ -26,13 +26,17 @@ public class SerialSpring implements SpringInterface {
 	DistanceJoint dj2;
 	
 	RevoluteJointDef rjd1;
+//	RevoluteJointDef rjd2;
 	RevoluteJoint rj1;
+//	RevoluteJoint rj2;
 	
 	PApplet parent;
 	Hand hand;
 	Anchor anchor;
 	Connector conn1;
 	Connector conn2;
+//	Connector conn3;
+//	Connector conn4;
 	PImage spring_img;
 
 	public SerialSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
@@ -43,8 +47,8 @@ public class SerialSpring implements SpringInterface {
 		this.parent = p;
 		this.box2d = b2;
 		this.hand = new Hand(this.x, this.y + this.originalLen * 2 + 20, false, parent, box2d);
-		this.conn1 = new Connector(this.x, this.y + this.originalLen + 10, parent, box2d);
-		this.conn2 = new Connector(this.x, this.y + this.originalLen + 15, parent, box2d);
+		this.conn1 = new Connector(this.x, this.y + this.originalLen + 10, true, parent, box2d);
+		this.conn2 = new Connector(this.x, this.y + this.originalLen + 15, true, parent, box2d);
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
 		
 		// Import photo
@@ -62,7 +66,7 @@ public class SerialSpring implements SpringInterface {
 		
 		// Some stuff about how strong and bouncy the spring should be
 		//djd.maxForce = (float) (1000.0 * hand.body.m_mass);
-		djd1.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt((this.k)/(this.conn1.body.m_mass + this.hand.body.m_mass))));
+		djd1.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/(this.conn1.body.m_mass + this.hand.body.m_mass))));
 		djd1.dampingRatio = 0.01f;
 		
 		// Make the first spring distance joint
@@ -89,8 +93,23 @@ public class SerialSpring implements SpringInterface {
 		// Define the revolute joint that connects the two springs
 		rjd1 = new RevoluteJointDef();
 		rjd1.initialize(this.conn1.body, this.conn2.body, this.conn1.body.getWorldCenter());
+		rjd1.lowerAngle = -0.25f * (float) Math.PI; // -45 degrees
+		rjd1.upperAngle = 0.25f * (float) Math.PI; // 45 degrees
+		rjd1.enableLimit = true;
+		rjd1.maxMotorTorque = 10.0f;
+		rjd1.motorSpeed = 0.0f;
+		rjd1.enableMotor = true;
 		rj1 = (RevoluteJoint) box2d.world.createJoint(rjd1);
 		
+//		// Messing around
+//		this.conn3 = new Connector(200, 200, true, parent, box2d);
+//		this.conn4 = new Connector(220, 220, false, parent, box2d);
+//		rjd2 = new RevoluteJointDef();
+//		rjd2.initialize(this.conn3.body, this.conn4.body, this.conn3.body.getWorldCenter());
+//		rjd2.motorSpeed = 10;
+//		rjd2.maxMotorTorque = 10000;
+//		rjd2.enableMotor = true;
+//		rj2 = (RevoluteJoint) box2d.world.createJoint(rjd2);	
 	}
 
 	//TODO: update hand drawing as well. 
@@ -140,6 +159,8 @@ public class SerialSpring implements SpringInterface {
 			this.conn2.draw();
 			this.hand.draw();
 		}
+		//this.conn3.draw();
+		//this.conn4.draw();
 	}
 	
 	public void mouseUpdate(int mx, int my, boolean pressed) {
