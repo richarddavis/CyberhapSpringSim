@@ -10,7 +10,7 @@ public class Main extends PApplet {
 
 	Box2DProcessing box2d;
 	SerialSpring s1;
-	Spring s2;
+	ParallelSpring s2;
 	Spring s3;
 	SpringCollection sc;
 	WeightCollection wc;
@@ -50,15 +50,15 @@ public class Main extends PApplet {
 			wc.add(weight);
 		}
 
-		s1 = new SerialSpring(100, 100, 10, 100, this, box2d);
-		s2 = new Spring(200, 100, 30, 100, this, box2d);
-		s3 = new Spring(300, 100, 50, 100, this, box2d);
+		s1 = new SerialSpring(100, 100, 30, 100, this, box2d);
+		s2 = new ParallelSpring(200, 100, 30, 100, this, box2d);
+		s3 = new Spring(300, 100, 30, 100, this, box2d);
 		
 		sc = new SpringCollection();
 		sc.add(s1);
 		sc.add(s2);
 		sc.add(s3);
-		sc.setActive(s1);
+		sc.setActive(s2);
 		
 		floor = new Boundary(this.width/2, this.height - 20, this.width - 20, 20, this, box2d);
 		ceiling = new Boundary(10, 10, this.width - 20, 20, this, box2d);

@@ -1,6 +1,6 @@
 package springsim;
 
-import org.jbox2d.collision.shapes.CircleShape;
+import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -13,7 +13,7 @@ import processing.core.PConstants;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
-public class Connector implements PConstants {
+public class RectangleConnector implements PConstants {
 
 	PApplet parent;
 	Box2DProcessing box2d;
@@ -26,7 +26,7 @@ public class Connector implements PConstants {
 	int w;
 	int h;
 
-	public Connector(int _x, int _y, boolean _dynamic, PApplet p, Box2DProcessing b2) {
+	public RectangleConnector(int _x, int _y, boolean _dynamic, PApplet p, Box2DProcessing b2) {
 
 		//constructor
 		this.parent = p;
@@ -34,56 +34,42 @@ public class Connector implements PConstants {
 		this.x = _x;
 		this.fixed_x = this.x;
 		this.y = _y;
-
-		this.connector_img = p.loadImage("connector.png");
-		
-		this.w = this.connector_img.width / 30;
-		this.h = this.connector_img.height / 30;
-
-		this.connector_img.resize(this.w, this.h);
+		this.w = 50;
+		this.h = 20;
 
 		BodyDef bd = new BodyDef();
-		bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) x,(int) y)));
-		if (_dynamic == true) {
-			bd.type = BodyType.DYNAMIC;
-		} else {
-			bd.type = BodyType.STATIC;
-		}
+		bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) this.x,(int) this.y)));
+		bd.type = BodyType.DYNAMIC;
 		bd.fixedRotation = false;
-		bd.linearDamping = (float) 0.3;
 
 		this.body = box2d.createBody(bd);
-		//body.setGravityScale(0);
 
-		CircleShape circle = new CircleShape();
+		PolygonShape sd = new PolygonShape();
+		float box2dW = box2d.scalarPixelsToWorld(this.w/2);
+		float box2dH = box2d.scalarPixelsToWorld(this.h/2);
+		sd.setAsBox(box2dW, box2dH);
 
-		circle.m_radius = box2d.scalarPixelsToWorld(this.w/2);
-		//Vec2 offset = new Vec2(this.w/2,this.h/2);
-		Vec2 offset = new Vec2(0, 0);
-	    offset = box2d.vectorPixelsToWorld(offset);
-	    circle.m_p.set(offset.x,offset.y);
-
-	    // Define a fixture
+		// Define a fixture
 		FixtureDef fd = new FixtureDef();
-		fd.shape = circle;
+		fd.shape = sd;
 
 		// Parameters that affect physics
-		fd.density = 0.7f; 
-		fd.friction = 0.1f;
-		fd.restitution = 0.9f;
-		//fd.setSensor(true);
+		fd.density = 1f;
+		fd.friction = 0.3f;
+		fd.restitution = 0.1f;
 
 		this.body.createFixture(fd);
 		this.body.resetMassData();
 	}
 
 	public void draw() {
-		//parent.image(hand_img, this.x, this.y);
 		Vec2 pos = this.box2d.getBodyPixelCoord(this.body);
 		this.x = (int)pos.x;
 		this.y = (int)pos.y;
-		parent.imageMode(PConstants.CENTER);
-		parent.image(connector_img, this.x, this.y+10);
+		parent.fill(255);
+		parent.stroke(0);
+		parent.strokeWeight(1);
+		parent.rect(this.x, this.y, this.w, this.h);
 	}
 
 	public int getX() {
@@ -104,12 +90,10 @@ public class Connector implements PConstants {
 
 	public void setW(double scale) {
 		this.w *= scale;
-		connector_img.resize(this.w, this.h);
 	}
 
 	public void setH(double scale) {
 		this.h *= scale;
-		connector_img.resize(this.w, this.h);
 	}
 
 	public boolean contains(int x, int y) {
