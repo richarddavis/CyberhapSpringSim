@@ -4,31 +4,31 @@ import java.util.ArrayList;
 
 public class SpringCollection {
 	
-	ArrayList<NewSpring> springs;
-	NewSpring activeSpring; 
+	ArrayList<SpringInterface> springs;
+	SpringInterface activeSpring; 
 	
 	public SpringCollection(){
-		springs = new ArrayList<NewSpring>();
+		springs = new ArrayList<SpringInterface>();
 	}
 	
 	public void draw() {
-		for (NewSpring s : springs) {
+		for (SpringInterface s : springs) {
 			s.draw();
 		}
 		printActiveForce();
 	}
 	
-	public boolean add(NewSpring s){
+	public boolean add(SpringInterface s){
 		return springs.add(s);
 	}
 	
-	public void setActive(NewSpring s){
+	public void setActive(SpringInterface s){
 		activeSpring = s;
 	}
 	
 	public void updateActive(int mx, int my, boolean pressed) {
-		for (NewSpring s : springs) {
-			if (s.hand.contains(mx, my)) {
+		for (SpringInterface s : springs) {
+			if (s.getHand().contains(mx, my)) {
 				this.setActive(s);
 				break;
 			}

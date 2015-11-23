@@ -9,9 +9,9 @@ import shiffman.box2d.Box2DProcessing;
 public class Main extends PApplet {
 
 	Box2DProcessing box2d;
-	NewSpring s1;
-	NewSpring s2;
-	NewSpring s3;
+	Spring s1;
+	Spring s2;
+	Spring s3;
 	SpringCollection sc;
 	WeightCollection wc;
 
@@ -50,9 +50,9 @@ public class Main extends PApplet {
 			wc.add(weight);
 		}
 
-		s1 = new NewSpring(100, 100, 1, 100, this, box2d);
-		s2 = new NewSpring(200, 100, 3, 100, this, box2d);
-		s3 = new NewSpring(300, 100, 5, 100, this, box2d);
+		s1 = new Spring(100, 100, 1, 100, this, box2d);
+		s2 = new Spring(200, 100, 3, 100, this, box2d);
+		s3 = new Spring(300, 100, 5, 100, this, box2d);
 		
 		sc = new SpringCollection();
 		sc.add(s1);

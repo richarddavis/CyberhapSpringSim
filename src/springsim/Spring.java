@@ -8,7 +8,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
-public class NewSpring {
+public class Spring implements SpringInterface {
 
 	int x;
 	int y;
@@ -26,7 +26,7 @@ public class NewSpring {
 	Anchor anchor;
 	PImage spring_img;
 
-	public NewSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
+	public Spring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
 		this.x = _x;
 		this.y = _y;
 		this.k = _k;
@@ -59,7 +59,7 @@ public class NewSpring {
 	}
 
 	//TODO: update hand drawing as well. 
-	void draw(){
+	public void draw(){
 
 		//parent.line(this.anchor.getX(), this.anchor.getY(), this.hand.getX(), this.hand.getY());
 
@@ -121,5 +121,8 @@ public class NewSpring {
 	public int getY(){
 		return this.y;
 	}
-
+	
+	public Hand getHand() {
+		return this.hand;
+	}
 }
