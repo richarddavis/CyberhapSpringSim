@@ -28,8 +28,9 @@ public class Hand implements PConstants {
 	int y;
 	int w;
 	int h;
+	boolean fixed;
 
-	public Hand(int _x, int _y, PApplet p, Box2DProcessing b2) {
+	public Hand(int _x, int _y, boolean _fixed, PApplet p, Box2DProcessing b2) {
 
 		//constructor
 		this.parent = p;
@@ -37,6 +38,7 @@ public class Hand implements PConstants {
 		this.x = _x;
 		this.fixed_x = this.x;
 		this.y = _y;
+		this.fixed = _fixed;
 
 		this.hand_img = p.loadImage("hand.png");
 
@@ -80,7 +82,11 @@ public class Hand implements PConstants {
 	public void draw() {
 		if (mj != null) {
 
-			this.mousePosUpdate(this.fixed_x, parent.mouseY);
+			if (this.fixed == true) {
+				this.mousePosUpdate(this.fixed_x, parent.mouseY);
+			} else {
+				this.mousePosUpdate(parent.mouseX, parent.mouseY);
+			}
 			
 			// We can get the two anchor points
 			Vec2 v1 = new Vec2(0,0);
@@ -148,7 +154,11 @@ public class Hand implements PConstants {
 		if (pressed == false) {
 			this.destroy();
 		} else if (this.contains(mx, my)) {
-			this.bind(this.fixed_x, my);
+			if (this.fixed == true) {
+				this.bind(this.fixed_x, my);
+			} else {
+				this.bind(mx, my);
+			}
 		}
 	}
 	

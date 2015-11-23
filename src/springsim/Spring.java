@@ -33,7 +33,7 @@ public class Spring implements SpringInterface {
 		this.originalLen = _length;
 		this.parent = p;
 		this.box2d = b2;
-		this.hand = new Hand(this.x, this.y + this.originalLen + 10, parent, box2d);
+		this.hand = new Hand(this.x, this.y + this.originalLen + 10, true, parent, box2d);
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
 		
 		// Import photo

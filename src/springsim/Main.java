@@ -9,7 +9,7 @@ import shiffman.box2d.Box2DProcessing;
 public class Main extends PApplet {
 
 	Box2DProcessing box2d;
-	Spring s1;
+	SerialSpring s1;
 	Spring s2;
 	Spring s3;
 	SpringCollection sc;
@@ -50,7 +50,7 @@ public class Main extends PApplet {
 			wc.add(weight);
 		}
 
-		s1 = new Spring(100, 100, 1, 100, this, box2d);
+		s1 = new SerialSpring(100, 100, 1, 100, this, box2d);
 		s2 = new Spring(200, 100, 3, 100, this, box2d);
 		s3 = new Spring(300, 100, 5, 100, this, box2d);
 		
