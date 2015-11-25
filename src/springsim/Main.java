@@ -63,6 +63,19 @@ public class Main extends PApplet {
 	int hfw = leftColWidth;
 	int hfh = 160;
 	
+	Box2DProcessing box2d;
+	SerialSpring s1;
+	ComboSpring s2;
+	ParallelSpring s3;
+	Spring s4;
+	SpringCollection sc;
+	WeightCollection wc;
+
+	Hand hand;
+	Boundary ceiling;
+	Boundary floor;
+	Weight weight;
+	
 	//physicsPlayground coord
 	int pPX = spacing;
 	int pPY = (spacing*3)+fFOH+hfh;
@@ -134,8 +147,7 @@ public class Main extends PApplet {
 		  cp5.setColorLabel(0xffdddddd);
 		  cp5.setColorValue(0xffff88ff);
 		  cp5.setColorActive(0xffff0000);
-		
-
+	
 		  
 		participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
 		hapkit = new Hapkit(this, Serial.list(), 7, researchData);
@@ -154,6 +166,19 @@ public class Main extends PApplet {
 //		components.add(forceDisplayOutput);
 //		components.add(physicsPlayground);
 //		components.add(hapkitFeedbackPanel);
+
+		s1 = new SerialSpring(50, 100, 30, 100, this, box2d);
+		s2 = new ComboSpring(150, 100, 30, 100, this, box2d);
+		s3 = new ParallelSpring(300, 100, 30, 100, this, box2d);
+		s4 = new Spring(400, 100, 30, 100, this, box2d);
+		
+		sc = new SpringCollection();
+		sc.add(s1);
+		sc.add(s2);
+		sc.add(s3);
+		sc.add(s4);
+		sc.setActive(s1);
+
 		
 	}
 

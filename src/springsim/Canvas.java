@@ -113,8 +113,8 @@ public class Canvas implements Component {
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new Spring(this.x+1*(this.w/3), 100, rData.getCurrentXSpring(), 200, parent, box2d, "X");
-		s2 = new Spring(this.x+2*(this.w/3), 100, rData.getCurrentYSpring(), 200, parent, box2d, "Y");
+		s1 = new Spring(this.x+1*(this.w/3), 100, rData.getCurrentXSpring(), 200, parent, box2d);
+		s2 = new Spring(this.x+2*(this.w/3), 100, rData.getCurrentYSpring(), 200, parent, box2d);
 		//s3 = new Spring(this.x+3*(this.w/4), 100, 70, 200, parent, box2d);
 		
 		sc = new SpringCollection();

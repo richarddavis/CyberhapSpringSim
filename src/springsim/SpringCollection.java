@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class SpringCollection {
 	
+
 	ArrayList<Spring> springs;
 	Spring activeSpring; 
 	
@@ -20,6 +21,7 @@ public class SpringCollection {
 		printActiveForce();
 	}
 	
+
 	public boolean add(Spring s){
 		return springs.add(s);
 	}
@@ -55,6 +57,18 @@ public class SpringCollection {
 	public void updateActiveSpring(int mx, int my, boolean pressed, boolean updatePosition, Hapkit hapkit) {
 		for (Spring s : springs) {
 			if (s.hand.contains(mx, my)) {
+
+	public boolean add(SpringInterface s){
+		return springs.add(s);
+	}
+	
+	public void setActive(SpringInterface s){
+		activeSpring = s;
+	}
+	
+	public void updateActive(int mx, int my, boolean pressed) {
+		for (SpringInterface s : springs) {
+			if (s.getHand().contains(mx, my)) {
 				this.setActive(s);
 				hapkit.setKConstant(s.k);
 				//serialData.writeToArduino();

@@ -30,8 +30,9 @@ public class Hand implements PConstants {
 	int y;
 	int w;
 	int h;
+	boolean fixed;
 
-	public Hand(int _x, int _y, PApplet p, Box2DProcessing b2) {
+	public Hand(int _x, int _y, boolean _fixed, PApplet p, Box2DProcessing b2) {
 
 		//constructor
 		this.parent = p;
@@ -39,6 +40,7 @@ public class Hand implements PConstants {
 		this.x = _x;
 		this.fixed_x = this.x;
 		this.y = _y;
+		this.fixed = _fixed;
 
 		this.inactive_hand_img = p.loadImage("hand.png");
 		this.active_hand_img = p.loadImage("active_hand.png");
@@ -73,7 +75,7 @@ public class Hand implements PConstants {
 		fd.shape = sd;
 
 		// Parameters that affect physics
-		fd.density = 0.7f; 
+		fd.density = 0.3f; 
 		fd.friction = 0.01f;
 		fd.restitution = 0.9f;
 		//fd.setSensor(true);
@@ -84,6 +86,11 @@ public class Hand implements PConstants {
 
 	public void draw() {
 		if (mj != null) {
+			if (this.fixed == true) {
+				this.mousePosUpdate(this.fixed_x, parent.mouseY);
+			} else {
+				this.mousePosUpdate(parent.mouseX, parent.mouseY);
+			}
 			
 			// We can get the two anchor points
 			Vec2 v1 = new Vec2(0,0);
@@ -152,7 +159,11 @@ public class Hand implements PConstants {
 		if (pressed == false) {
 			this.destroy();
 		} else if (this.contains(mx, my)) {
-			this.bind(this.fixed_x, my);
+			if (this.fixed == true) {
+				this.bind(this.fixed_x, my);
+			} else {
+				this.bind(mx, my);
+			}
 		}
 	}
 	
