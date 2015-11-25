@@ -117,7 +117,7 @@ public class Canvas implements Component {
 		s2 = new Spring(this.x+2*(this.w/3), 100, rData.getCurrentYSpring(), 200, parent, box2d, "Y");
 		//s3 = new Spring(this.x+3*(this.w/4), 100, 70, 200, parent, box2d);
 		
-		sc = new SpringCollection();
+		sc = new SpringCollection(rData);
 		sc.add(s1);
 		sc.add(s2);
 		//sc.add(s3);

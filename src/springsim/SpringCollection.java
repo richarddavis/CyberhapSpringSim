@@ -6,9 +6,11 @@ public class SpringCollection {
 	
 	ArrayList<Spring> springs;
 	Spring activeSpring; 
+	ResearchData rData;
 	
-	public SpringCollection(){
+	public SpringCollection(ResearchData rData){
 		springs = new ArrayList<Spring>();
+		this.rData = rData;
 	}
 	
 	public void draw() {
@@ -58,6 +60,7 @@ public class SpringCollection {
 				this.setActive(s);
 				hapkit.setKConstant(s.k);
 				//serialData.writeToArduino();
+				rData.logEvent(s.k, -1, "SWITCHING BETWEEN SPRINGS");
 				break;
 			}
 		}
