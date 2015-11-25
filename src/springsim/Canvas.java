@@ -108,7 +108,7 @@ public class Canvas implements Component {
 		         .setSize(130,50)
 		         .setVisible(false)
 		         .setId(2);
-			  
+		
 		
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
@@ -124,6 +124,11 @@ public class Canvas implements Component {
 		
 		//set initial active spring
 		sc.setActive(s1);
+		
+		rData.logEvent(-1, -1, "Initial K value sent to hapkit");
+		serialData.setKConstant(sc.activeSpring.k);
+		
+		
 		
 		floor = new Boundary(this.x + this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
 		ceiling = new Boundary(this.x+10, this.y+30, this.w - 20, 30, parent, box2d);
@@ -197,9 +202,11 @@ public class Canvas implements Component {
 			sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, false, serialData);
 		}else if(clickedSpringX()){
 			sc.setXSpringActive();
+			rData.logEvent(-1, -1, "request sent to change K constant after changing active spring to X");
 			serialData.setKConstant(rData.getCurrentXSpring());
 		}else if(clickedSpringY()){
 			sc.setYSpringActive();
+			rData.logEvent(-1, -1, "request sent to change K constant after changing active spring to Y");
 			serialData.setKConstant(rData.getCurrentYSpring());
 		}
 	}
@@ -224,6 +231,7 @@ public class Canvas implements Component {
 
 			sc.setSpringX(rData.getCurrentXSpring());
 			sc.setSpringY(rData.getCurrentYSpring());
+			rData.logEvent(-1, -1, "request sent to change K constant after changing spring pair");
 			serialData.setKConstant(sc.activeSpring.k);
 	}
 	
