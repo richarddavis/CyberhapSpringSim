@@ -31,12 +31,26 @@ public class Canvas implements Component {
 	PImage wood_plank_img;
 	PImage next_img;
 	
+	PImage spring_x;
+	PImage spring_y;
+	PImage spring_x_active;
+	PImage spring_y_active;
+	
 	Button next, X, Y;
 	
 	int x;
 	int y;
 	int w;
 	int h;
+	
+	int springx_img_x;
+	int springx_img_y;
+	
+	int springy_img_x;
+	int springy_img_y;	
+	
+	int spring_img_w;
+	int spring_img_h;
 	
 	int numSprings;
 	private Ruler ruler;
@@ -52,10 +66,23 @@ public class Canvas implements Component {
 		this.numSprings = 3;
 		this.rData = rData;
 		
+		spring_img_w = 100;
+		spring_img_h = 100;
+		
+		springx_img_x = this.x+(this.w/4)-(spring_img_w/2);
+		springx_img_y = this.y+150;
+		
+		springy_img_x = this.x+(3*(this.w/4))-(spring_img_w/2);
+		springy_img_y = this.y+150;	
+		
 		parent = main; 
 		
 		wood_plank_img = parent.loadImage("wood-plank.jpg");
 		next_img = parent.loadImage("arrow-next.png");
+		spring_x = parent.loadImage("springx.jpg");
+		spring_y = parent.loadImage("springy.jpg");
+		spring_x_active = parent.loadImage("springx-active.jpg");
+		spring_y_active = parent.loadImage("springy-active.jpg");
 		
 		box2d = new Box2DProcessing(parent);
 		box2d.createWorld();
@@ -86,8 +113,8 @@ public class Canvas implements Component {
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new Spring(this.x+1*(this.w/3), 100, rData.getCurrentXSpring(), 200, parent, box2d);
-		s2 = new Spring(this.x+2*(this.w/3), 100, rData.getCurrentYSpring(), 200, parent, box2d);
+		s1 = new Spring(this.x+1*(this.w/3), 100, rData.getCurrentXSpring(), 200, parent, box2d, "X");
+		s2 = new Spring(this.x+2*(this.w/3), 100, rData.getCurrentYSpring(), 200, parent, box2d, "Y");
 		//s3 = new Spring(this.x+3*(this.w/4), 100, 70, 200, parent, box2d);
 		
 		sc = new SpringCollection();
@@ -134,8 +161,19 @@ public class Canvas implements Component {
 			parent.text("Spring Y", ceiling.x+260, ceiling.y-10);
 			parent.image(wood_plank_img, ceiling.x+(ceiling.w/2), ceiling.y+((ceiling.h/2)), ceiling.w, ceiling.h);
 		}else{
-			X.setVisible(true);
-			Y.setVisible(true);
+			//X.setVisible(true);
+			//Y.setVisible(true);
+			parent.pushMatrix();
+			parent.imageMode(PConstants.CORNER);
+			if(sc.activeSpring.getName().equals("X")){
+				parent.image(spring_x_active, springx_img_x, springx_img_y, spring_img_w, spring_img_h);
+				parent.image(spring_y, springy_img_x, springy_img_y, spring_img_w, spring_img_h);
+			}else if(sc.activeSpring.getName().equals("Y")){
+				parent.image(spring_x, springx_img_x, springx_img_y, spring_img_w, spring_img_h);
+				parent.image(spring_y_active, springy_img_x, springy_img_y, spring_img_w, spring_img_h);
+			}
+			parent.popMatrix();
+			
 		}
 
 		
@@ -155,7 +193,29 @@ public class Canvas implements Component {
 	}
 	
 	public void mousePressed() {
-		sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, false, serialData);
+		if(rData.getCondition() == rData.CONDITION_GRAPHICS_HAPTICS){
+			sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, false, serialData);
+		}else if(clickedSpringX()){
+			sc.setXSpringActive();
+			serialData.setKConstant(rData.getCurrentXSpring());
+		}else if(clickedSpringY()){
+			sc.setYSpringActive();
+			serialData.setKConstant(rData.getCurrentYSpring());
+		}
+	}
+	
+	public boolean clickedSpringX(){
+		return (parent.mouseX > springx_img_x
+				&& parent.mouseX < springx_img_x+spring_img_w
+				&& parent.mouseY > springx_img_y
+				&& parent.mouseY < springx_img_y+spring_img_h);
+	}
+	
+	public boolean clickedSpringY(){
+		return (parent.mouseX > springy_img_x
+				&& parent.mouseX < springy_img_x+spring_img_w
+				&& parent.mouseY > springy_img_y
+				&& parent.mouseY < springy_img_y+spring_img_h);
 	}
 	
 	public void buttonPressed(){

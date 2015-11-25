@@ -13,7 +13,6 @@ public class ResearchData {
 	static int CONDITION_GRAPHICS_HAPTICS = 1;
 	static int CONDITION_GRAPHICS_ONLY = 0;
 	
-	static int initialCondition; // 1 or 0
 	int springIndex; // 1-15
 	int condition; // 0 or 1
 	int participantId; // 1-15
@@ -23,23 +22,28 @@ public class ResearchData {
 	CSVLogOutput log;
 	
 	int[][][][] springData; //[participant][condition][springIndex][left/right spring]
+	int[] initialCondition;
 	
 	public ResearchData(int participantId){
 		
 		initiateLog();
-		generateRandomCondition();
 		parseSpringData();
 		
 		this.participantId = participantId;
-		this.condition = initialCondition;
-		this.springIndex = 1;
+		this.condition = initialCondition[participantId];
+		this.springIndex = 0;
 		this.completedConditions = 0;
+		
+		CSVLogEvent e = new CSVLogEvent(initialCondition[participantId], -1, -1, -1, springData[participantId][condition][springIndex]);
+		e.setNotes("Intitial Condition: "+initialCondition+" (1=haptics+graphics 0=graphics)");
+		log.addEvent(e);
 	}
 	
 	private void parseSpringData() {
 		springData = new int[19][2][16][2]; 
+		initialCondition = new int[19];
 		CSVInputData springDataParser = new CSVInputData("spring_pairs.csv");
-		springDataParser.readCSVFile(springData);
+		springDataParser.readCSVFile(springData, initialCondition);
 	}
 	
 	public int getCurrentXSpring(){
@@ -67,7 +71,7 @@ public class ResearchData {
 			logEvent(-1,-1,"Study is Over.");
 		}
 		condition = 1 - condition;
-		springIndex = 1;
+		springIndex = 0;
 		logEvent(-1,-1,"Conditions have been switched");
 		completedConditions++;
 	}
@@ -79,18 +83,9 @@ public class ResearchData {
 		
 		this.log = new CSVLogOutput("participant_"+participantId+"_log_"+reportDate+".csv", participantId);
 	}
-
-	public void generateRandomCondition(){
-		Random rand=new Random(); 
-		initialCondition=rand.nextInt(1); 
-		
-		CSVLogEvent e = new CSVLogEvent(initialCondition, -1, -1, -1);
-		e.setNotes("Intitial Condition: "+initialCondition+" (1=haptics+graphics 0=graphics)");
-		log.addEvent(e);
-	}
 	
 	public void logEvent(int k, double current_pos, String notes){
-		CSVLogEvent e = new CSVLogEvent(condition,springIndex,k, current_pos);
+		CSVLogEvent e = new CSVLogEvent(condition,springIndex,k, current_pos, springData[participantId][condition][springIndex]);
 		e.setNotes(notes);
 		log.addEvent(e);
 	}

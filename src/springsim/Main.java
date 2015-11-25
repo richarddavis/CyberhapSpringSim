@@ -90,7 +90,20 @@ public class Main extends PApplet {
 	ControlP5 cp5;
 	
 	int participantId;
-	ResearchData researchData;
+	static ResearchData researchData;
+	
+	static public void main(String args[]) {
+		   PApplet.main(new String[] { "springsim.Main" });
+			
+			Runtime.getRuntime().addShutdownHook(new Thread()
+			{
+			    @Override
+			    public void run()
+			    {
+			        endProcedure();
+			    }
+			});
+	}
 	
 	public void setup() {
 		size(width, height);
@@ -173,12 +186,27 @@ public class Main extends PApplet {
 	 * 
 	 */
 	public void stop() {
+		System.out.println("GENERATING LOG");
 		researchData.generateCSVLog();
 	} 
 	
-	public void controlEvent(ControlEvent theEvent) {
-	      designPalette.buttonPressed();
+	public static void endProcedure(){
+		System.out.println("GENERATING LOG");
+		researchData.generateCSVLog();
+	}
+	
+	public void controlEvent(ControlEvent theEvent) {	
+		if(designPalette != null){
+			if(theEvent.isFrom(designPalette.next) ||
+					theEvent.isFrom(designPalette.X) ||
+					theEvent.isFrom(designPalette.Y)){
+		      designPalette.buttonPressed();
+			}else{
+				System.out.println(theEvent.getStringValue());
+			}
+		}
 	}
 }
+
 
 

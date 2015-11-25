@@ -25,7 +25,7 @@ public class CSVLogOutput {
 	static int participantId;
 
 	//CSV file header
-	private static final String FILE_HEADER = "participant_id,timestamp,condition_id, springIndex, hapkit_k,hapkit_x,notes";
+	private static final String FILE_HEADER = "participant_id,timestamp,condition_id, springIndex,spring_x, spring_y, hapkit_k,hapkit_x,notes";
 	
 	public CSVLogOutput(String fileName, int participantId) {
 
@@ -66,6 +66,10 @@ public class CSVLogOutput {
 				fileWriter.append(Integer.toString(event.getConditionId())); // condition id
 				fileWriter.append(COMMA_DELIMITER);
 				fileWriter.append(Integer.toString(event.getSpringpairIndex())); // springIndex
+				fileWriter.append(COMMA_DELIMITER);
+				fileWriter.append(Integer.toString(event.getSpringX()));
+				fileWriter.append(COMMA_DELIMITER);
+				fileWriter.append(Integer.toString(event.getSpringY()));
 				fileWriter.append(COMMA_DELIMITER);
 				fileWriter.append(Float.toString((float) event.getHapkit_k()));
 				fileWriter.append(COMMA_DELIMITER);

@@ -70,6 +70,22 @@ public class SpringCollection {
 		//System.out.println(this.activeSpring.getForce());
 	}
 	
+	public void setXSpringActive(){
+		for (Spring s : springs) {
+		 if(s.getName().equals("X")){
+			 this.setActive(s);
+		 }
+		}	
+	}
+	
+	public void setYSpringActive(){
+		for (Spring s : springs) {
+		 if(s.getName().equals("Y")){
+			 this.setActive(s);
+		 }
+		}	
+	}
+	
 	public float getActiveForce() {
 		return this.activeSpring.getForce();
 	}

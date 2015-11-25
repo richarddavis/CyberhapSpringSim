@@ -9,11 +9,15 @@ public class CSVLogEvent {
 	private double hapkit_x; 
 	private int conditionId;
 	private int springpairIndex;
+	private int spring_x;
+	private int spring_y;
 	private String notes; 
 	
-	public CSVLogEvent(int condition, int springIndex, double _k, double _x){
+	public CSVLogEvent(int condition, int springIndex, double _k, double _x, int[] springData){
 		this.hapkit_k = _k;
 		this.hapkit_x = _x;
+		this.spring_x = springData[0];
+		this.spring_y = springData[1];
 		this.conditionId = condition;
 		this.springpairIndex = springIndex;
 	}
@@ -78,6 +82,14 @@ public class CSVLogEvent {
 
 	public void setConditionId(int conditionId) {
 		this.conditionId = conditionId;
+	}
+
+	public int getSpringX() {
+		return spring_x;
+	}
+
+	public int getSpringY() {
+		return spring_y;
 	}
 
 }

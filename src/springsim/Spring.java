@@ -19,6 +19,8 @@ public class Spring {
 	int spring_img_w = 35;
 	boolean display_forces = false;
 	
+	String name;
+	
 	//BOX2D
 	DistanceJointDef djd;
 	DistanceJoint dj;
@@ -29,7 +31,7 @@ public class Spring {
 	Anchor anchor;
 	PImage spring_img;
 
-	public Spring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
+	public Spring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2, String name){
 		this.x = _x;
 		this.y = _y;
 		this.k = _k;
@@ -38,6 +40,7 @@ public class Spring {
 		this.box2d = b2;
 		this.hand = new Hand(this.x, this.y + this.originalLen + 10, parent, box2d);
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
+		this.name = name;
 		
 		// Import photo
 		this.spring_img = parent.loadImage("spring.jpg");
@@ -130,6 +133,10 @@ public class Spring {
 	
 	public float getForce() {
 		return (this.k * (this.getLength() - dj.getLength()));
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 	
 	public void displayForce(boolean on) {
