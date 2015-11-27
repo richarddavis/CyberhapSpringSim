@@ -63,19 +63,6 @@ public class Main extends PApplet {
 	int hfw = leftColWidth;
 	int hfh = 160;
 	
-	Box2DProcessing box2d;
-	SerialSpring s1;
-	ComboSpring s2;
-	ParallelSpring s3;
-	Spring s4;
-	SpringCollection sc;
-	WeightCollection wc;
-
-	Hand hand;
-	Boundary ceiling;
-	Boundary floor;
-	Weight weight;
-	
 	//physicsPlayground coord
 	int pPX = spacing;
 	int pPY = (spacing*3)+fFOH+hfh;
@@ -132,54 +119,35 @@ public class Main extends PApplet {
 		researchData = new ResearchData(participantId);
 		
 		cp5 = new ControlP5(this);
-		//TODO consider changing colors
-		//cp5.setColorForeground(50);
-		//cp5.setColorBackground(150);
-		//cp5.setColorActive(200);
 		
-		  // change the default font to Verdana
-		  PFont p = createFont("Verdana",12); 
-		  cp5.setControlFont(p);
+		// change the default font to Verdana
+		PFont p = createFont("Verdana",12); 
+		cp5.setControlFont(p);
 		  
-		  // change the original colors
-		  cp5.setColorForeground(0xffaa0000);
-		  cp5.setColorBackground(0xff660000);
-		  cp5.setColorLabel(0xffdddddd);
-		  cp5.setColorValue(0xffff88ff);
-		  cp5.setColorActive(0xffff0000);
-	
+		// change the original colors
+		cp5.setColorForeground(0xffaa0000);
+		cp5.setColorBackground(0xff660000);
+		cp5.setColorLabel(0xffdddddd);
+		cp5.setColorValue(0xffff88ff);
+		cp5.setColorActive(0xffff0000);
 		  
 		participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
 		hapkit = new Hapkit(this, Serial.list(), 7, researchData);
 		designPalette = new Canvas(this, cp5, dPX, dPY, dPW, dPH, hapkit, researchData);
 		
-		//forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
-		//expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
-		//forceDisplayOutput = new ForceDisplayOutput(this, cp5, fDOX, fDOY, fDOW, fDOH);
-		//physicsPlayground = new PhysicsPlayground(this, cp5, designPalette, pPX, pPY, pPW, pPH);
-		//hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit, designPalette.getSpringCollection());
+		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
+		expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
+		forceDisplayOutput = new ForceDisplayOutput(this, cp5, fDOX, fDOY, fDOW, fDOH);
+		physicsPlayground = new PhysicsPlayground(this, cp5, designPalette, pPX, pPY, pPW, pPH);
+		hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit, designPalette.getSpringCollection());
 		
 		components.add(designPalette);
 		components.add(participantSelection);
-//		components.add(forceFeedbackOption);
-//		components.add(expSettings);
-//		components.add(forceDisplayOutput);
-//		components.add(physicsPlayground);
-//		components.add(hapkitFeedbackPanel);
-
-		s1 = new SerialSpring(50, 100, 30, 100, this, box2d);
-		s2 = new ComboSpring(150, 100, 30, 100, this, box2d);
-		s3 = new ParallelSpring(300, 100, 30, 100, this, box2d);
-		s4 = new Spring(400, 100, 30, 100, this, box2d);
-		
-		sc = new SpringCollection();
-		sc.add(s1);
-		sc.add(s2);
-		sc.add(s3);
-		sc.add(s4);
-		sc.setActive(s1);
-
-		
+		components.add(forceFeedbackOption);
+		components.add(expSettings);
+		components.add(forceDisplayOutput);
+		components.add(physicsPlayground);
+		components.add(hapkitFeedbackPanel);
 	}
 
 	public void draw() {
@@ -221,15 +189,8 @@ public class Main extends PApplet {
 	}
 	
 	public void controlEvent(ControlEvent theEvent) {	
-		if(designPalette != null){
-			if(theEvent.isFrom(designPalette.next) ||
-					theEvent.isFrom(designPalette.X) ||
-					theEvent.isFrom(designPalette.Y)){
-		      designPalette.buttonPressed();
-			}else{
-				System.out.println(theEvent.getStringValue());
-			}
-		}
+		//TODO
+		System.out.println(theEvent.getStringValue());
 	}
 }
 

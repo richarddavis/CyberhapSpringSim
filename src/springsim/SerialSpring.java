@@ -10,16 +10,9 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
-public class SerialSpring implements SpringInterface {
-
-	int x;
-	int y;
-	int currentLen;
-	int originalLen;
-	int k;
+public class SerialSpring extends SpringInterface {
 
 	//BOX2D
-	Box2DProcessing box2d;
 	DistanceJointDef djd1;
 	DistanceJointDef djd2;
 	DistanceJoint dj1;
@@ -30,8 +23,6 @@ public class SerialSpring implements SpringInterface {
 	RevoluteJoint rj1;
 //	RevoluteJoint rj2;
 	
-	PApplet parent;
-	Hand hand;
 	Anchor anchor;
 	CircleConnector conn1;
 	CircleConnector conn2;
@@ -40,12 +31,8 @@ public class SerialSpring implements SpringInterface {
 	PImage spring_img;
 
 	public SerialSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
-		this.x = _x;
-		this.y = _y;
-		this.k = _k;
-		this.originalLen = _length;
-		this.parent = p;
-		this.box2d = b2;
+		super(_x, _y, _k, _length, p, b2);
+		
 		this.hand = new Hand(this.x, this.y + this.originalLen * 2 + 20, false, parent, box2d);
 		this.conn1 = new CircleConnector(this.x, this.y + this.originalLen + 10, true, parent, box2d);
 		this.conn2 = new CircleConnector(this.x, this.y + this.originalLen + 15, true, parent, box2d);
@@ -163,10 +150,6 @@ public class SerialSpring implements SpringInterface {
 		//this.conn4.draw();
 	}
 	
-	public void mouseUpdate(int mx, int my, boolean pressed) {
-		this.hand.mouseUpdate(mx, my, pressed);
-	}
-	
 	public float getLength() {
 		Vec2 v1 = new Vec2(0,0);
 		dj1.getAnchorA(v1);
@@ -182,18 +165,6 @@ public class SerialSpring implements SpringInterface {
 	
 	public float getForce() {
 		return (this.k * (this.getLength() - dj1.getLength()));
-	}
-
-	public int getX(){
-		return this.x;
-	}
-
-	public int getY(){
-		return this.y;
-	}
-
-	public Hand getHand() {
-		return this.hand;
 	}
 
 }

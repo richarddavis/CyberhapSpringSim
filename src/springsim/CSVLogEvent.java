@@ -13,11 +13,11 @@ public class CSVLogEvent {
 	private int spring_y;
 	private String notes; 
 	
-	public CSVLogEvent(int condition, int springIndex, double _k, double _x, int[] springData){
+	public CSVLogEvent(int condition, int springIndex, double _k, double _x){
 		this.hapkit_k = _k;
 		this.hapkit_x = _x;
-		this.spring_x = springData[0];
-		this.spring_y = springData[1];
+		this.spring_x = -1;
+		this.spring_y = -1;
 		this.conditionId = condition;
 		this.springpairIndex = springIndex;
 	}

@@ -8,41 +8,23 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
-public class Spring implements SpringInterface {
-
-	int x;
-	int y;
-	int currentLen;
-	int originalLen;
-	int k;
+public class Spring extends SpringInterface {
 
 	int spring_img_w = 35;
-	boolean display_forces = false;
-	
-	String name;
 	
 	//BOX2D
 	DistanceJointDef djd;
 	DistanceJoint dj;
-	Box2DProcessing box2d;
 	
-	PApplet parent;
-	Hand hand;
 	Anchor anchor;
 	PImage spring_img;
 
-
 	public Spring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
 
-		this.x = _x;
-		this.y = _y;
-		this.k = _k;
-		this.originalLen = _length;
-		this.parent = p;
-		this.box2d = b2;
+		super(_x, _y, _k, _length, p, b2);
+		
 		this.hand = new Hand(this.x, this.y + this.originalLen + 10, true, parent, box2d);
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
-		this.name = name;
 		
 		// Import photo
 		this.spring_img = parent.loadImage("spring.jpg");
@@ -112,14 +94,6 @@ public class Spring implements SpringInterface {
 		this.hand.draw();
 	}
 	
-	public void mouseUpdate(int mx, int my, boolean pressed) {
-		this.hand.mouseUpdate(mx, my, pressed);
-	}
-	
-	public void hapkitUpdate(int my) {
-		this.hand.hapkitUpdate(my);
-	}
-	
 	public float getLength() {
 		Vec2 v1 = new Vec2(0,0);
 		dj.getAnchorA(v1);
@@ -135,31 +109,5 @@ public class Spring implements SpringInterface {
 	
 	public float getForce() {
 		return (this.k * (this.getLength() - dj.getLength()));
-	}
-	
-	public String getName(){
-		return this.name;
-	}
-	
-	public void displayForce(boolean on) {
-		if (on == true) {
-			this.display_forces = true;
-			System.out.println("Turning on force display under spring.");
-		} else if (on == false) {
-			this.display_forces = false;
-			System.out.println("Turning off force display under spring.");
-		}
-	}
-
-	public int getX(){
-		return this.x;
-	}
-
-	public int getY(){
-		return this.y;
-	}
-	
-	public Hand getHand() {
-		return this.hand;
 	}
 }

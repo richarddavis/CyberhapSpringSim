@@ -11,10 +11,6 @@ import shiffman.box2d.Box2DProcessing;
 public class Canvas implements Component {
 
 	Box2DProcessing box2d;
-	Spring s1;
-	Spring s2;
-	Spring s3;
-	SpringCollection sc;
 	
 	//Serial Data
 	//int serialPortIndex = 0;
@@ -25,6 +21,7 @@ public class Canvas implements Component {
 	Hand hand;
 	Boundary ceiling;
 	Boundary floor;
+	Weight weight;
 	
 	PApplet parent;
 	
@@ -55,6 +52,16 @@ public class Canvas implements Component {
 	int numSprings;
 	private Ruler ruler;
 	ResearchData rData;
+	
+	SerialSpring s1;
+	ComboSpring s2;
+	ParallelSpring s3;
+	Spring s4;
+	
+	SpringCollection sc;
+	WeightCollection wc;
+
+
 	
 	public Canvas(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, ResearchData rData) {
 		
@@ -113,20 +120,20 @@ public class Canvas implements Component {
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new Spring(this.x+1*(this.w/3), 100, rData.getCurrentXSpring(), 200, parent, box2d);
-		s2 = new Spring(this.x+2*(this.w/3), 100, rData.getCurrentYSpring(), 200, parent, box2d);
-		//s3 = new Spring(this.x+3*(this.w/4), 100, 70, 200, parent, box2d);
+		s1 = new SerialSpring(50, 100, 30, 100, this.parent, box2d);
+		s2 = new ComboSpring(150, 100, 30, 100, this.parent, box2d);
+		s3 = new ParallelSpring(300, 100, 30, 100, this.parent, box2d);
+		s4 = new Spring(400, 100, 30, 100, this.parent, box2d);
 		
-		sc = new SpringCollection();
+		sc = new SpringCollection(rData);
 		sc.add(s1);
 		sc.add(s2);
-		//sc.add(s3);
-		
-		//set initial active spring
+		sc.add(s3);
+		sc.add(s4);
 		sc.setActive(s1);
 		
 		rData.logEvent(-1, -1, "Initial K value sent to hapkit");
-		serialData.setKConstant(sc.activeSpring.k);
+		serialData.setKConstant(sc.activeSpring.getK());
 		
 		
 		
@@ -154,8 +161,6 @@ public class Canvas implements Component {
 		parent.rect(x, y, w, h);
 		parent.textSize(18); 
 		parent.fill(0);
-		parent.text("Spring Pair", this.x+170, this.y+400);
-		parent.text(rData.getSpringIndex(), this.x+275, this.y+400);
 		
 		if(rData.getCondition() == rData.CONDITION_GRAPHICS_HAPTICS){
 			X.setVisible(false);
@@ -198,17 +203,11 @@ public class Canvas implements Component {
 	}
 	
 	public void mousePressed() {
-		if(rData.getCondition() == rData.CONDITION_GRAPHICS_HAPTICS){
-			sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, false, serialData);
-		}else if(clickedSpringX()){
-			sc.setXSpringActive();
-			rData.logEvent(-1, -1, "request sent to change K constant after changing active spring to X");
-			serialData.setKConstant(rData.getCurrentXSpring());
-		}else if(clickedSpringY()){
-			sc.setYSpringActive();
-			rData.logEvent(-1, -1, "request sent to change K constant after changing active spring to Y");
-			serialData.setKConstant(rData.getCurrentYSpring());
-		}
+		//TODO
+	}
+	
+	public void mouseReleased() {
+		sc.updateActiveSpring(parent.mouseX, parent.mouseY, false, false, serialData);
 	}
 	
 	public boolean clickedSpringX(){
@@ -223,20 +222,6 @@ public class Canvas implements Component {
 				&& parent.mouseX < springy_img_x+spring_img_w
 				&& parent.mouseY > springy_img_y
 				&& parent.mouseY < springy_img_y+spring_img_h);
-	}
-	
-	public void buttonPressed(){
-			rData.logEvent(-1, -1, "next spring pair requested");
-			rData.nextSpringPair();
-
-			sc.setSpringX(rData.getCurrentXSpring());
-			sc.setSpringY(rData.getCurrentYSpring());
-			rData.logEvent(-1, -1, "request sent to change K constant after changing spring pair");
-			serialData.setKConstant(sc.activeSpring.k);
-	}
-	
-	public void mouseReleased() {
-		sc.updateActiveSpring(parent.mouseX, parent.mouseY, false, false, serialData);
 	}
 	
 	public SpringCollection getSpringCollection() {

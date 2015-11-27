@@ -7,27 +7,21 @@ import org.jbox2d.dynamics.joints.DistanceJointDef;
 import processing.core.PApplet;
 import shiffman.box2d.Box2DProcessing;
 
-public class ParallelSpring implements SpringInterface {
-
-	int x;
-	int y;
-	int currentLen;
-	int originalLen;
-	int k;
+public class ParallelSpring extends SpringInterface {
 
 	//BOX2D
-	Box2DProcessing box2d;
 	DistanceJointDef djd1;
 	DistanceJointDef djd2;
 	DistanceJoint dj1;
 	DistanceJoint dj2;
 
-	PApplet parent;
-	Hand hand;
 	Anchor anchor1;
 	Anchor anchor2;
 
 	public ParallelSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
+		
+		super(_x, _y, _k, _length, p, b2);
+		
 		this.x = _x;
 		this.y = _y;
 		this.k = _k;
@@ -123,10 +117,6 @@ public class ParallelSpring implements SpringInterface {
 		this.hand.draw();
 	}
 	
-	public void mouseUpdate(int mx, int my, boolean pressed) {
-		this.hand.mouseUpdate(mx, my, pressed);
-	}
-	
 	public float getLength() {
 		Vec2 v1 = new Vec2(0,0);
 		dj1.getAnchorA(v1);
@@ -142,18 +132,6 @@ public class ParallelSpring implements SpringInterface {
 	
 	public float getForce() {
 		return (this.k * (this.getLength() - dj1.getLength()));
-	}
-
-	public int getX(){
-		return this.x;
-	}
-
-	public int getY(){
-		return this.y;
-	}
-
-	public Hand getHand() {
-		return this.hand;
 	}
 
 }

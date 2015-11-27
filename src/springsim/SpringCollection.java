@@ -5,15 +5,17 @@ import java.util.ArrayList;
 public class SpringCollection {
 	
 
-	ArrayList<Spring> springs;
-	Spring activeSpring; 
+	ArrayList<SpringInterface> springs;
+	SpringInterface activeSpring; 
+	ResearchData rData;
 	
-	public SpringCollection(){
-		springs = new ArrayList<Spring>();
+	public SpringCollection(ResearchData rData){
+		this.springs = new ArrayList<SpringInterface>();
+		this.rData = rData;
 	}
 	
 	public void draw() {
-		for (Spring s : springs) {
+		for (SpringInterface s : springs) {
 			if(s != null){
 				s.draw();
 			}
@@ -29,9 +31,9 @@ public class SpringCollection {
 	public void setActive(Spring s){
 		if(activeSpring == null){
 			activeSpring = s;
-			activeSpring.hand.swapIcon();
+			activeSpring.getHand().swapIcon();
 		}else{
-			activeSpring.hand.swapIcon();
+			activeSpring.getHand().swapIcon();
 			s.hand.swapIcon();
 			activeSpring = s;
 		}
@@ -39,12 +41,13 @@ public class SpringCollection {
 	}
 	
 	public void setSpringX(int K){
-		springs.get(0).k = K;
+		springs.get(0).setK(K);
 	}
 	
 	public void setSpringY(int K){
-		springs.get(1).k = K;
+		springs.get(1).setK(K);
 	}
+	
 	
 	
 	/**
@@ -55,8 +58,20 @@ public class SpringCollection {
 	 * @param serialData 
 	 */
 	public void updateActiveSpring(int mx, int my, boolean pressed, boolean updatePosition, Hapkit hapkit) {
-		for (Spring s : springs) {
-			if (s.hand.contains(mx, my)) {
+		for (SpringInterface s : springs) {
+			if (s.getHand().contains(mx, my)) {
+				this.setActive(s);
+				hapkit.setKConstant(s.getK());
+				//serialData.writeToArduino();
+				rData.logEvent(s.getK(), -1, "SWITCHING BETWEEN SPRINGS");
+				break;
+			}
+		}
+		if(updatePosition){
+			this.activeSpring.mouseUpdate(mx, my, pressed);
+		}
+	}
+	
 
 	public boolean add(SpringInterface s){
 		return springs.add(s);
@@ -66,11 +81,11 @@ public class SpringCollection {
 		activeSpring = s;
 	}
 	
-	public void updateActive(int mx, int my, boolean pressed) {
+	public void updateActive(int mx, int my, boolean pressed, boolean updatePosition, Hapkit hapkit) {
 		for (SpringInterface s : springs) {
 			if (s.getHand().contains(mx, my)) {
 				this.setActive(s);
-				hapkit.setKConstant(s.k);
+				hapkit.setKConstant(s.getK());
 				//serialData.writeToArduino();
 				break;
 			}
@@ -85,7 +100,7 @@ public class SpringCollection {
 	}
 	
 	public void setXSpringActive(){
-		for (Spring s : springs) {
+		for (SpringInterface s : springs) {
 		 if(s.getName().equals("X")){
 			 this.setActive(s);
 		 }
@@ -93,7 +108,7 @@ public class SpringCollection {
 	}
 	
 	public void setYSpringActive(){
-		for (Spring s : springs) {
+		for (SpringInterface s : springs) {
 		 if(s.getName().equals("Y")){
 			 this.setActive(s);
 		 }
@@ -113,7 +128,7 @@ public class SpringCollection {
 	}
 	
 	public void displayForces(boolean display_on) {
-		for (Spring s : springs) {
+		for (SpringInterface s : springs) {
 			s.displayForce(display_on);
 		}
 	}

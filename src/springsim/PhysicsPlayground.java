@@ -45,7 +45,7 @@ public class PhysicsPlayground implements Component{
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
-		tf2.setText(Integer.toString(c.sc.activeSpring.k));
+		tf2.setText(Integer.toString(c.sc.activeSpring.getK()));
 	}
 
 	@Override
