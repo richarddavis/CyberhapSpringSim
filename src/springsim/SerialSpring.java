@@ -30,10 +30,10 @@ public class SerialSpring extends SpringInterface {
 //	Connector conn4;
 	PImage spring_img;
 
-	public SerialSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
-		super(_x, _y, _k, _length, p, b2);
+	public SerialSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2, ResearchData rData){
+		super(_x, _y, _k, _length, p, b2, rData);
 		
-		this.hand = new Hand(this.x, this.y + this.originalLen * 2 + 20, false, parent, box2d);
+		this.hand = new Hand(this.x, this.y + this.originalLen * 2 + 20, false, parent, box2d, rData);
 		this.conn1 = new CircleConnector(this.x, this.y + this.originalLen + 10, true, parent, box2d);
 		this.conn2 = new CircleConnector(this.x, this.y + this.originalLen + 15, true, parent, box2d);
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);

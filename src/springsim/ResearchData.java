@@ -10,28 +10,18 @@ import javax.swing.JOptionPane;
 
 public class ResearchData {
 	
-	static int CONDITION_GRAPHICS_HAPTICS = 1;
-	static int CONDITION_GRAPHICS_ONLY = 0;
 	static int MOUSE_MODE = 0;
 	static int HAPKIT_MODE = 1;
 	
-	int condition; // 0 or 1
-	int participantId; // 1-15
+	int participantId;
 	int inputMode;
 	
 	CSVLogOutput log;
 	
-	public ResearchData(int participantId){
-		
+	public ResearchData(int participantId, int inputMode){
 		initiateLog();
 		this.participantId = participantId;
-		
-		//TODO: make this dynamic/random
-		this.condition = 0;
-		
-		CSVLogEvent e = new CSVLogEvent(condition, -1, -1, -1);
-		e.setNotes("Intitial Condition: "+condition+" (1=haptics+graphics 0=graphics)");
-		log.addEvent(e);
+		this.inputMode = inputMode;
 	}
 	
 	private void initiateLog() {
@@ -43,7 +33,7 @@ public class ResearchData {
 	}
 	
 	public void logEvent(int k, double current_pos, String notes){
-		CSVLogEvent e = new CSVLogEvent(condition,-1,k, current_pos);
+		CSVLogEvent e = new CSVLogEvent(inputMode,-1,k, current_pos);
 		e.setNotes(notes);
 		log.addEvent(e);
 	}
@@ -52,12 +42,12 @@ public class ResearchData {
 		log.generateLog();
 	}
 
-	public int getCondition() {
-		return this.condition;
-	}
-
 	public int getInputMode() {
 		return this.inputMode;
+	}
+
+	public boolean isHapkitMode() {
+		return inputMode == HAPKIT_MODE;
 	}
 
 }

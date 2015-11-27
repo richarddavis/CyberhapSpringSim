@@ -11,7 +11,7 @@ public class Canvas implements Component {
 
 	Box2DProcessing box2d;
 	PApplet parent;
-	Hapkit serialData;
+	Hapkit hapkitData;
 	
 	double hapkitPos;
 	
@@ -64,7 +64,7 @@ public class Canvas implements Component {
 		this.y = _y;
 		this.w = _w;
 		this.h = _h;
-		this.serialData = _hapkit;
+		this.hapkitData = _hapkit;
 		this.numSprings = 3;
 		this.rData = rData;
 		
@@ -101,10 +101,10 @@ public class Canvas implements Component {
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new SerialSpring(this.x+50, this.y+100, 30, 100, this.parent, box2d);
-		s2 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d);
-		s3 = new ParallelSpring(this.x+300, this.y+100, 30, 100, this.parent, box2d);
-		s4 = new Spring(this.x+400, this.y+100, 30, 100, this.parent, box2d);
+		s1 = new SerialSpring(this.x+50, this.y+100, 30, 100, this.parent, box2d, rData);
+		s2 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d, rData);
+		s3 = new ParallelSpring(this.x+300, this.y+100, 30, 100, this.parent, box2d, rData);
+		s4 = new Spring(this.x+400, this.y+100, 30, 100, this.parent, box2d,rData);
 		
 		sc = new SpringCollection(rData);
 		sc.add(s1);
@@ -113,19 +113,24 @@ public class Canvas implements Component {
 		sc.add(s4);
 		sc.setActive(s1);
 		
-		rData.logEvent(-1, -1, "Initial K value sent to hapkit");
-		serialData.setKConstant(sc.activeSpring.getK());
+		if(rData.isHapkitMode()){
+			rData.logEvent(-1, -1, "Initial K value sent to hapkit");
+			hapkitData.setKConstant(sc.activeSpring.getK());
+		}
 		
 		floor = new Boundary(this.x + this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
 		ceiling = new Boundary(this.x+10, this.y+30, this.w - 20, 30, parent, box2d);
-		//ruler = new Ruler(parent, this.x+20, this.y+80, 30, 400, 12);
+		ruler = new Ruler(parent, this.x+20, this.y+80, 30, 400, 12);
 		
 	}
 	
 	public void step(){
 		this.box2d.step();
-		updateSpringPosition();
-		readHapkitPos();
+		
+		if(rData.isHapkitMode()){
+		  updateSpringPosition();
+		  readHapkitPos();
+		}
 	}
 	
 	public void draw(){
@@ -144,11 +149,11 @@ public class Canvas implements Component {
 	}
 	
 	private void updateSpringPosition() {
-		sc.updateActiveSpringY(hapkitPos);
+		sc.updateActiveSpringYPosition(hapkitPos);
 	}
 	
 	public void readHapkitPos() {
-		hapkitPos = this.serialData.getPos();
+		hapkitPos = this.hapkitData.getPos();
 	}
 	
 	public void displayForces(boolean on) {
@@ -156,33 +161,11 @@ public class Canvas implements Component {
 	}
 	
 	public void mousePressed() {
-		if(rData.getInputMode() == rData.MOUSE_MODE)){
-			sc.updateActive(this.parent.mouseX, this.parent.mouseY, true);
-		}else{
-			sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, false, serialData);
-		}
+		sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, hapkitData);
 	}
 	
 	public void mouseReleased() {
-		if(rData.getInputMode() == rData.MOUSE_MODE)){
-			sc.updateActive(this.parent.mouseX, this.parent.mouseY, false);
-		}else{
-			sc.updateActiveSpring(parent.mouseX, parent.mouseY, false, false, serialData);
-		}
-	}
-	
-	public boolean clickedSpringX(){
-		return (parent.mouseX > springx_img_x
-				&& parent.mouseX < springx_img_x+spring_img_w
-				&& parent.mouseY > springx_img_y
-				&& parent.mouseY < springx_img_y+spring_img_h);
-	}
-	
-	public boolean clickedSpringY(){
-		return (parent.mouseX > springy_img_x
-				&& parent.mouseX < springy_img_x+spring_img_w
-				&& parent.mouseY > springy_img_y
-				&& parent.mouseY < springy_img_y+spring_img_h);
+		sc.updateActiveSpring(parent.mouseX, parent.mouseY, false, hapkitData);
 	}
 	
 	public SpringCollection getSpringCollection() {

@@ -22,6 +22,9 @@ public class Hand implements PConstants {
 	PImage inactive_hand_img;
 	PImage active_hand_img;
 	PImage current_hand_img;
+	
+	ResearchData rData;
+	
 	Body body;
 	MouseJoint mj;
 
@@ -32,7 +35,7 @@ public class Hand implements PConstants {
 	int h;
 	boolean fixed;
 
-	public Hand(int _x, int _y, boolean _fixed, PApplet p, Box2DProcessing b2) {
+	public Hand(int _x, int _y, boolean _fixed, PApplet p, Box2DProcessing b2, ResearchData rData) {
 
 		//constructor
 		this.parent = p;
@@ -41,6 +44,7 @@ public class Hand implements PConstants {
 		this.fixed_x = this.x;
 		this.y = _y;
 		this.fixed = _fixed;
+		this.rData = rData;
 
 		this.inactive_hand_img = p.loadImage("hand.png");
 		this.active_hand_img = p.loadImage("active_hand.png");
@@ -86,10 +90,13 @@ public class Hand implements PConstants {
 
 	public void draw() {
 		if (mj != null) {
-			if (this.fixed == true) {
-				this.mousePosUpdate(this.fixed_x, parent.mouseY);
-			} else {
-				this.mousePosUpdate(parent.mouseX, parent.mouseY);
+			
+			if(!rData.isHapkitMode()){
+				if (this.fixed == true) {
+					this.mousePosUpdate(this.fixed_x, parent.mouseY);
+				} else {
+					this.mousePosUpdate(parent.mouseX, parent.mouseY);
+				}
 			}
 			
 			// We can get the two anchor points
@@ -186,11 +193,11 @@ public class Hand implements PConstants {
 		this.mj.setTarget(mouseWorld);
 	}
 	
-	public void hapkitPosUpdate(int mx, int my) {
-		// Update the position
-		Vec2 mouseWorld = box2d.coordPixelsToWorld(mx,my);
-		this.mj.setTarget(mouseWorld);
-	}
+//	public void hapkitPosUpdate(int mx, int my) {
+//		// Update the position
+//		Vec2 mouseWorld = box2d.coordPixelsToWorld(mx,my);
+//		this.mj.setTarget(mouseWorld);
+//	}
 
 	public void destroy() {
 		// We can get rid of the joint when the mouse is released

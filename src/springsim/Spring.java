@@ -19,11 +19,11 @@ public class Spring extends SpringInterface {
 	Anchor anchor;
 	PImage spring_img;
 
-	public Spring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
+	public Spring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2, ResearchData rData){
 
-		super(_x, _y, _k, _length, p, b2);
+		super(_x, _y, _k, _length, p, b2, rData);
 		
-		this.hand = new Hand(this.x, this.y + this.originalLen + 10, true, parent, box2d);
+		this.hand = new Hand(this.x, this.y + this.originalLen + 10, true, parent, box2d, rData);
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
 		
 		// Import photo
@@ -47,7 +47,7 @@ public class Spring extends SpringInterface {
 		// Make the joint
 		dj = (DistanceJoint) box2d.world.createJoint(djd);
 	}
-
+	
 	//TODO: update hand drawing as well. 
 	public void draw(){
 

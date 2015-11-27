@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class SpringCollection {
 	
-
 	ArrayList<SpringInterface> springs;
 	SpringInterface activeSpring; 
 	ResearchData rData;
@@ -14,21 +13,11 @@ public class SpringCollection {
 		this.rData = rData;
 	}
 	
-	public void draw() {
-		for (SpringInterface s : springs) {
-			if(s != null){
-				s.draw();
-			}
-		}
-		printActiveForce();
-	}
-	
-
-	public boolean add(Spring s){
+	public boolean add(SpringInterface s){
 		return springs.add(s);
 	}
 	
-	public void setActive(Spring s){
+	public void setActive(SpringInterface s){
 		if(activeSpring == null){
 			activeSpring = s;
 			activeSpring.getHand().swapIcon();
@@ -37,94 +26,10 @@ public class SpringCollection {
 			s.hand.swapIcon();
 			activeSpring = s;
 		}
-		
-	}
-	
-	public void setSpringX(int K){
-		springs.get(0).setK(K);
-	}
-	
-	public void setSpringY(int K){
-		springs.get(1).setK(K);
-	}
-	
-	
-	
-	/**
-	 * 
-	 * @param mx
-	 * @param my
-	 * @param updatePosition
-	 * @param serialData 
-	 */
-	public void updateActiveSpring(int mx, int my, boolean pressed, boolean updatePosition, Hapkit hapkit) {
-		for (SpringInterface s : springs) {
-			if (s.getHand().contains(mx, my)) {
-				this.setActive(s);
-				hapkit.setKConstant(s.getK());
-				//serialData.writeToArduino();
-				rData.logEvent(s.getK(), -1, "SWITCHING BETWEEN SPRINGS");
-				break;
-			}
-		}
-		if(updatePosition){
-			this.activeSpring.mouseUpdate(mx, my, pressed);
-		}
-	}
-	
-
-	public boolean add(SpringInterface s){
-		return springs.add(s);
-	}
-	
-	public void setActive(SpringInterface s){
-		activeSpring = s;
-	}
-	
-	public void updateActive(int mx, int my, boolean pressed, boolean updatePosition, Hapkit hapkit) {
-		for (SpringInterface s : springs) {
-			if (s.getHand().contains(mx, my)) {
-				this.setActive(s);
-				hapkit.setKConstant(s.getK());
-				//serialData.writeToArduino();
-				break;
-			}
-		}
-		if(updatePosition){
-			this.activeSpring.mouseUpdate(mx, my, pressed);
-		}
-	}
-	
-	public void printActiveForce() {
-		//System.out.println(this.activeSpring.getForce());
-	}
-	
-	public void setXSpringActive(){
-		for (SpringInterface s : springs) {
-		 if(s.getName().equals("X")){
-			 this.setActive(s);
-		 }
-		}	
-	}
-	
-	public void setYSpringActive(){
-		for (SpringInterface s : springs) {
-		 if(s.getName().equals("Y")){
-			 this.setActive(s);
-		 }
-		}	
 	}
 	
 	public float getActiveForce() {
 		return this.activeSpring.getForce();
-	}
-
-	public void updateActiveSpringY(double hapkitPos) {
-
-		int currentY = this.activeSpring.getY();
-		int newY = (int) (currentY + hapkitPos);
-		this.activeSpring.hapkitUpdate(newY);
-		
 	}
 	
 	public void displayForces(boolean display_on) {
@@ -132,5 +37,77 @@ public class SpringCollection {
 			s.displayForce(display_on);
 		}
 	}
+	
+	public void draw() {
+		for (SpringInterface s : springs) {
+			if(s != null){
+				s.draw();
+			}
+		}
+	}
+	
+	public void updateActiveSpring(int mx, int my, boolean pressed, Hapkit hapkit) {
+		for (SpringInterface s : springs) {
+			if (s.getHand().contains(mx, my)) {
+				this.setActive(s);
+				
+				if(rData.getInputMode() == rData.HAPKIT_MODE){
+					hapkit.setKConstant(s.getK());
+					// MAKES ALL OTHER SPRING ACT NORMALLY AGAIN:
+					destroyOldHapkitJoints();
+				}
+				
+				rData.logEvent(s.getK(), -1, "SWITCHING BETWEEN SPRINGS");
+				break;
+			}
+		}
+		
+		if(rData.getInputMode() == rData.MOUSE_MODE){
+			this.activeSpring.mouseUpdate(mx, my, pressed);
+		}else{
+			this.activeSpring.hapkitUpdate(my);
+		}
+	}
+	
+	private void destroyOldHapkitJoints() {
+		for (SpringInterface s : springs) {
+			if(!s.equals(activeSpring)){
+				s.hand.destroy();
+			}
+		}
+		
+	}
+
+	public void updateActiveSpringYPosition(double hapkitPos) {
+		int currentY = this.activeSpring.getY();
+		int newY = (int) (currentY + hapkitPos);
+		this.activeSpring.hapkitUpdate(newY);	
+	}
+
+	
+	
+////	public void updateActiveMouse(int mx, int my, boolean pressed) {
+////		for (SpringInterface s : springs) {
+////			if (s.getHand().contains(mx, my)) {
+////				this.setActive(s);
+////				break;
+////			}
+////		}
+////		this.activeSpring.mouseUpdate(mx, my, pressed);
+////	}
+//	
+//	public void updateActiveHapkit(int mx, int my, boolean pressed, boolean updatePosition, Hapkit hapkit) {
+//		for (SpringInterface s : springs) {
+//			if (s.getHand().contains(mx, my)) {
+//				this.setActive(s);
+//				hapkit.setKConstant(s.getK());
+//				break;
+//			}
+//		}
+//		if(updatePosition){
+//			this.activeSpring.mouseUpdate(mx, my, pressed);
+//		}
+//	}
+
 	
 }

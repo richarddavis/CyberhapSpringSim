@@ -18,9 +18,9 @@ public class ParallelSpring extends SpringInterface {
 	Anchor anchor1;
 	Anchor anchor2;
 
-	public ParallelSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2){
+	public ParallelSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2, ResearchData rData){
 		
-		super(_x, _y, _k, _length, p, b2);
+		super(_x, _y, _k, _length, p, b2, rData);
 		
 		this.x = _x;
 		this.y = _y;
@@ -29,7 +29,7 @@ public class ParallelSpring extends SpringInterface {
 		this.parent = p;
 		this.box2d = b2;
 		
-		this.hand = new Hand(this.x, this.y + this.originalLen * 2 + 20, false, parent, box2d);
+		this.hand = new Hand(this.x, this.y + this.originalLen * 2 + 20, false, parent, box2d, rData);
 		this.anchor1 = new Anchor(getX() - 40, getY(), parent, box2d);
 		this.anchor2 = new Anchor(getX() + 40, getY(), parent, box2d);
 

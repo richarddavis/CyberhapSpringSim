@@ -10,6 +10,10 @@ import processing.core.PFont;
 import processing.serial.Serial;
 
 public class Main extends PApplet {
+	
+	static int MOUSE_MODE = 0;
+	static int HAPKIT_MODE = 1;
+	int inputMode;
 
 	//Container properties, dynamic generated from overall width, height
 	int width = 1000;
@@ -65,7 +69,7 @@ public class Main extends PApplet {
 	
 	//Components
 	Hapkit hapkit;
-	Canvas designPalette;
+	Canvas designCanvas;
 	ForceFeedbackOption forceFeedbackOption;
 	HapkitFeedback hapkitFeedbackPanel;
 	ExperimentSettings expSettings;
@@ -104,7 +108,10 @@ public class Main extends PApplet {
 		
 		participantId = Integer.parseInt(pID);
 		
-		researchData = new ResearchData(participantId);
+		//inputMode = HAPKIT_MODE;
+		inputMode = MOUSE_MODE;
+		
+		researchData = new ResearchData(participantId, inputMode);
 		
 		cp5 = new ControlP5(this);
 		
@@ -119,17 +126,19 @@ public class Main extends PApplet {
 		cp5.setColorValue(0xffff88ff);
 		cp5.setColorActive(0xffff0000);
 		  
-		participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
-		hapkit = new Hapkit(this, Serial.list(), 7, researchData);
-		designPalette = new Canvas(this, cp5, dPX, dPY, dPW, dPH, hapkit, researchData);
+		if(inputMode == HAPKIT_MODE){
+			hapkit = new Hapkit(this, Serial.list(), 7, researchData);
+		}
 		
-		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designPalette);
+		participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
+		designCanvas = new Canvas(this, cp5, dPX, dPY, dPW, dPH, hapkit, researchData);
+		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designCanvas);
 		expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
 		forceDisplayOutput = new ForceDisplayOutput(this, cp5, fDOX, fDOY, fDOW, fDOH);
-		physicsPlayground = new PhysicsPlayground(this, cp5, designPalette, pPX, pPY, pPW, pPH);
-		hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit, designPalette.getSpringCollection());
+		physicsPlayground = new PhysicsPlayground(this, cp5, designCanvas, pPX, pPY, pPW, pPH);
+		hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit, designCanvas.getSpringCollection());
 		
-		components.add(designPalette);
+		components.add(designCanvas);
 		components.add(participantSelection);
 		components.add(forceFeedbackOption);
 		components.add(expSettings);
@@ -150,11 +159,11 @@ public class Main extends PApplet {
 	}	
 
 	public void mousePressed() {
-		designPalette.mousePressed();	
+		designCanvas.mousePressed();	
 	}
 	
 	public void mouseReleased() {
-		designPalette.mouseReleased();
+		designCanvas.mouseReleased();
 	}
 
 	public void serialEvent(Serial p){
