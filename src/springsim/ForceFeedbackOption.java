@@ -1,6 +1,7 @@
 package springsim;
 
 import controlP5.ControlEvent;
+import controlP5.ControlListener;
 import controlP5.ControlP5;
 import controlP5.RadioButton;
 import processing.core.PApplet;
@@ -14,7 +15,7 @@ public class ForceFeedbackOption implements Component {
 	Canvas c;
 	
 	PApplet parent;
-	
+	MyControlListener myListener;
 	ControlP5 cp5;
 	RadioButton r2;
 	
@@ -41,8 +42,9 @@ public class ForceFeedbackOption implements Component {
 		         .addItem("Display ON",1)
 		         .addItem("Display OFF",0);
 		
-		// This line tells the radio button where to find the callback function: in this object.
-		r2.plugTo(this);
+		myListener = new MyControlListener();
+		this.cp5.getController("displayForcesOnCanvasButton");//.addListener(myListener);
+		  
 	}
 	
 	@Override
@@ -74,3 +76,14 @@ public class ForceFeedbackOption implements Component {
 	}
 	
 }
+
+class MyControlListener implements ControlListener {
+	  int col;
+	  public void controlEvent(ControlEvent theEvent) {
+	    System.out.println("i got an event from mySlider, " +
+	            "changing background color to "+
+	            theEvent.getValue());
+	    col = (int)theEvent.getValue();
+	  }
+
+	}
