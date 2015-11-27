@@ -71,15 +71,13 @@ public class HapkitFeedback implements Component {
 
 	@Override
 	public void draw() {
-		int xRect = x+(w/2);
-		int yRect = y+(h/2);
-		
+
 		parent.fill(255);
-		parent.rect(xRect, yRect, w, h);
+		parent.rect(x, y, w, h);
 		parent.fill(0);
 		parent.text("Force Feedback", x+10, y+15);
 		parent.text("Gain", x+10, y+145);
-		parent.image(hand_img, x+50, y+50, hand_img.width / 6, hand_img.height / 6);
+		parent.image(hand_img, x+20, y+20, hand_img.width / 6, hand_img.height / 6);
 		
 		parent.text("Spring Force = " + String.format("%.2f", this.springs.getActiveForce()), x+10, y+105);
 	}

@@ -50,16 +50,12 @@ public class PhysicsPlayground implements Component{
 
 	@Override
 	public void draw() {
-		int xRect = x+(w/2);
-		int yRect = y+(h/2);
-		
+
 		parent.fill(255);
-		parent.rect(xRect, yRect, w, h);
+		parent.rect(x, y, w, h);
 		parent.fill(0);
 		parent.text("Spring Properties", x+10, y+15);
-		
 		parent.text("mass = ", x+10, y+spacing);
-		
 		parent.text("spring stiffness (K) = ", x+10, y+(2*spacing));
 		
 	}

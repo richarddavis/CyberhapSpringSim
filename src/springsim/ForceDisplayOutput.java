@@ -104,14 +104,11 @@ public class ForceDisplayOutput implements Component {
 	
 	@Override
 	public void draw() {
-		int xRect = x+(w/2);
-		int yRect = y+(h/2);
-		
+
 		parent.fill(255);
-		parent.rect(xRect, yRect, w, h);
+		parent.rect(x, y, w, h);
 		parent.fill(0);
 		parent.text("Force Display Output", x, y);
-		
 		generateGraph();
 	}
 

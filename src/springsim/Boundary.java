@@ -57,7 +57,5 @@ public class Boundary implements PConstants {
 		this.y = (int)pos.y;
 		parent.fill(255);
 		parent.stroke(0);
-		//parent.rectMode(PConstants.CENTER);
-		//parent.rect(this.x,this.y,w,h);
 	}
 }

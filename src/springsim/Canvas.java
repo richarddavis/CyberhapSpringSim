@@ -5,15 +5,12 @@ import controlP5.ControlP5;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
-import processing.serial.Serial;
 import shiffman.box2d.Box2DProcessing;
 
 public class Canvas implements Component {
 
 	Box2DProcessing box2d;
-	
-	//Serial Data
-	//int serialPortIndex = 0;
+	PApplet parent;
 	Hapkit serialData;
 	
 	double hapkitPos;
@@ -22,8 +19,6 @@ public class Canvas implements Component {
 	Boundary ceiling;
 	Boundary floor;
 	Weight weight;
-	
-	PApplet parent;
 	
 	PImage wood_plank_img;
 	PImage next_img;
@@ -102,28 +97,14 @@ public class Canvas implements Component {
 			         .setSize(130,50)
 			         .setId(2);
 		
-		X = cp5.addButton("Spring X")
-		         .setValue(4)
-		         .setPosition(this.x+70,this.y+220)
-		         .setSize(130,50)
-		         .setVisible(false)
-		         .setId(2);
-		
-		Y = cp5.addButton("Spring Y")
-		         .setValue(4)
-		         .setPosition(this.x+250,this.y+220)
-		         .setSize(130,50)
-		         .setVisible(false)
-		         .setId(2);
-		
 		
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new SerialSpring(50, 100, 30, 100, this.parent, box2d);
-		s2 = new ComboSpring(150, 100, 30, 100, this.parent, box2d);
-		s3 = new ParallelSpring(300, 100, 30, 100, this.parent, box2d);
-		s4 = new Spring(400, 100, 30, 100, this.parent, box2d);
+		s1 = new SerialSpring(this.x+50, this.y+100, 30, 100, this.parent, box2d);
+		s2 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d);
+		s3 = new ParallelSpring(this.x+300, this.y+100, 30, 100, this.parent, box2d);
+		s4 = new Spring(this.x+400, this.y+100, 30, 100, this.parent, box2d);
 		
 		sc = new SpringCollection(rData);
 		sc.add(s1);
@@ -135,57 +116,29 @@ public class Canvas implements Component {
 		rData.logEvent(-1, -1, "Initial K value sent to hapkit");
 		serialData.setKConstant(sc.activeSpring.getK());
 		
-		
-		
 		floor = new Boundary(this.x + this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
 		ceiling = new Boundary(this.x+10, this.y+30, this.w - 20, 30, parent, box2d);
 		//ruler = new Ruler(parent, this.x+20, this.y+80, 30, 400, 12);
 		
-		// Initialize Serial Comms
-		// serialData = new Hapkit(parent, Serial.list(), serialPortIndex);
 	}
 	
 	public void step(){
 		this.box2d.step();
 		updateSpringPosition();
 		readHapkitPos();
-		//parent.println(hapkitPos);
 	}
 	
 	public void draw(){
-		int xRect = x+(w/2);
-		int yRect = y+(h/2);
-		
+
 		parent.fill(255);
 		parent.stroke(0);
 		parent.rect(x, y, w, h);
 		parent.textSize(18); 
 		parent.fill(0);
 		
-		if(rData.getCondition() == rData.CONDITION_GRAPHICS_HAPTICS){
-			X.setVisible(false);
-			Y.setVisible(false);
-			sc.draw();
-			parent.fill(0);
-			parent.text("Spring X", ceiling.x+100, ceiling.y-10);
-			parent.text("Spring Y", ceiling.x+260, ceiling.y-10);
-			parent.image(wood_plank_img, ceiling.x+(ceiling.w/2), ceiling.y+((ceiling.h/2)), ceiling.w, ceiling.h);
-		}else{
-			//X.setVisible(true);
-			//Y.setVisible(true);
-			parent.pushMatrix();
-			parent.imageMode(PConstants.CORNER);
-			if(sc.activeSpring.getName().equals("X")){
-				parent.image(spring_x_active, springx_img_x, springx_img_y, spring_img_w, spring_img_h);
-				parent.image(spring_y, springy_img_x, springy_img_y, spring_img_w, spring_img_h);
-			}else if(sc.activeSpring.getName().equals("Y")){
-				parent.image(spring_x, springx_img_x, springx_img_y, spring_img_w, spring_img_h);
-				parent.image(spring_y_active, springy_img_x, springy_img_y, spring_img_w, spring_img_h);
-			}
-			parent.popMatrix();
-			
+		for(SpringInterface s : sc.springs){
+			s.draw();
 		}
-
 		
 		floor.draw();
 	}

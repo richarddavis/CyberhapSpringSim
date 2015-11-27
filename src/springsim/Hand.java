@@ -110,8 +110,11 @@ public class Hand implements PConstants {
 		Vec2 pos = this.box2d.getBodyPixelCoord(this.body);
 		this.x = (int)pos.x;
 		this.y = (int)pos.y;
+		
+		parent.pushMatrix();
 		parent.imageMode(PConstants.CENTER);
 		parent.image(current_hand_img, this.x, this.y+10);
+		parent.popMatrix();
 
 	}
 

@@ -1,25 +1,13 @@
 package springsim;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
-
 import javax.swing.JOptionPane;
-
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
-//import jssc.SerialPort;
-//import jssc.SerialPortEvent;
-//import jssc.SerialPortEventListener;
-//import jssc.SerialPortException;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.serial.Serial;
-import shiffman.box2d.Box2DProcessing;
 
 public class Main extends PApplet {
 

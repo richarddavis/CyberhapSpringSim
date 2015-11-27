@@ -37,17 +37,12 @@ public class ExperimentSettings implements Component {
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void draw() {
-		//adjust for the fact rect() uses center, not top-left, xy coordinates
-		int xRect = x+(w/2);
-		int yRect = y+(h/2);
-		
 		parent.fill(255);
-		parent.rect(xRect, yRect, w, h);
+		parent.rect(x, y, w, h);
 		parent.fill(0);
 		parent.text("Experiment Settings", x+10, y+15);
 		
