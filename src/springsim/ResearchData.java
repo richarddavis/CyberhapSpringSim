@@ -12,9 +12,12 @@ public class ResearchData {
 	
 	static int CONDITION_GRAPHICS_HAPTICS = 1;
 	static int CONDITION_GRAPHICS_ONLY = 0;
+	static int MOUSE_MODE = 0;
+	static int HAPKIT_MODE = 1;
 	
 	int condition; // 0 or 1
 	int participantId; // 1-15
+	int inputMode;
 	
 	CSVLogOutput log;
 	
@@ -50,7 +53,11 @@ public class ResearchData {
 	}
 
 	public int getCondition() {
-		return condition;
+		return this.condition;
+	}
+
+	public int getInputMode() {
+		return this.inputMode;
 	}
 
 }

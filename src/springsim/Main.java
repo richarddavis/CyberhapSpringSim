@@ -150,8 +150,7 @@ public class Main extends PApplet {
 	}	
 
 	public void mousePressed() {
-		designPalette.mousePressed();
-		
+		designPalette.mousePressed();	
 	}
 	
 	public void mouseReleased() {

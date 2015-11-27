@@ -156,11 +156,19 @@ public class Canvas implements Component {
 	}
 	
 	public void mousePressed() {
-		//TODO
+		if(rData.getInputMode() == rData.MOUSE_MODE)){
+			sc.updateActive(this.parent.mouseX, this.parent.mouseY, true);
+		}else{
+			sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, false, serialData);
+		}
 	}
 	
 	public void mouseReleased() {
-		sc.updateActiveSpring(parent.mouseX, parent.mouseY, false, false, serialData);
+		if(rData.getInputMode() == rData.MOUSE_MODE)){
+			sc.updateActive(this.parent.mouseX, this.parent.mouseY, false);
+		}else{
+			sc.updateActiveSpring(parent.mouseX, parent.mouseY, false, false, serialData);
+		}
 	}
 	
 	public boolean clickedSpringX(){
