@@ -1,16 +1,12 @@
 package springsim;
 
+import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Textfield;
 import processing.core.PApplet;
 
-public class PhysicsPlayground implements Component{
+public class PhysicsPlayground extends Component{
 
-	int x;
-	int y;
-	int w;
-	int h;
-	
 	PApplet parent;
 	Canvas c; 
 	
@@ -21,10 +17,7 @@ public class PhysicsPlayground implements Component{
 	int spacing = 40; 
 	
 	public PhysicsPlayground(Main main, ControlP5 cp5, Canvas _c, int _x, int _y, int _w, int _h) {
-		this.x = _x;
-		this.y = _y;
-		this.w = _w;
-		this.h = _h;
+		super(_x,_y,_w,_h);
 		parent = main;
 		this.c = _c;
 		
@@ -39,7 +32,6 @@ public class PhysicsPlayground implements Component{
 			      .setSize(60,25)
 			      .setFocus(true)
 			      ;
-		
 	}
 	
 	@Override
@@ -57,6 +49,12 @@ public class PhysicsPlayground implements Component{
 		parent.text("Spring Properties", x+10, y+15);
 		parent.text("mass = ", x+10, y+spacing);
 		parent.text("spring stiffness (K) = ", x+10, y+(2*spacing));
+		
+	}
+
+	@Override
+	public void controlEvent(ControlEvent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 

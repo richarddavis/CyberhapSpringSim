@@ -184,10 +184,6 @@ public class Main extends PApplet {
 		researchData.generateCSVLog();
 	}
 	
-	public void controlEvent(ControlEvent theEvent) {	
-		//TODO
-		System.out.println(theEvent.getStringValue());
-	}
 }
 
 

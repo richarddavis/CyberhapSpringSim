@@ -1,13 +1,14 @@
 package springsim;
 
 import controlP5.Button;
+import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
-public class Canvas implements Component {
+public class Canvas extends Component {
 
 	Box2DProcessing box2d;
 	PApplet parent;
@@ -29,11 +30,6 @@ public class Canvas implements Component {
 	PImage spring_y_active;
 	
 	Button next, X, Y;
-	
-	int x;
-	int y;
-	int w;
-	int h;
 	
 	int springx_img_x;
 	int springx_img_y;
@@ -60,10 +56,7 @@ public class Canvas implements Component {
 	
 	public Canvas(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, ResearchData rData) {
 		
-		this.x = _x;
-		this.y = _y;
-		this.w = _w;
-		this.h = _h;
+		super(_x,_y,_w,_h);
 		this.hapkitData = _hapkit;
 		this.numSprings = 3;
 		this.rData = rData;
@@ -97,6 +90,7 @@ public class Canvas implements Component {
 			         .setSize(130,50)
 			         .setId(2);
 		
+		next.addListener(this);
 		
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
@@ -170,6 +164,11 @@ public class Canvas implements Component {
 	
 	public SpringCollection getSpringCollection() {
 		return this.sc;
+	}
+
+	@Override
+	public void controlEvent(ControlEvent arg0) {
+		parent.println("handled");
 	}
 
 }

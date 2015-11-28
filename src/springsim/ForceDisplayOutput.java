@@ -4,17 +4,13 @@ import java.util.ArrayList;
 
 import controlP5.Button;
 import controlP5.Chart;
+import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Textfield;
 import processing.core.PApplet;
 
-public class ForceDisplayOutput implements Component {
+public class ForceDisplayOutput extends Component {
 
-	int x;
-	int y;
-	int w;
-	int h;
-	
 	private ArrayList<int[]> data;
 	
 	PApplet parent;
@@ -27,10 +23,7 @@ public class ForceDisplayOutput implements Component {
 	
 	
 	public ForceDisplayOutput(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h) {
-		this.x = _x;
-		this.y = _y;
-		this.w = _w;
-		this.h = _h;
+		super(_x,_y,_w,_h);
 		parent = main;
 		
 		data = new ArrayList<int[]>();
@@ -113,6 +106,12 @@ public class ForceDisplayOutput implements Component {
 	}
 
 	private void generateGraph() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controlEvent(ControlEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,26 +1,19 @@
 package springsim;
 
+import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.DropdownList;
 import controlP5.Textfield;
 import processing.core.PApplet;
 
-public class ExperimentSettings implements Component {
-	
-	int x;
-	int y;
-	int w;
-	int h;
+public class ExperimentSettings extends Component {
+
 	DropdownList d1;
 	Textfield tf1;
-	
 	PApplet parent;
 
 	public ExperimentSettings(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h) {
-		this.x = _x;
-		this.y = _y;
-		this.w = _w;
-		this.h = _h;
+		super(_x,_y,_w,_h);
 		parent = main;
 		
 		  d1 = cp5.addDropdownList("myList-d1")
@@ -31,6 +24,8 @@ public class ExperimentSettings implements Component {
 		          ;
 		  
 		  d1.addItem("Earth", 1);
+		  
+		  d1.addListener(this);
 		  
 	}
 
@@ -46,6 +41,11 @@ public class ExperimentSettings implements Component {
 		parent.fill(0);
 		parent.text("Experiment Settings", x+10, y+15);
 		
+	}
+
+	@Override
+	public void controlEvent(ControlEvent arg0) {
+		parent.println("handled dropdown locally");
 	}
 
 }

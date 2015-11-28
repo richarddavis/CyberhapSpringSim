@@ -6,25 +6,14 @@ import controlP5.ControlP5;
 import controlP5.RadioButton;
 import processing.core.PApplet;
 
-public class ForceFeedbackOption implements Component {
+public class ForceFeedbackOption extends Component {
 
-	int x;
-	int y;
-	int w;
-	int h;
 	Canvas c;
-	
 	PApplet parent;
-	MyControlListener myListener;
-	ControlP5 cp5;
 	RadioButton r2;
 	
-	public ForceFeedbackOption(Main main, ControlP5 _cp5, int _x, int _y, int _w, int _h, Canvas _c) {
-		this.x = _x;
-		this.y = _y;
-		this.w = _w;
-		this.h = _h;
-		this.cp5 = _cp5;
+	public ForceFeedbackOption(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Canvas _c) {
+		super(_x,_y,_w,_h);
 		this.c = _c;
 		parent = main;
 		
@@ -42,9 +31,8 @@ public class ForceFeedbackOption implements Component {
 		         .addItem("Display ON",1)
 		         .addItem("Display OFF",0);
 		
-		myListener = new MyControlListener();
-		this.cp5.getController("displayForcesOnCanvasButton");//.addListener(myListener);
-		  
+		r2.plugTo(this);
+
 	}
 	
 	@Override
@@ -74,16 +62,12 @@ public class ForceFeedbackOption implements Component {
 			System.out.println("Bad value sent from radiobutton.");
 		}
 	}
+
+	@Override
+	public void controlEvent(ControlEvent arg0) {
+		parent.println("handled radiobutton locally");
+	}
+
+
 	
 }
-
-class MyControlListener implements ControlListener {
-	  int col;
-	  public void controlEvent(ControlEvent theEvent) {
-	    System.out.println("i got an event from mySlider, " +
-	            "changing background color to "+
-	            theEvent.getValue());
-	    col = (int)theEvent.getValue();
-	  }
-
-	}

@@ -8,12 +8,8 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
 
-public class HapkitFeedback implements Component {
+public class HapkitFeedback extends Component {
 
-	int x;
-	int y;
-	int w;
-	int h;
 	Hapkit hapkit;
 	PApplet parent;
 	ControlP5 cp5;
@@ -22,10 +18,7 @@ public class HapkitFeedback implements Component {
 	SpringCollection springs;
 		
 	public HapkitFeedback(Main main, ControlP5 _cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, SpringCollection _springs) {
-		this.x = _x;
-		this.y = _y;
-		this.w = _w;
-		this.h = _h;
+		super(_x, _y, _w, _h);
 		this.cp5 = _cp5;
 		this.hapkit = _hapkit;
 		parent = main;
@@ -46,7 +39,9 @@ public class HapkitFeedback implements Component {
 		         .addItem("ON",1)
 		         .addItem("OFF",0);
 		
-		r2 = cp5.addRadioButton("GainOption")
+		r.plugTo(this);
+		
+		r2 = cp5.addRadioButton("gainOption")
 		         .setPosition(x+50,y+130)
 		         .setSize(20,20)
 		         .setColorForeground(parent.color(120))
@@ -58,15 +53,13 @@ public class HapkitFeedback implements Component {
 		         .addItem("2x",2)
 		         .addItem("3x",3);
 		
-		// This line tells the radio button where to find the callback function: in this object.
-		r.plugTo(this);
 		r2.plugTo(this);
+		cp5.addListener(this);
 	}
 
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -93,6 +86,11 @@ public class HapkitFeedback implements Component {
 	
 	public void GainOption(int buttonValue) {
 		this.hapkit.setGain(buttonValue);
+	}
+
+	@Override
+	public void controlEvent(ControlEvent arg0) {
+		System.out.println("handled display input locally");
 	}
 	
 }
