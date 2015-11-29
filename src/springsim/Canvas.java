@@ -84,14 +84,6 @@ public class Canvas extends Component {
 		box2d.setScaleFactor(500);
 		box2d.setGravity(0, -2);
 		
-		next = cp5.addButton("Next Springs")
-			         .setValue(4)
-			         .setPosition(this.x+300,this.y+470)
-			         .setSize(130,50)
-			         .setId(2);
-		
-		next.addListener(this);
-		
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		

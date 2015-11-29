@@ -8,7 +8,7 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
 
-public class HapkitFeedback extends Component {
+public class HapkitFeedbackSettings extends Component {
 
 	Hapkit hapkit;
 	PApplet parent;
@@ -17,7 +17,7 @@ public class HapkitFeedback extends Component {
 	PImage hand_img;
 	SpringCollection springs;
 		
-	public HapkitFeedback(Main main, ControlP5 _cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, SpringCollection _springs) {
+	public HapkitFeedbackSettings(Main main, ControlP5 _cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, SpringCollection _springs) {
 		super(_x, _y, _w, _h);
 		this.cp5 = _cp5;
 		this.hapkit = _hapkit;
@@ -37,23 +37,22 @@ public class HapkitFeedback extends Component {
 		         .setItemsPerRow(1)
 		         .setSpacingColumn(50)
 		         .addItem("ON",1)
-		         .addItem("OFF",0);
-		
-		r.plugTo(this);
+		         .addItem("OFF",0)
+		         .activate(0);
 		
 		r2 = cp5.addRadioButton("gainOption")
-		         .setPosition(x+50,y+130)
+		         .setPosition(x+70,y+100)
 		         .setSize(20,20)
 		         .setColorForeground(parent.color(120))
 		         .setColorActive(parent.color(200))
 		         .setColorLabel(parent.color(0))
 		         .setItemsPerRow(3)
-		         .setSpacingColumn(20)
+		         .setSpacingColumn(30)
 		         .addItem("1x",1)
 		         .addItem("2x",2)
-		         .addItem("3x",3);
+		         .addItem("3x",3)
+		         .activate(0);
 		
-		r2.plugTo(this);
 		cp5.addListener(this);
 	}
 
@@ -64,15 +63,12 @@ public class HapkitFeedback extends Component {
 
 	@Override
 	public void draw() {
-
 		parent.fill(255);
 		parent.rect(x, y, w, h);
 		parent.fill(0);
 		parent.text("Force Feedback", x+10, y+15);
-		parent.text("Gain", x+10, y+145);
-		parent.image(hand_img, x+20, y+20, hand_img.width / 6, hand_img.height / 6);
-		
-		parent.text("Spring Force = " + String.format("%.2f", this.springs.getActiveForce()), x+10, y+105);
+		parent.text("Gain", x+10, y+117);
+		parent.image(hand_img, x+40, y+50, hand_img.width / 6, hand_img.height / 6);
 	}
 
 	public void feedbackButton(int buttonValue) {

@@ -16,7 +16,7 @@ public class ExperimentSettings extends Component {
 		super(_x,_y,_w,_h);
 		parent = main;
 		
-		  d1 = cp5.addDropdownList("myList-d1")
+		  d1 = cp5.addDropdownList("Experiment Planet")
 		          .setPosition(this.x+60, this.y+50)
 		          .setSize(80,40)
 		          .setItemHeight(20)
@@ -24,6 +24,7 @@ public class ExperimentSettings extends Component {
 		          ;
 		  
 		  d1.addItem("Earth", 1);
+		 
 		  
 		  d1.addListener(this);
 		  

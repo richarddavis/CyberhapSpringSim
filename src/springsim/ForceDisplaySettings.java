@@ -6,13 +6,13 @@ import controlP5.ControlP5;
 import controlP5.RadioButton;
 import processing.core.PApplet;
 
-public class ForceFeedbackOption extends Component {
+public class ForceDisplaySettings extends Component {
 
 	Canvas c;
 	PApplet parent;
 	RadioButton r2;
 	
-	public ForceFeedbackOption(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Canvas _c) {
+	public ForceDisplaySettings(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Canvas _c) {
 		super(_x,_y,_w,_h);
 		this.c = _c;
 		parent = main;
@@ -29,7 +29,8 @@ public class ForceFeedbackOption extends Component {
 		         .setItemsPerRow(1)
 		         .setSpacingColumn(50)
 		         .addItem("Display ON",1)
-		         .addItem("Display OFF",0);
+		         .addItem("Display OFF",0)
+		         .activate(0);
 		
 		r2.plugTo(this);
 

@@ -34,6 +34,7 @@ public abstract class SpringInterface {
 		this.hand = new Hand(this.x, this.y + this.originalLen + 10, true, parent, box2d, rData);
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
 		this.name = "";
+		this.display_forces = true;
 	}
 	
 	public void mouseUpdate(int mx, int my, boolean pressed) {

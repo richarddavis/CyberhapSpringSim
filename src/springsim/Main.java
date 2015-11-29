@@ -70,8 +70,8 @@ public class Main extends PApplet {
 	//Components
 	Hapkit hapkit;
 	Canvas designCanvas;
-	ForceFeedbackOption forceFeedbackOption;
-	HapkitFeedback hapkitFeedbackPanel;
+	ForceDisplaySettings forceFeedbackOption;
+	HapkitFeedbackSettings hapkitFeedbackPanel;
 	ExperimentSettings expSettings;
 	ForceDisplayOutput forceDisplayOutput;
 	PhysicsPlayground physicsPlayground;
@@ -132,11 +132,11 @@ public class Main extends PApplet {
 		
 		participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
 		designCanvas = new Canvas(this, cp5, dPX, dPY, dPW, dPH, hapkit, researchData);
-		forceFeedbackOption = new ForceFeedbackOption(this, cp5, fFOX, fFOY, fFOW, fFOH,  designCanvas);
+		forceFeedbackOption = new ForceDisplaySettings(this, cp5, fFOX, fFOY, fFOW, fFOH,  designCanvas);
 		expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
 		forceDisplayOutput = new ForceDisplayOutput(this, cp5, fDOX, fDOY, fDOW, fDOH);
 		physicsPlayground = new PhysicsPlayground(this, cp5, designCanvas, pPX, pPY, pPW, pPH);
-		hapkitFeedbackPanel = new HapkitFeedback(this, cp5, hfx, hfy, hfw, hfh, hapkit, designCanvas.getSpringCollection());
+		hapkitFeedbackPanel = new HapkitFeedbackSettings(this, cp5, hfx, hfy, hfw, hfh, hapkit, designCanvas.getSpringCollection());
 		
 		components.add(designCanvas);
 		components.add(participantSelection);
