@@ -75,7 +75,6 @@ public class SpringCollection {
 				s.hand.destroy();
 			}
 		}
-		
 	}
 
 	public void updateActiveSpringYPosition(double hapkitPos) {
@@ -83,31 +82,5 @@ public class SpringCollection {
 		int newY = (int) (currentY + hapkitPos);
 		this.activeSpring.hapkitUpdate(newY);	
 	}
-
-	
-	
-////	public void updateActiveMouse(int mx, int my, boolean pressed) {
-////		for (SpringInterface s : springs) {
-////			if (s.getHand().contains(mx, my)) {
-////				this.setActive(s);
-////				break;
-////			}
-////		}
-////		this.activeSpring.mouseUpdate(mx, my, pressed);
-////	}
-//	
-//	public void updateActiveHapkit(int mx, int my, boolean pressed, boolean updatePosition, Hapkit hapkit) {
-//		for (SpringInterface s : springs) {
-//			if (s.getHand().contains(mx, my)) {
-//				this.setActive(s);
-//				hapkit.setKConstant(s.getK());
-//				break;
-//			}
-//		}
-//		if(updatePosition){
-//			this.activeSpring.mouseUpdate(mx, my, pressed);
-//		}
-//	}
-
 	
 }

@@ -44,10 +44,7 @@ public class Canvas extends Component {
 	private Ruler ruler;
 	ResearchData rData;
 	
-	SerialSpring s1;
-	ComboSpring s2;
-	ParallelSpring s3;
-	Spring s4;
+	SpringInterface s1, s2, s3, s4;
 	
 	SpringCollection sc;
 	WeightCollection wc;
@@ -88,15 +85,15 @@ public class Canvas extends Component {
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
 		s1 = new SerialSpring(this.x+50, this.y+100, 30, 100, this.parent, box2d, rData);
-		s2 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d, rData);
-		s3 = new ParallelSpring(this.x+300, this.y+100, 30, 100, this.parent, box2d, rData);
-		s4 = new Spring(this.x+400, this.y+100, 30, 100, this.parent, box2d,rData);
+		s2 = new ParallelSpring(this.x+300, this.y+100, 30, 100, this.parent, box2d, rData);
+		s3 = new Spring(this.x+400, this.y+100, 30, 100, this.parent, box2d,rData);
+		//s4 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d, rData);
 		
 		sc = new SpringCollection(rData);
 		sc.add(s1);
 		sc.add(s2);
 		sc.add(s3);
-		sc.add(s4);
+		//sc.add(s4);
 		sc.setActive(s1);
 		
 		if(rData.isHapkitMode()){
@@ -126,6 +123,11 @@ public class Canvas extends Component {
 		parent.rect(x, y, w, h);
 		parent.textSize(18); 
 		parent.fill(0);
+		
+		parent.pushMatrix();
+		parent.imageMode(PConstants.CORNER);
+		parent.image(wood_plank_img, this.x+10, this.y+50, this.w-20, 30);
+		parent.popMatrix();
 		
 		for(SpringInterface s : sc.springs){
 			s.draw();

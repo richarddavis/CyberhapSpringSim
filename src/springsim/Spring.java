@@ -38,7 +38,7 @@ public class Spring extends SpringInterface {
 		// Get the mouse location in world coordinates
 		djd.collideConnected = true;
 		djd.length = box2d.scalarPixelsToWorld(this.originalLen);
-		
+
 		// Some stuff about how strong and bouncy the spring should be
 		//djd.maxForce = (float) (1000.0 * hand.body.m_mass);
 		djd.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/this.hand.body.m_mass)));

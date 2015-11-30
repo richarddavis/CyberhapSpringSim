@@ -19,15 +19,11 @@ public class SerialSpring extends SpringInterface {
 	DistanceJoint dj2;
 	
 	RevoluteJointDef rjd1;
-//	RevoluteJointDef rjd2;
 	RevoluteJoint rj1;
-//	RevoluteJoint rj2;
 	
 	Anchor anchor;
 	CircleConnector conn1;
 	CircleConnector conn2;
-//	Connector conn3;
-//	Connector conn4;
 	PImage spring_img;
 
 	public SerialSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2, ResearchData rData){
@@ -88,15 +84,6 @@ public class SerialSpring extends SpringInterface {
 		rjd1.enableMotor = true;
 		rj1 = (RevoluteJoint) box2d.world.createJoint(rjd1);
 		
-//		// Messing around
-//		this.conn3 = new Connector(200, 200, true, parent, box2d);
-//		this.conn4 = new Connector(220, 220, false, parent, box2d);
-//		rjd2 = new RevoluteJointDef();
-//		rjd2.initialize(this.conn3.body, this.conn4.body, this.conn3.body.getWorldCenter());
-//		rjd2.motorSpeed = 10;
-//		rjd2.maxMotorTorque = 10000;
-//		rjd2.enableMotor = true;
-//		rj2 = (RevoluteJoint) box2d.world.createJoint(rjd2);	
 	}
 
 	//TODO: update hand drawing as well. 
@@ -146,8 +133,6 @@ public class SerialSpring extends SpringInterface {
 			this.conn2.draw();
 			this.hand.draw();
 		}
-		//this.conn3.draw();
-		//this.conn4.draw();
 	}
 	
 	public float getLength() {

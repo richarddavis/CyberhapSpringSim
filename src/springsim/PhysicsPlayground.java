@@ -27,11 +27,15 @@ public class PhysicsPlayground extends Component{
 	      .setFocus(true)
 	      ;
 		
+		tf1.getCaptionLabel().setVisible(false);
+		
 		tf2 = cp5.addTextfield("KConstantInput")
 			      .setPosition(x+140,y+25+spacing)
 			      .setSize(60,25)
 			      .setFocus(true)
 			      ;
+		
+		tf2.getCaptionLabel().setVisible(false);
 	}
 	
 	@Override

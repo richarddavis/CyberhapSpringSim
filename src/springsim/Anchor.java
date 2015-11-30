@@ -70,7 +70,6 @@ public class Anchor {
 		proc.stroke(0);
 		proc.strokeWeight(1);
 		proc.image(hook_img, this.x, this.y, this.w+20, this.h+20);
-		//proc.rect(this.x, this.y, this.w, this.h);
 	}
 	
 	public int getX() {

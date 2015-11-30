@@ -51,6 +51,7 @@ public class CircleConnector implements PConstants {
 		}
 		bd.fixedRotation = true;
 		bd.linearDamping = (float) 0.3;
+		bd.fixedRotation = true;
 
 		this.body = box2d.createBody(bd);
 		//body.setGravityScale(0);
