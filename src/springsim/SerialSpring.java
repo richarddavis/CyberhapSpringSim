@@ -3,8 +3,13 @@ package springsim;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
+import org.jbox2d.dynamics.joints.Joint;
+import org.jbox2d.dynamics.joints.PrismaticJoint;
+import org.jbox2d.dynamics.joints.PrismaticJointDef;
 import org.jbox2d.dynamics.joints.RevoluteJoint;
 import org.jbox2d.dynamics.joints.RevoluteJointDef;
+import org.jbox2d.dynamics.joints.WeldJoint;
+import org.jbox2d.dynamics.joints.WeldJointDef;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -25,6 +30,12 @@ public class SerialSpring extends SpringInterface {
 	CircleConnector conn1;
 	CircleConnector conn2;
 	PImage spring_img;
+	
+	int fixed_x;
+	private WeldJointDef wjd;
+	private Joint wj;
+	private PrismaticJointDef pjd;
+	private PrismaticJoint pj;
 
 	public SerialSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2, ResearchData rData){
 		super(_x, _y, _k, _length, p, b2, rData);
@@ -33,6 +44,7 @@ public class SerialSpring extends SpringInterface {
 		this.conn1 = new CircleConnector(this.x, this.y + this.originalLen + 10, true, parent, box2d);
 		this.conn2 = new CircleConnector(this.x, this.y + this.originalLen + 15, true, parent, box2d);
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
+		this.fixed_x = _x;
 		
 		// Import photo
 		this.spring_img = parent.loadImage("spring.jpg");
@@ -73,16 +85,27 @@ public class SerialSpring extends SpringInterface {
 		// Make the second spring distance joint
 		dj2 = (DistanceJoint) box2d.world.createJoint(djd2);
 		
-		// Define the revolute joint that connects the two springs
-		rjd1 = new RevoluteJointDef();
-		rjd1.initialize(this.conn1.body, this.conn2.body, this.conn1.body.getWorldCenter());
-		rjd1.lowerAngle = -0.25f * (float) Math.PI; // -45 degrees
-		rjd1.upperAngle = 0.25f * (float) Math.PI; // 45 degrees
-		rjd1.enableLimit = true;
-		rjd1.maxMotorTorque = 10.0f;
-		rjd1.motorSpeed = 0.0f;
-		rjd1.enableMotor = true;
-		rj1 = (RevoluteJoint) box2d.world.createJoint(rjd1);
+//		// Define the revolute joint that connects the two springs
+//		rjd1 = new RevoluteJointDef();
+//		rjd1.initialize(this.conn1.body, this.conn2.body, this.conn1.body.getWorldCenter());
+//		rjd1.lowerAngle = -0.25f * (float) Math.PI; // -45 degrees
+//		rjd1.upperAngle = 0.25f * (float) Math.PI; // 45 degrees
+//		rjd1.enableLimit = true;
+//		rjd1.maxMotorTorque = 10.0f;
+//		rjd1.motorSpeed = 0.0f;
+//		rjd1.enableMotor = false;
+//		rj1 = (RevoluteJoint) box2d.world.createJoint(rjd1);
+		
+		pjd = new PrismaticJointDef();
+		pjd.bodyA = conn1.body;
+		pjd.bodyB = conn2.body;
+		pjd.lowerTranslation = 0;
+		pjd.upperTranslation = 0;
+		pjd.enableLimit = true;
+		pjd.enableMotor = false;
+//		wjd.type = JointType.WeldJoint;
+		pjd.collideConnected = true;
+		pj = (PrismaticJoint) box2d.world.createJoint(pjd);
 		
 	}
 
@@ -144,7 +167,7 @@ public class SerialSpring extends SpringInterface {
 		// Convert them to screen coordinates
 		//v1 = box2d.coordWorldToPixels(v1);
 		//v2 = box2d.coordWorldToPixels(v2);
-		
+
 		return (v2.sub(v1)).length();
 	}
 	

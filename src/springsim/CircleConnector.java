@@ -49,7 +49,6 @@ public class CircleConnector implements PConstants {
 		} else {
 			bd.type = BodyType.STATIC;
 		}
-		bd.fixedRotation = true;
 		bd.linearDamping = (float) 0.3;
 		bd.fixedRotation = true;
 
@@ -81,7 +80,7 @@ public class CircleConnector implements PConstants {
 	public void draw() {
 		//parent.image(hand_img, this.x, this.y);
 		Vec2 pos = this.box2d.getBodyPixelCoord(this.body);
-		this.x = (int)pos.x;
+		this.x = (int)pos.y;
 		this.y = (int)pos.y;
 		parent.imageMode(PConstants.CENTER);
 		parent.image(connector_img, this.x, this.y+10);
