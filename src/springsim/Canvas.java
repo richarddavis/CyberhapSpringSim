@@ -84,9 +84,11 @@ public class Canvas extends Component {
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new SerialSpring(this.x+50, this.y+100, 30, 100, "Spring A", this.parent, box2d, rData);
-		s2 = new ParallelSpring(this.x+300, this.y+100, 30, 100, "Spring B",this.parent, box2d, rData);
-		s3 = new Spring(this.x+400, this.y+100, 30, 100, "Spring C",this.parent, box2d,rData);
+		//s1 = new SerialSpring(this.x+50, this.y+100, 30, 200, "Spring A", this.parent, box2d, rData);
+		//s2 = new ParallelSpring(this.x+300, this.y+100, 30, 200, "Spring B",this.parent, box2d, rData);
+		s3 = new Spring(this.x+400, this.y+100, 15, 200, "Spring C",this.parent, box2d,rData);
+		s2 = new Spring(this.x+250, this.y+100, 55, 200, "Spring B",this.parent, box2d,rData);
+		s1 = new Spring(this.x+100, this.y+100, 35, 200, "Spring A",this.parent, box2d,rData);
 		//s4 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d, rData);
 		
 		sc = new SpringCollection(rData);
@@ -94,7 +96,7 @@ public class Canvas extends Component {
 		sc.add(s2);
 		sc.add(s3);
 		//sc.add(s4);
-		sc.setActive(s1);
+		sc.setActive(s2);
 		
 		if(rData.isHapkitMode()){
 			rData.logEvent(-1, -1, "Initial K value sent to hapkit");
@@ -129,10 +131,7 @@ public class Canvas extends Component {
 		parent.image(wood_plank_img, this.x+10, this.y+50, this.w-20, 30);
 		parent.popMatrix();
 		
-		for(SpringInterface s : sc.springs){
-			s.draw();
-		}
-		
+		sc.draw();
 		floor.draw();
 		ruler.draw();
 	}

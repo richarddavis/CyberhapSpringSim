@@ -5,6 +5,7 @@ import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
 public class ParallelSpring extends SpringInterface {
@@ -15,8 +16,12 @@ public class ParallelSpring extends SpringInterface {
 	DistanceJoint dj1;
 	DistanceJoint dj2;
 
+	int spring_img_w = 35;
+	
 	Anchor anchor1;
 	Anchor anchor2;
+	
+	PImage spring_img;
 
 	public ParallelSpring(int _x, int _y, int _k, int _length, String label, PApplet p, Box2DProcessing b2, ResearchData rData){
 		
@@ -32,6 +37,8 @@ public class ParallelSpring extends SpringInterface {
 		this.hand = new Hand(this.x, this.y + this.originalLen * 2 + 20, false, parent, box2d, rData);
 		this.anchor1 = new Anchor(getX() - 40, getY(), parent, box2d);
 		this.anchor2 = new Anchor(getX() + 40, getY(), parent, box2d);
+		
+		this.spring_img = parent.loadImage("spring.jpg");
 
 		// Define the first spring distance joint
 		this.djd1 = new DistanceJointDef();
@@ -109,6 +116,8 @@ public class ParallelSpring extends SpringInterface {
 			parent.stroke(0);
 			parent.strokeWeight(3);
 			parent.line(v1.x,v1.y,v2.x,v2.y);
+			
+			//parent.image(spring_img, v2.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
 			
 			//System.out.println(this.getLength());
 			//System.out.println(this.getForce());

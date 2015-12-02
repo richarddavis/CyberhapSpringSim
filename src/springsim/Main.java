@@ -73,7 +73,7 @@ public class Main extends PApplet {
 	ForceDisplaySettings forceFeedbackOption;
 	HapkitFeedbackSettings hapkitFeedbackPanel;
 	ExperimentSettings expSettings;
-	ForceDisplayOutput forceDisplayOutput;
+	SpringFactory forceDisplayOutput;
 	PhysicsPlayground physicsPlayground;
 	ParticipantSelection participantSelection;
 	
@@ -108,8 +108,8 @@ public class Main extends PApplet {
 		
 		participantId = Integer.parseInt(pID);
 		
-		//inputMode = HAPKIT_MODE;
-		inputMode = MOUSE_MODE;
+		inputMode = HAPKIT_MODE;
+		//inputMode = MOUSE_MODE;
 		
 		researchData = new ResearchData(participantId, inputMode);
 		
@@ -134,7 +134,7 @@ public class Main extends PApplet {
 		designCanvas = new Canvas(this, cp5, dPX, dPY, dPW, dPH, hapkit, researchData);
 		forceFeedbackOption = new ForceDisplaySettings(this, cp5, fFOX, fFOY, fFOW, fFOH,  designCanvas);
 		expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
-		forceDisplayOutput = new ForceDisplayOutput(this, cp5, fDOX, fDOY, fDOW, fDOH);
+		forceDisplayOutput = new SpringFactory(this, cp5, fDOX, fDOY, fDOW, fDOH);
 		physicsPlayground = new PhysicsPlayground(this, cp5, designCanvas, pPX, pPY, pPW, pPH);
 		hapkitFeedbackPanel = new HapkitFeedbackSettings(this, cp5, hfx, hfy, hfw, hfh, hapkit, designCanvas.getSpringCollection());
 		

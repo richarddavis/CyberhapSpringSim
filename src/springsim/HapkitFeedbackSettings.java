@@ -13,7 +13,7 @@ public class HapkitFeedbackSettings extends Component {
 	Hapkit hapkit;
 	PApplet parent;
 	ControlP5 cp5;
-	RadioButton r, r2;
+	RadioButton feedback, gain;
 	PImage hand_img;
 	SpringCollection springs;
 		
@@ -28,7 +28,7 @@ public class HapkitFeedbackSettings extends Component {
 		// if we need to implement listeners, consider constructing radio
 		// buttons, etc. in main class so that listener can be handed
 		// all necessary instances of classes to handle input events appropriately. 
-		r = cp5.addRadioButton("feedbackButton")
+		feedback = cp5.addRadioButton("feedbackButton")
 		         .setPosition(x+90,y+40)
 		         .setSize(40,20)
 		         .setColorForeground(parent.color(120))
@@ -40,7 +40,7 @@ public class HapkitFeedbackSettings extends Component {
 		         .addItem("OFF",0)
 		         .activate(0);
 		
-		r2 = cp5.addRadioButton("gainOption")
+		gain = cp5.addRadioButton("gainOption")
 		         .setPosition(x+70,y+110)
 		         .setSize(20,20)
 		         .setColorForeground(parent.color(120))
@@ -71,22 +71,30 @@ public class HapkitFeedbackSettings extends Component {
 		parent.image(hand_img, x+40, y+60, hand_img.width / 6, hand_img.height / 6);
 	}
 
-	public void feedbackButton(int buttonValue) {
-		//parent.println("Got button event.");
-		if (buttonValue == 1) {
-			this.hapkit.setFeedback(true);
-		} else if (buttonValue == 0) {
-			this.hapkit.setFeedback(false);
-		} 
-	}
-	
-	public void GainOption(int buttonValue) {
-		this.hapkit.setGain(buttonValue);
-	}
+//	public void feedbackButton(int buttonValue) {
+//		//parent.println("Got button event.");
+//		if (buttonValue == 1) {
+//			this.hapkit.setFeedback(true);
+//		} else if (buttonValue == 0) {
+//			this.hapkit.setFeedback(false);
+//		} 
+//	}
+//	
+//	public void GainOption(int buttonValue) {
+//		this.hapkit.setGain(buttonValue);
+//	}
 
 	@Override
-	public void controlEvent(ControlEvent arg0) {
-		System.out.println("handled display input locally");
+	public void controlEvent(ControlEvent event) {
+		if(event.isFrom(gain)){
+			this.hapkit.setGain((int) gain.getValue());
+		}else if(event.isFrom(feedback)){
+			if (event.getValue() == 1) {
+				this.hapkit.setFeedback(true);
+			} else if (event.getValue() == 0) {
+				this.hapkit.setFeedback(false);
+			} 
+		}
 	}
 	
 }

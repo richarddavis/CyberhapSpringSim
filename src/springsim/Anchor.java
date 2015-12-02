@@ -8,6 +8,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
@@ -23,6 +24,8 @@ public class Anchor {
 	int y;
 	int w;
 	int h;
+	
+	BodyDef bd = new BodyDef();
 
 	public Anchor(int _x, int _y, PApplet p, Box2DProcessing b2){
 		
@@ -36,7 +39,7 @@ public class Anchor {
 		
 		hook_img = p.loadImage("hook.png");
 		
-		BodyDef bd = new BodyDef();
+		
 	    bd.position.set(box2d.coordPixelsToWorld(new Vec2((int) this.x,(int) this.y)));
 	    bd.type = BodyType.STATIC;
 	    bd.fixedRotation = true;
@@ -69,7 +72,11 @@ public class Anchor {
 		proc.fill(255);
 		proc.stroke(0);
 		proc.strokeWeight(1);
+		
+		proc.pushMatrix();
+		proc.imageMode(PConstants.CENTER);
 		proc.image(hook_img, this.x, this.y, this.w+20, this.h+20);
+		proc.popMatrix();
 	}
 	
 	public int getX() {
@@ -78,6 +85,10 @@ public class Anchor {
 	
 	public int getY() {
 		return this.y;
+	}
+
+	public void setX(int x) {
+		this.x = x;
 	}
 	
 }

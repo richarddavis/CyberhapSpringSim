@@ -5,12 +5,14 @@ import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
 public class Spring extends SpringInterface {
 
 	int spring_img_w = 35;
+	String label;
 	
 	//BOX2D
 	DistanceJointDef djd;
@@ -28,6 +30,7 @@ public class Spring extends SpringInterface {
 		
 		// Import photo
 		this.spring_img = parent.loadImage("spring.jpg");
+		this.label = label;
 		
 		// Define the joint
 		this.djd = new DistanceJointDef();
@@ -51,8 +54,9 @@ public class Spring extends SpringInterface {
 	//TODO: update hand drawing as well. 
 	public void draw(){
 
+		
 		//parent.line(this.anchor.getX(), this.anchor.getY(), this.hand.getX(), this.hand.getY());
-
+		parent.text(label, this.x-30, 40);
 		if (dj != null) {
 			// We can get the two anchor points
 			Vec2 v1 = new Vec2(0,0);
@@ -74,7 +78,11 @@ public class Spring extends SpringInterface {
 //			parent.stroke(0);
 //			parent.strokeWeight(3);
 			//parent.line(v1.x,v1.y,v2.x,v2.y);
+			
+			parent.pushMatrix();
+			parent.imageMode(PConstants.CENTER);
 			parent.image(spring_img, this.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
+			parent.popMatrix();
 			
 			//(float) (this.y + (0.5*(v2.y-v1.y)))
 			//v2.y-v1.y-(hand.current_hand_img.height/2)
@@ -109,5 +117,12 @@ public class Spring extends SpringInterface {
 	
 	public float getForce() {
 		return (this.k * (this.getLength() - dj.getLength()));
+	}
+	
+	@Override
+	public void setX(int x){
+		this.x = x;
+		this.hand.setX(x);
+		this.anchor.setX(x);
 	}
 }

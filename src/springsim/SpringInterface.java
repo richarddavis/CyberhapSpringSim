@@ -69,6 +69,10 @@ public abstract class SpringInterface {
 		return this.label;
 	}
 	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
 	public void displayForce(boolean on) {
 		if (on == true) {
 			this.display_forces = true;
@@ -82,6 +86,8 @@ public abstract class SpringInterface {
 	public abstract float getLength();
 	public abstract float getForce();
 	public abstract void draw();
+
+
 }
 
 
