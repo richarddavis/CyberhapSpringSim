@@ -108,8 +108,8 @@ public class Main extends PApplet {
 		
 		participantId = Integer.parseInt(pID);
 		
-		inputMode = HAPKIT_MODE;
-		//inputMode = MOUSE_MODE;
+		//inputMode = HAPKIT_MODE;
+		inputMode = MOUSE_MODE;
 		
 		researchData = new ResearchData(participantId, inputMode);
 		

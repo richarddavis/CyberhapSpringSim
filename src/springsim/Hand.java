@@ -114,7 +114,7 @@ public class Hand implements PConstants {
 		
 		parent.pushMatrix();
 		parent.imageMode(PConstants.CENTER);
-		parent.image(current_hand_img, this.x, this.y+10);
+		parent.image(current_hand_img, this.fixed_x, this.y+10);
 		parent.popMatrix();
 
 	}
