@@ -30,7 +30,6 @@ public class ParallelSpring extends SpringInterface {
 		this.x = _x;
 		this.y = _y;
 		this.k = _k;
-		this.originalLen = _length;
 		this.parent = p;
 		this.box2d = b2;
 		
@@ -82,7 +81,7 @@ public class ParallelSpring extends SpringInterface {
 		//parent.line(this.anchor.getX(), this.anchor.getY(), this.hand.getX(), this.hand.getY());
 		parent.pushMatrix();
 		parent.fill(0);
-		parent.text(label, this.x-40, 40);
+		parent.text(getLabel(), this.x-40, 40);
 		parent.popMatrix();
 		
 		if (dj1 != null) {

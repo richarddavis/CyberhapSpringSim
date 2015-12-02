@@ -20,27 +20,6 @@ public class SpringCollection {
 	public boolean add(SpringInterface s){
 		return springs.add(s);
 	}
-	
-//	private void balanceXPositions() {
-//		for(int i=0; i<springs.size(); i++){
-//			int interval = (Canvas.w/springs.size());
-//			int new_x = (int) ((interval*i)+(0.5*interval));
-//			
-//
-//			Class<?> clazz = springs.get(i).getClass();
-//			Constructor<?> constructor;
-//			
-//			try {
-//				constructor = clazz.getConstructor(int.class, int.class, int.class, int.class,String.class, PApplet.class, Box2DProcessing.class, ResearchData.class);
-//				Object instance = constructor.newInstance(Canvas.x+new_x, springs.get(i).y, springs.get(i).k, springs.get(i).originalLen, springs.get(i).getLabel(), springs.get(i).parent, Canvas.box2d, rData);
-//				springs.remove(springs.get(i));
-//				springs.add((SpringInterface) instance);
-//			}catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//	}
 
 	public void setActive(SpringInterface s){
 		if(activeSpring == null){

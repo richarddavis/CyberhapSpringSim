@@ -54,7 +54,7 @@ public class Main extends PApplet {
 	int pPX = spacing;
 	int pPY = (spacing*2)+fFOH;
 	int pPW = leftColWidth;
-	int pPH = 130;
+	int pPH = 100;
 	
 	//expSettings coord
 	int eSX = (spacing*3)+leftColWidth+centerColWidth;
@@ -109,8 +109,8 @@ public class Main extends PApplet {
 		
 		participantId = Integer.parseInt(pID);
 		
-		inputMode = HAPKIT_MODE;
-		//inputMode = MOUSE_MODE;
+		//inputMode = HAPKIT_MODE;
+		inputMode = MOUSE_MODE;
 		
 		researchData = new ResearchData(participantId, inputMode);
 		

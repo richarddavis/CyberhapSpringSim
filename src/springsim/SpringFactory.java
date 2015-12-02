@@ -106,7 +106,7 @@ public class SpringFactory extends Component {
 		parent.fill(255);
 		parent.rect(x, y, w, h);
 		parent.fill(0);
-		parent.text("Spring Factory", x+10, y+25);
+		parent.text("Spring Generator", x+10, y+25);
 		
 		parent.tint(255, 126);
 		parent.textSize(0);

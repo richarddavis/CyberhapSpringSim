@@ -26,7 +26,7 @@ public class PhysicsPlayground extends Component{
 		parent = main;
 		this.c = _c;
 		
-		tf1 = cp5.addTextfield("MassInput")
+		tf1 = cp5.addTextfield("Length")
 	      .setPosition(x+140,y+35)
 	      .setSize(60,25)
 	      .setFocus(false)
@@ -35,7 +35,7 @@ public class PhysicsPlayground extends Component{
 		
 		tf1.getCaptionLabel().setVisible(false);
 		
-		tf2 = cp5.addTextfield("KConstantInput")
+		tf2 = cp5.addTextfield("CurrentLabel")
 			      .setPosition(x+140,y+25+spacing)
 			      .setSize(60,25)
 			      .setFocus(false)
@@ -44,12 +44,15 @@ public class PhysicsPlayground extends Component{
 		
 		tf2.getCaptionLabel().setVisible(false);
 		
+		tf2.setText(c.sc.activeSpring.getLabel());
+		tf1.setText(Integer.toString(c.sc.activeSpring.originalLen/Main.SCALE_FACTOR));
+		
+		cp5.addListener(this);
 	}
 	
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
-		tf2.setText(Integer.toString(c.sc.activeSpring.getK()));
 	}
 
 	@Override
@@ -74,8 +77,15 @@ public class PhysicsPlayground extends Component{
 	}
 
 	@Override
-	public void controlEvent(ControlEvent arg0) {
-		// TODO Auto-generated method stub
+	public void controlEvent(ControlEvent event) {
+		if(event.isFrom(tf1)){
+			int len = Integer.parseInt(tf1.getStringValue())*Main.SCALE_FACTOR;
+			c.sc.activeSpring.originalLen = len;
+			c.sc.activeSpring.getHand().hapkitUpdate(len);
+			System.out.println(c.sc.activeSpring.originalLen);
+		}else if(event.isFrom(tf2)){
+			c.sc.activeSpring.setLabel(tf2.getStringValue());
+		}
 		
 	}
 
