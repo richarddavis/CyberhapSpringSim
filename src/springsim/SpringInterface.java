@@ -44,7 +44,7 @@ public abstract class SpringInterface {
 	}
 
 	public void hapkitUpdate(int my) {
-		this.hand.hapkitUpdate(my, originalLen);
+		this.hand.hapkitUpdate(my);
 	}
 	
 	public Hand getHand() {

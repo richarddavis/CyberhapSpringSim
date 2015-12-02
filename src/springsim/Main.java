@@ -107,10 +107,18 @@ public class Main extends PApplet {
 				  "Participant ID",
 				  JOptionPane.QUESTION_MESSAGE);
 		
-		participantId = Integer.parseInt(pID);
+		String[] choices = { "Hapkit Condition", "Mouse Condition"};
+	    String input = (String) JOptionPane.showInputDialog(null, "Select a Condition",
+	        "The Choice of a Lifetime", JOptionPane.QUESTION_MESSAGE, null,
+	        choices, choices[0]);
+	    
+	    if(input.equals("Hapkit Condition")){
+	    	inputMode = HAPKIT_MODE;
+	    }else{
+	    	inputMode = MOUSE_MODE;
+	    }
 		
-		//inputMode = HAPKIT_MODE;
-		inputMode = MOUSE_MODE;
+		participantId = Integer.parseInt(pID);
 		
 		researchData = new ResearchData(participantId, inputMode);
 		

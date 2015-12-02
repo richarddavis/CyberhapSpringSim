@@ -92,8 +92,9 @@ public class SpringCollection {
 	}
 
 	public void updateActiveSpringYPosition(double hapkitPos) {
-		int currentY = this.activeSpring.getY();
+		int currentY = (int) this.activeSpring.getY()+this.activeSpring.originalLen+10;
 		int newY = (int) (currentY + hapkitPos);
+		System.out.println(hapkitPos);
 		this.activeSpring.hapkitUpdate(newY);	
 	}
 

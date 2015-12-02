@@ -1,8 +1,6 @@
 package springsim;
 
 import java.awt.Font;
-
-import controlP5.Button;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Textfield;
@@ -19,7 +17,6 @@ public class PhysicsPlayground extends Component{
 	Textfield tf3;
 	
 	int spacing = 40;
-	private Button submit; 
 	
 	public PhysicsPlayground(Main main, ControlP5 cp5, Canvas _c, int _x, int _y, int _w, int _h) {
 		super(_x,_y,_w,_h);
@@ -53,6 +50,13 @@ public class PhysicsPlayground extends Component{
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub
+		if(!tf2.isActive()){
+			tf2.setText(c.sc.activeSpring.getLabel());
+		}
+		
+		if(!tf1.isActive()){
+			tf1.setText(Integer.toString(c.sc.activeSpring.originalLen/Main.SCALE_FACTOR));
+		}
 	}
 
 	@Override
@@ -72,8 +76,6 @@ public class PhysicsPlayground extends Component{
 		parent.setFont(p1);
 		parent.textSize(18);
 		parent.popMatrix();
-
-		
 	}
 
 	@Override
@@ -81,12 +83,11 @@ public class PhysicsPlayground extends Component{
 		if(event.isFrom(tf1)){
 			int len = Integer.parseInt(tf1.getStringValue())*Main.SCALE_FACTOR;
 			c.sc.activeSpring.originalLen = len;
-			c.sc.activeSpring.getHand().hapkitUpdate(len);
+			c.sc.activeSpring.setLength(len);
 			System.out.println(c.sc.activeSpring.originalLen);
 		}else if(event.isFrom(tf2)){
 			c.sc.activeSpring.setLabel(tf2.getStringValue());
 		}
-		
 	}
 
 }

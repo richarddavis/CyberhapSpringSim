@@ -197,7 +197,7 @@ public class SpringFactory extends Component {
 		if(value == REGULAR_SPRING){
 			current_spring = new Spring(this.x+(this.w/4), 150, Integer.parseInt(stiffness.getText()), final_len, label.getText(), parent, Canvas.box2d, rData);
 		}else if(value == PARALLEL_SPRING){
-			current_spring = new ParallelSpring(this.x+(this.w/4), 150, Integer.parseInt(stiffness.getText()), Integer.parseInt(length.getText()), label.getText(), parent, Canvas.box2d, rData);
+			current_spring = new ParallelSpring(this.x+(this.w/4), 150, Integer.parseInt(stiffness.getText()), final_len, label.getText(), parent, Canvas.box2d, rData);
 		}
 	}
 

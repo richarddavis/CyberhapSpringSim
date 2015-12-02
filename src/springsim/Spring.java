@@ -43,7 +43,7 @@ public class Spring extends SpringInterface {
 		// Some stuff about how strong and bouncy the spring should be
 		//djd.maxForce = (float) (1000.0 * hand.body.m_mass);
 		djd.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/this.hand.body.m_mass)));
-		djd.dampingRatio = 0.01f;
+		djd.dampingRatio = 0.001f;
 		
 		// Make the joint
 		dj = (DistanceJoint) box2d.world.createJoint(djd);
@@ -120,6 +120,10 @@ public class Spring extends SpringInterface {
 		//v2 = box2d.coordWorldToPixels(v2);
 		
 		return (v2.sub(v1)).length();
+	}
+	
+	public void setLength(int len_pixels){
+		dj.setLength(box2d.scalarPixelsToWorld(len_pixels));
 	}
 	
 	public float getForce() {

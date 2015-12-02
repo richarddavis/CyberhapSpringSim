@@ -50,7 +50,7 @@ public class ParallelSpring extends SpringInterface {
 		// Some stuff about how strong and bouncy the spring should be
 		//djd.maxForce = (float) (1000.0 * hand.body.m_mass);
 		djd1.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/(this.hand.body.m_mass))));
-		djd1.dampingRatio = 0.01f;
+		djd1.dampingRatio = 0.001f;
 
 		// Make the first spring distance joint
 		dj1 = (DistanceJoint) box2d.world.createJoint(djd1);
@@ -68,7 +68,7 @@ public class ParallelSpring extends SpringInterface {
 		// Some stuff about how strong and bouncy the spring should be
 		//djd.maxForce = (float) (1000.0 * hand.body.m_mass);
 		djd2.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/(this.hand.body.m_mass))));
-		djd2.dampingRatio = 0.01f;
+		djd2.dampingRatio = 0.001f;
 
 		// Make the second spring distance joint
 		dj2 = (DistanceJoint) box2d.world.createJoint(djd2);
@@ -166,6 +166,11 @@ public class ParallelSpring extends SpringInterface {
 		//v2 = box2d.coordWorldToPixels(v2);
 		
 		return (v2.sub(v1)).length();
+	}
+	
+	public void setLength(int len_pixels){
+		dj1.setLength(box2d.scalarPixelsToWorld(len_pixels));
+		dj2.setLength(box2d.scalarPixelsToWorld(len_pixels));
 	}
 	
 	public float getForce() {
