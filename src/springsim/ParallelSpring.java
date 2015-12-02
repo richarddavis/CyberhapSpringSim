@@ -1,10 +1,13 @@
 package springsim;
 
+import java.awt.Font;
+
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
@@ -96,9 +99,18 @@ public class ParallelSpring extends SpringInterface {
 			v2 = box2d.coordWorldToPixels(v2);
 			
 			// And just draw a line to represent the spring
-			parent.stroke(0);
-			parent.strokeWeight(3);
-			parent.line(v1.x,v1.y,v2.x,v2.y);
+//			parent.stroke(0);
+//			parent.strokeWeight(3);
+//			parent.line(v1.x,v1.y,v2.x,v2.y);
+			
+			double angle = Math.atan2(v2.y-v1.y, v2.x-v1.x);
+			parent.pushMatrix();
+			parent.translate(((hand.x+anchor.x)/2)-20, (hand.y+anchor.y)/2);
+			parent.rotate((float) (angle+(Math.PI/2)));
+			System.out.println(angle);
+//			parent.image(spring_img, v2.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
+			parent.image(spring_img, 0, 0, spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
+			parent.popMatrix();
 			
 			//System.out.println(this.getLength());
 			//System.out.println(this.getForce());
@@ -116,19 +128,18 @@ public class ParallelSpring extends SpringInterface {
 			v2 = box2d.coordWorldToPixels(v2);
 			
 			// And just draw a line to represent the spring
-			parent.stroke(0);
-			parent.strokeWeight(3);
-			parent.line(v1.x,v1.y,v2.x,v2.y);
-			
+//			parent.stroke(0);
+//			parent.strokeWeight(3);
+//			parent.line(v1.x,v1.y,v2.x,v2.y);
 			
 			double angle = Math.atan2(v1.y-v2.y, v1.x-v2.x);
-//			parent.pushMatrix();
-//			parent.translate(anchor.x, anchor.y);
-//			parent.rotate((float)angle);
-//			System.out.println(angle);
-////			parent.image(spring_img, v2.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
-//			parent.image(spring_img, 0, 0, spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
-//			parent.popMatrix();
+			parent.pushMatrix();
+			parent.translate(((hand.x+anchor.x)/2)+20, (hand.y+anchor.y)/2);
+			parent.rotate((float) (angle+(Math.PI/2)));
+			System.out.println(angle);
+//			parent.image(spring_img, v2.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
+			parent.image(spring_img, 0, 0, spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
+			parent.popMatrix();
 			
 			
 			//System.out.println(this.getLength());
@@ -136,19 +147,37 @@ public class ParallelSpring extends SpringInterface {
 			this.anchor2.draw();
 		}
 		
-		int dfx = this.x - this.hand.w/2-20;
+		int dfx = this.x - this.hand.w/2-10;
 		int dfy = this.hand.y + this.hand.h + 5;
 		
 		if (this.display_forces == true) {
 			parent.fill(100);
+			
+			parent.pushMatrix();
+			Font p1 = parent.getFont();
+			PFont p2 = parent.createFont("Verdana",12);
+			parent.textFont(p2);
 			parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
+			
 			if(this.display_k){
-				parent.text("K: " +  this.getK(), dfx, dfy+20);
+				parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
 			}
-			//parent.rect(this.hand.x, this.hand.y + 100, 100, 100);
+			
+			parent.setFont(p1);
+			parent.textSize(18);
+			parent.popMatrix();
+
+			
 		}else{
 			if(this.display_k){
+				parent.pushMatrix();
+				Font p1 = parent.getFont();
+				PFont p2 = parent.createFont("Verdana",12);
+				parent.textFont(p2);
 				parent.text("K: " +  this.getK(), dfx, dfy);
+				parent.setFont(p1);
+				parent.textSize(18);
+				parent.popMatrix();
 			}
 		}
 		

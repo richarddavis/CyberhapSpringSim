@@ -1,11 +1,14 @@
 package springsim;
 
+import java.awt.Font;
+
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
+import processing.core.PFont;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
@@ -88,19 +91,37 @@ public class Spring extends SpringInterface {
 			
 			//System.out.println(this.getLength());
 			//System.out.println(this.getForce());
-			int dfx = this.x - this.hand.w/2-20;
+			int dfx = this.x - this.hand.w/2-10;
 			int dfy = this.hand.y + this.hand.h + 5;
 			
 			if (this.display_forces == true) {
 				parent.fill(100);
+				
+				parent.pushMatrix();
+				Font p1 = parent.getFont();
+				PFont p2 = parent.createFont("Verdana",12);
+				parent.textFont(p2);
 				parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
+				
 				if(this.display_k){
-					parent.text("K: " +  this.getK(), dfx, dfy+20);
+					parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
 				}
-				//parent.rect(this.hand.x, this.hand.y + 100, 100, 100);
+				
+				parent.setFont(p1);
+				parent.textSize(18);
+				parent.popMatrix();
+
+				
 			}else{
 				if(this.display_k){
+					parent.pushMatrix();
+					Font p1 = parent.getFont();
+					PFont p2 = parent.createFont("Verdana",12);
+					parent.textFont(p2);
 					parent.text("K: " +  this.getK(), dfx, dfy);
+					parent.setFont(p1);
+					parent.textSize(18);
+					parent.popMatrix();
 				}
 			}
 		}
