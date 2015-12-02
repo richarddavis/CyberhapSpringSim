@@ -91,7 +91,9 @@ public class Hand implements PConstants {
 	public void draw() {
 		if (mj != null) {
 			
-			this.mousePosUpdate(this.fixed_x, parent.mouseY);
+			if(rData.isHapkitMode() == false){
+				this.mousePosUpdate(this.fixed_x, parent.mouseY);
+			}
 			
 			// We can get the two anchor points
 			Vec2 v1 = new Vec2(0,0);

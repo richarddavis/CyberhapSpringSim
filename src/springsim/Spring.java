@@ -54,6 +54,7 @@ public class Spring extends SpringInterface {
 
 		
 		//parent.line(this.anchor.getX(), this.anchor.getY(), this.hand.getX(), this.hand.getY());
+		parent.fill(0);
 		parent.text(this.label, this.x-40, 40);
 		if (dj != null) {
 			// We can get the two anchor points
