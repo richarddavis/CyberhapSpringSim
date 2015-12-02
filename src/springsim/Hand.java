@@ -91,7 +91,7 @@ public class Hand implements PConstants {
 	public void draw() {
 		if (mj != null) {
 			
-			if(rData.isHapkitMode() == false){
+			if(!rData.isHapkitMode()){
 				this.mousePosUpdate(this.fixed_x, parent.mouseY);
 			}
 			
