@@ -97,7 +97,7 @@ public class Canvas extends Component {
 		//s1 = new SerialSpring(this.x+50, this.y+100, 30, 200, "Spring A", this.parent, box2d, rData);
 		//s2 = new ParallelSpring(this.x+300, this.y+100, 30, 200, "Spring B",this.parent, box2d, rData);
 		s3 = new Spring(X3, this.y+100, 15, 200, "Spring C",this.parent, box2d,rData);
-		s2 = new ParallelSpring(X2, this.y+100, 55, 200, "Spring B",this.parent, box2d,rData);
+		s2 = new ParallelSpring(X2, this.y+100, 55, 35, 200, "Spring B",this.parent, box2d,rData);
 		s1 = new Spring(X1, this.y+100, 35, 200, "Spring A",this.parent, box2d,rData);
 		//s4 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d, rData);
 		
@@ -203,6 +203,10 @@ public class Canvas extends Component {
 		}else if(event.isFrom(delete3)){
 			sc.delete((int)event.getValue());
 		}
+	}
+
+	public void displayStiffness(boolean b) {
+		this.sc.displayStiffness(b);
 	}
 
 }

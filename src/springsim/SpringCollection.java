@@ -42,6 +42,12 @@ public class SpringCollection {
 		}
 	}
 	
+	public void displayStiffness(boolean b) {
+		for (SpringInterface s : springs) {
+			s.displayK(b);
+		}
+	}
+	
 	public void draw() {
 		for (SpringInterface s : springs) {
 			if(s != null){
@@ -107,5 +113,7 @@ public class SpringCollection {
 	public void add(int x_i, SpringInterface s) {
 			springs.add(x_i, s);
 	}
+
+
 	
 }

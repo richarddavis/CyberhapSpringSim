@@ -94,35 +94,30 @@ public class Spring extends SpringInterface {
 			int dfx = this.x - this.hand.w/2-10;
 			int dfy = this.hand.y + this.hand.h + 5;
 			
-			if (this.display_forces == true) {
-				parent.fill(100);
+			int dsx1 = this.x;
+			int dsy1 = (this.anchor.y + this.hand.y)/2;
 				
+			Font p1 = parent.getFont();
+			PFont p2 = parent.createFont("Verdana",12);
+			
+			if(display_k){
+				parent.fill(120);
 				parent.pushMatrix();
-				Font p1 = parent.getFont();
-				PFont p2 = parent.createFont("Verdana",12);
 				parent.textFont(p2);
-				parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
-				
-				if(this.display_k){
-					parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
-				}
-				
+				parent.text("K: " + k, dsx1+20, dsy1);
 				parent.setFont(p1);
 				parent.textSize(18);
 				parent.popMatrix();
-
-				
-			}else{
-				if(this.display_k){
-					parent.pushMatrix();
-					Font p1 = parent.getFont();
-					PFont p2 = parent.createFont("Verdana",12);
-					parent.textFont(p2);
-					parent.text("K: " +  this.getK(), dfx, dfy);
-					parent.setFont(p1);
-					parent.textSize(18);
-					parent.popMatrix();
-				}
+			}
+			
+			if (this.display_forces == true) {
+				parent.fill(100);
+				parent.pushMatrix();
+				parent.textFont(p2);
+				parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
+				parent.setFont(p1);
+				parent.textSize(18);
+				parent.popMatrix();	
 			}
 		}
 

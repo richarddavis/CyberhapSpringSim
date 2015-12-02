@@ -36,13 +36,13 @@ public class Main extends PApplet {
 	int fFOX = spacing;
 	int fFOY = spacing;
 	int fFOW = leftColWidth;
-	int fFOH = 90;
+	int fFOH = 200;
 	
 	//forceDisplayOutput coord
 	int fDOX = (spacing*3)+leftColWidth+centerColWidth;
 	int fDOY = spacing;
 	int fDOW = rightColWidth;
-	int fDOH = 400;
+	int fDOH = 420;
 	
 	//participantSelection coordinates
 	int pSX = (spacing*3)+leftColWidth+centerColWidth;
@@ -109,7 +109,7 @@ public class Main extends PApplet {
 		
 		String[] choices = { "Hapkit Condition", "Mouse Condition"};
 	    String input = (String) JOptionPane.showInputDialog(null, "Select a Condition",
-	        "The Choice of a Lifetime", JOptionPane.QUESTION_MESSAGE, null,
+	        "Study 2 Condition", JOptionPane.QUESTION_MESSAGE, null,
 	        choices, choices[0]);
 	    
 	    if(input.equals("Hapkit Condition")){

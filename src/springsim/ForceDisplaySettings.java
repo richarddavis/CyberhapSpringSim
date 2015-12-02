@@ -11,8 +11,8 @@ public class ForceDisplaySettings extends Component {
 
 	Canvas c;
 	PApplet parent;
-	RadioButton r2;
-	PImage numerical_img;
+	RadioButton r2, r;
+	PImage numerical_img, stiff_img;
 	
 	public ForceDisplaySettings(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Canvas _c) {
 		super(_x,_y,_w,_h);
@@ -20,6 +20,7 @@ public class ForceDisplaySettings extends Component {
 		parent = main;
 		
 		this.numerical_img = parent.loadImage("numerical_force.png");
+		this.stiff_img = parent.loadImage("stiffness.png");
 		
 		// if we need to implement listeners, consider constructing radio
 		// buttons, etc. in main class so that listener can be handed
@@ -36,6 +37,21 @@ public class ForceDisplaySettings extends Component {
 		         .addItem("Display OFF",0)
 		         .activate(0);
 		
+		r = cp5.addRadioButton("displayStiffness")
+		         .setPosition(x+100,y+135)
+		         .setSize(40,20)
+		         .setColorForeground(parent.color(120))
+		         .setColorActive(parent.color(200))
+		         .setColorLabel(parent.color(0))
+		         .setItemsPerRow(1)
+		         .setSpacingColumn(60)
+		         .addItem("On",1)
+				 .addItem("Off",0)
+		         .activate(0);
+		
+		
+		
+		r.plugTo(this);
 		r2.plugTo(this);
 
 	}
@@ -54,7 +70,19 @@ public class ForceDisplaySettings extends Component {
 		parent.fill(0);
 		parent.text("Numerical Forces", x+10, y+20);
 		
+		parent.text("Spring Stiffness", x+10, y+110);
+		
 		parent.image(numerical_img, x+45, y+60, (int) (numerical_img.width/1.5), (int) (numerical_img.height/1.5));
+		parent.image(stiff_img, x+50, y+150, (int) (stiff_img.width), (int) (stiff_img.height));
+		
+	}
+	
+	public void displayStiffness(int value){
+		if(value == 0){
+			this.c.displayStiffness(false);
+		}else{
+			this.c.displayStiffness(true);
+		}
 	}
 
 	public void displayForcesOnCanvasButton(int buttonValue) {

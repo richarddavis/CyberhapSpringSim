@@ -36,7 +36,7 @@ public abstract class SpringInterface {
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
 		this.label = label;
 		this.display_forces = true;
-		this.display_k = false;
+		this.display_k = true;
 	}
 	
 	public void mouseUpdate(int mx, int my, boolean pressed) {
@@ -96,6 +96,15 @@ public abstract class SpringInterface {
 	public abstract float getLength();
 	public abstract float getForce();
 	public abstract void draw();
+
+	public void setK2(int value) {
+		// TODO Auto-generated method stub
+	}
+
+	public void displayK(boolean b) {
+		this.display_k = b;
+		
+	}
 
 
 }

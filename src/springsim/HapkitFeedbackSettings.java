@@ -71,6 +71,8 @@ public class HapkitFeedbackSettings extends Component {
 		parent.fill(0);
 		parent.text("HapKit Feedback", x+10, y+25);
 		
+	
+		
 		parent.pushMatrix();
 		Font p1 = parent.getFont();
 		PFont p2 = parent.createFont("Verdana",12);

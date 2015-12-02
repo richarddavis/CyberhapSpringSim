@@ -24,6 +24,7 @@ public class SpringFactory extends Component {
 	Chart myChart;
 	
 	Textfield stiffness; 
+	Textfield stiffness2; 
 	Textfield length;
 	Textfield label;
 	Button add;
@@ -43,13 +44,23 @@ public class SpringFactory extends Component {
 		this.rData = rData;
 		this.canvas = designCanvas;
 		
-		stiffness =  cp5.addTextfield("Stiffness (K)")
+		stiffness =  cp5.addTextfield("Stiffness (K) #1")
 			      .setPosition(x+130,y+50+spacing)
 			      .setSize(60,25)
 			      .setFocus(false)
 			      .setValue("25")
 			      .setColorCaptionLabel(255)
 				  .setAutoClear(false)
+			      ;
+		
+		stiffness2 =  cp5.addTextfield("Stiffness (K) #2")
+			      .setPosition(x+130,y+50+spacing)
+			      .setSize(60,25)
+			      .setFocus(false)
+			      .setValue("25")
+			      .setColorCaptionLabel(255)
+				  .setAutoClear(false)
+				  .setVisible(false);
 			      ;
 		
 		length =  cp5.addTextfield("Length (cm)")
@@ -120,17 +131,35 @@ public class SpringFactory extends Component {
 	@Override
 	public void controlEvent(ControlEvent event) {
 		if(event.isFrom(springType)){
+			changeDisplay(springType.getArrayValue(1));
 			generateSpring(springType.getArrayValue(1));
 		}else if(event.isFrom(length)){
 			length.setFocus(false);
 			generateSpring(springType.getArrayValue(1));
 		}else if(event.isFrom(stiffness)){
 			stiffness.setFocus(false);
+			current_spring.setK(Integer.parseInt(stiffness.getStringValue()));
+		}else if(event.isFrom(stiffness2)){
+			stiffness2.setFocus(false);
+			current_spring.setK2(Integer.parseInt(stiffness2.getStringValue()));
 		}else if(event.isFrom(label)){
 			label.setFocus(false);
 			current_spring.setLabel(label.getStringValue());
 		}else if(event.isFrom(add)){
 			addCurrentSpring();
+		}
+	}
+
+	private void changeDisplay(float value) {
+		if(value == REGULAR_SPRING){
+			stiffness2.setVisible(false);
+			length.setPosition(x+130,y+50+(spacing*2));
+			label.setPosition(x+130,y+50+(spacing*3));
+		}else if(value == PARALLEL_SPRING){
+			stiffness2.setVisible(true);
+			stiffness2.setPosition(x+130,y+50+(spacing*2));
+			length.setPosition(x+130,y+50+(spacing*3));
+			label.setPosition(x+130,y+50+(spacing*4));
 		}
 	}
 
@@ -173,11 +202,12 @@ public class SpringFactory extends Component {
 					current_spring = new Spring(x_final, y, Integer.parseInt(stiffness.getText()), final_len, label.getText(), parent, Canvas.box2d, rData);
 				}else if(springType.getArrayValue(1) == PARALLEL_SPRING){
 					System.out.println("parallel");
-					current_spring = new ParallelSpring(x_final, y, Integer.parseInt(stiffness.getText()), final_len, label.getText(), parent, Canvas.box2d, rData);
+					current_spring = new ParallelSpring(x_final, y, Integer.parseInt(stiffness.getText()),Integer.parseInt(stiffness2.getText()) ,final_len, label.getText(), parent, Canvas.box2d, rData);
 				}
 				
 				canvas.sc.springs.remove(x_i);
 				canvas.sc.add(x_i,current_spring);
+				canvas.sc.setActive(current_spring);
 				
 				System.out.println(canvas.sc.springs.indexOf(current_spring));
 				
@@ -197,7 +227,7 @@ public class SpringFactory extends Component {
 		if(value == REGULAR_SPRING){
 			current_spring = new Spring(this.x+(this.w/4), 150, Integer.parseInt(stiffness.getText()), final_len, label.getText(), parent, Canvas.box2d, rData);
 		}else if(value == PARALLEL_SPRING){
-			current_spring = new ParallelSpring(this.x+(this.w/4), 150, Integer.parseInt(stiffness.getText()), final_len, label.getText(), parent, Canvas.box2d, rData);
+			current_spring = new ParallelSpring(this.x+(this.w/4), 150, Integer.parseInt(stiffness.getText()), Integer.parseInt(stiffness2.getText()), final_len, label.getText(), parent, Canvas.box2d, rData);
 		}
 	}
 

@@ -25,14 +25,18 @@ public class ParallelSpring extends SpringInterface {
 	Anchor anchor2;
 	
 	PImage spring_img;
+	private int k1;
+	private int k2;
 
-	public ParallelSpring(int _x, int _y, int _k, int _length, String label, PApplet p, Box2DProcessing b2, ResearchData rData){
+	public ParallelSpring(int _x, int _y, int _k1,int _k2, int _length, String label, PApplet p, Box2DProcessing b2, ResearchData rData){
 		
-		super(_x, _y, _k, _length,label, p, b2, rData);
+		super(_x, _y, (_k1+_k2), _length,label, p, b2, rData);
 		
 		this.x = _x;
 		this.y = _y;
-		this.k = _k;
+		this.k = (_k1 + _k2);
+		this.k1 = _k1;
+		this.k2 = _k2;
 		this.parent = p;
 		this.box2d = b2;
 		
@@ -52,7 +56,7 @@ public class ParallelSpring extends SpringInterface {
 
 		// Some stuff about how strong and bouncy the spring should be
 		//djd.maxForce = (float) (1000.0 * hand.body.m_mass);
-		djd1.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/(this.hand.body.m_mass))));
+		djd1.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k1/(this.hand.body.m_mass))));
 		djd1.dampingRatio = 0.001f;
 
 		// Make the first spring distance joint
@@ -70,7 +74,7 @@ public class ParallelSpring extends SpringInterface {
 
 		// Some stuff about how strong and bouncy the spring should be
 		//djd.maxForce = (float) (1000.0 * hand.body.m_mass);
-		djd2.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/(this.hand.body.m_mass))));
+		djd2.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k2/(this.hand.body.m_mass))));
 		djd2.dampingRatio = 0.001f;
 
 		// Make the second spring distance joint
@@ -150,35 +154,34 @@ public class ParallelSpring extends SpringInterface {
 		int dfx = this.x - this.hand.w/2-10;
 		int dfy = this.hand.y + this.hand.h + 5;
 		
-		if (this.display_forces == true) {
-			parent.fill(100);
+		int dsx1 = (this.anchor1.x + this.hand.x)/2;
+		int dsy1 = (this.anchor1.y + this.hand.y)/2;
+		
+		int dsx2 = (this.anchor2.x + this.hand.x)/2;
+		int dsy2 = (this.anchor2.y + this.hand.y)/2;
 			
+		Font p1 = parent.getFont();
+		PFont p2 = parent.createFont("Verdana",12);
+		
+		if(display_k){
+			parent.fill(120);
 			parent.pushMatrix();
-			Font p1 = parent.getFont();
-			PFont p2 = parent.createFont("Verdana",12);
 			parent.textFont(p2);
-			parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
-			
-			if(this.display_k){
-				parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
-			}
-			
+			parent.text("K: " + k1, dsx1-55, dsy1);
+			parent.text("K: " + k2, dsx2+25, dsy2);
 			parent.setFont(p1);
 			parent.textSize(18);
 			parent.popMatrix();
-
-			
-		}else{
-			if(this.display_k){
-				parent.pushMatrix();
-				Font p1 = parent.getFont();
-				PFont p2 = parent.createFont("Verdana",12);
-				parent.textFont(p2);
-				parent.text("K: " +  this.getK(), dfx, dfy);
-				parent.setFont(p1);
-				parent.textSize(18);
-				parent.popMatrix();
-			}
+		}
+		
+		if (this.display_forces == true) {
+			parent.fill(100);
+			parent.pushMatrix();
+			parent.textFont(p2);
+			parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
+			parent.setFont(p1);
+			parent.textSize(18);
+			parent.popMatrix();	
 		}
 		
 		this.hand.draw();
@@ -204,6 +207,17 @@ public class ParallelSpring extends SpringInterface {
 	
 	public float getForce() {
 		return (this.k * (this.getLength() - dj1.getLength()));
+	}
+	
+	
+	@Override
+	public void setK(int val) {
+		this.k1 = val;
+	}
+	
+	@Override
+	public void setK2(int val) {
+		this.k2 = val;
 	}
 
 }
