@@ -5,23 +5,27 @@ import controlP5.ControlListener;
 import controlP5.ControlP5;
 import controlP5.RadioButton;
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class ForceDisplaySettings extends Component {
 
 	Canvas c;
 	PApplet parent;
 	RadioButton r2;
+	PImage numerical_img;
 	
 	public ForceDisplaySettings(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Canvas _c) {
 		super(_x,_y,_w,_h);
 		this.c = _c;
 		parent = main;
 		
+		this.numerical_img = parent.loadImage("numerical_force.png");
+		
 		// if we need to implement listeners, consider constructing radio
 		// buttons, etc. in main class so that listener can be handed
 		// all necessary instances of classes to handle input events appropriately. 
 		r2 = cp5.addRadioButton("displayForcesOnCanvasButton")
-		         .setPosition(x+10,y+35)
+		         .setPosition(x+85,y+35)
 		         .setSize(40,20)
 		         .setColorForeground(parent.color(120))
 		         .setColorActive(parent.color(200))
@@ -48,7 +52,9 @@ public class ForceDisplaySettings extends Component {
 		parent.fill(255);
 		parent.rect(x, y, w, h);
 		parent.fill(0);
-		parent.text("Display Forces", x+10, y+20);
+		parent.text("Numerical Forces", x+10, y+20);
+		
+		parent.image(numerical_img, x+45, y+60, (int) (numerical_img.width/1.5), (int) (numerical_img.height/1.5));
 	}
 
 	public void displayForcesOnCanvasButton(int buttonValue) {

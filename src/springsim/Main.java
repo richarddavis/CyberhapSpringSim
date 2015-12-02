@@ -13,6 +13,7 @@ public class Main extends PApplet {
 	
 	static int MOUSE_MODE = 0;
 	static int HAPKIT_MODE = 1;
+	static int SCALE_FACTOR = 60;
 	int inputMode;
 
 	//Container properties, dynamic generated from overall width, height
@@ -41,7 +42,7 @@ public class Main extends PApplet {
 	int fDOX = (spacing*3)+leftColWidth+centerColWidth;
 	int fDOY = spacing;
 	int fDOW = rightColWidth;
-	int fDOH = 500;
+	int fDOH = 400;
 	
 	//participantSelection coordinates
 	int pSX = (spacing*3)+leftColWidth+centerColWidth;
@@ -49,31 +50,31 @@ public class Main extends PApplet {
 	int pSW = rightColWidth;
 	int pSH = 80;
 	
-	//hapkitFeedbackPanel coord
-	int hfx = spacing;
-	int hfy = (spacing*2)+fFOH;
-	int hfw = leftColWidth;
-	int hfh = 140;
-	
 	//physicsPlayground coord
 	int pPX = spacing;
-	int pPY = (spacing*3)+fFOH+hfh;
+	int pPY = (spacing*2)+fFOH;
 	int pPW = leftColWidth;
 	int pPH = 130;
 	
 	//expSettings coord
-	int eSX = spacing;
-	int eSY = (spacing*4)+fFOH+hfh+pPH;
-	int eSW = leftColWidth;
+	int eSX = (spacing*3)+leftColWidth+centerColWidth;
+	int eSY = (spacing*2)+fDOH;
+	int eSW = rightColWidth;
 	int eSH = 140;
+	
+	//hapkitFeedbackPanel coord
+	int hfx = spacing;
+	int hfy = (spacing*3)+fFOH+pPH;
+	int hfw = leftColWidth;
+	int hfh = 155;
 	
 	//Components
 	Hapkit hapkit;
 	Canvas designCanvas;
 	ForceDisplaySettings forceFeedbackOption;
 	HapkitFeedbackSettings hapkitFeedbackPanel;
-	ExperimentSettings expSettings;
-	SpringFactory forceDisplayOutput;
+	//ExperimentSettings expSettings;
+	SpringFactory springFactory;
 	PhysicsPlayground physicsPlayground;
 	ParticipantSelection participantSelection;
 	
@@ -108,8 +109,8 @@ public class Main extends PApplet {
 		
 		participantId = Integer.parseInt(pID);
 		
-		//inputMode = HAPKIT_MODE;
-		inputMode = MOUSE_MODE;
+		inputMode = HAPKIT_MODE;
+		//inputMode = MOUSE_MODE;
 		
 		researchData = new ResearchData(participantId, inputMode);
 		
@@ -133,18 +134,22 @@ public class Main extends PApplet {
 		//participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
 		designCanvas = new Canvas(this, cp5, dPX, dPY, dPW, dPH, hapkit, researchData);
 		forceFeedbackOption = new ForceDisplaySettings(this, cp5, fFOX, fFOY, fFOW, fFOH,  designCanvas);
-		expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
-		forceDisplayOutput = new SpringFactory(this, cp5, fDOX, fDOY, fDOW, fDOH);
+		//expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
+		springFactory = new SpringFactory(this, cp5, researchData, designCanvas, fDOX, fDOY, fDOW, fDOH);
 		physicsPlayground = new PhysicsPlayground(this, cp5, designCanvas, pPX, pPY, pPW, pPH);
+		
+		if(inputMode == HAPKIT_MODE){
 		hapkitFeedbackPanel = new HapkitFeedbackSettings(this, cp5, hfx, hfy, hfw, hfh, hapkit, designCanvas.getSpringCollection());
+		components.add(hapkitFeedbackPanel);
+		}
 		
 		//components.add(participantSelection);
 		components.add(designCanvas);
 		components.add(forceFeedbackOption);
-		components.add(expSettings);
-		components.add(forceDisplayOutput);
+		//components.add(expSettings);
+		components.add(springFactory);
 		components.add(physicsPlayground);
-		components.add(hapkitFeedbackPanel);
+		
 	}
 
 	public void draw() {

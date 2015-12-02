@@ -34,7 +34,9 @@ public class Ruler implements MouseListener, MouseMotionListener {
 	}
 
 	public void draw() {
+		p.fill(255,250,205);
 		p.rect(x, y, w, h+20);
+		p.fill(0);
 		
 		int spacing = h / distance;
 		

@@ -63,7 +63,7 @@ public class ParallelSpring extends SpringInterface {
 		// Body 2 is the Hand's object
 		djd2.bodyB = this.hand.body;
 		// Get the mouse location in world coordinates
-		djd2.collideConnected = true;
+		djd2.collideConnected = false;
 		djd2.length = box2d.scalarPixelsToWorld(this.originalLen);
 
 		// Some stuff about how strong and bouncy the spring should be
@@ -80,7 +80,11 @@ public class ParallelSpring extends SpringInterface {
 	public void draw(){
 
 		//parent.line(this.anchor.getX(), this.anchor.getY(), this.hand.getX(), this.hand.getY());
-
+		parent.pushMatrix();
+		parent.fill(0);
+		parent.text(label, this.x-40, 40);
+		parent.popMatrix();
+		
 		if (dj1 != null) {
 			// We can get the two anchor points
 			Vec2 v1 = new Vec2(0,0);
@@ -117,19 +121,36 @@ public class ParallelSpring extends SpringInterface {
 			parent.strokeWeight(3);
 			parent.line(v1.x,v1.y,v2.x,v2.y);
 			
-			//parent.image(spring_img, v2.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
+			
+			double angle = Math.atan2(v1.y-v2.y, v1.x-v2.x);
+//			parent.pushMatrix();
+//			parent.translate(anchor.x, anchor.y);
+//			parent.rotate((float)angle);
+//			System.out.println(angle);
+////			parent.image(spring_img, v2.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
+//			parent.image(spring_img, 0, 0, spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
+//			parent.popMatrix();
+			
 			
 			//System.out.println(this.getLength());
 			//System.out.println(this.getForce());
 			this.anchor2.draw();
 		}
 		
+		int dfx = this.x - this.hand.w/2-20;
+		int dfy = this.hand.y + this.hand.h + 5;
+		
 		if (this.display_forces == true) {
-			int dfx = this.hand.x - this.hand.w/2;
-			int dfy = this.hand.y + this.hand.h + 5;
 			parent.fill(100);
 			parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
+			if(this.display_k){
+				parent.text("K: " +  this.getK(), dfx, dfy+20);
+			}
 			//parent.rect(this.hand.x, this.hand.y + 100, 100, 100);
+		}else{
+			if(this.display_k){
+				parent.text("K: " +  this.getK(), dfx, dfy);
+			}
 		}
 		
 		this.hand.draw();

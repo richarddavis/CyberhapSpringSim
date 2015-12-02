@@ -1,6 +1,10 @@
 package springsim;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+
+import processing.core.PApplet;
+import shiffman.box2d.Box2DProcessing;
 
 public class SpringCollection {
 	
@@ -17,6 +21,27 @@ public class SpringCollection {
 		return springs.add(s);
 	}
 	
+//	private void balanceXPositions() {
+//		for(int i=0; i<springs.size(); i++){
+//			int interval = (Canvas.w/springs.size());
+//			int new_x = (int) ((interval*i)+(0.5*interval));
+//			
+//
+//			Class<?> clazz = springs.get(i).getClass();
+//			Constructor<?> constructor;
+//			
+//			try {
+//				constructor = clazz.getConstructor(int.class, int.class, int.class, int.class,String.class, PApplet.class, Box2DProcessing.class, ResearchData.class);
+//				Object instance = constructor.newInstance(Canvas.x+new_x, springs.get(i).y, springs.get(i).k, springs.get(i).originalLen, springs.get(i).getLabel(), springs.get(i).parent, Canvas.box2d, rData);
+//				springs.remove(springs.get(i));
+//				springs.add((SpringInterface) instance);
+//			}catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//	}
+
 	public void setActive(SpringInterface s){
 		if(activeSpring == null){
 			activeSpring = s;
@@ -58,7 +83,7 @@ public class SpringCollection {
 	
 	public void updateActiveSpring(int mx, int my, boolean pressed, Hapkit hapkit) {
 		for (SpringInterface s : springs) {
-			if (s.getHand().contains(mx, my)) {
+			if (s!= null && s.getHand().contains(mx, my)) {
 				this.setActive(s);
 				
 				if(rData.getInputMode() == ResearchData.HAPKIT_MODE){
@@ -81,7 +106,7 @@ public class SpringCollection {
 	
 	private void destroyOldHapkitJoints() {
 		for (SpringInterface s : springs) {
-			if(!s.equals(activeSpring)){
+			if(s != null && !s.equals(activeSpring)){
 				s.hand.destroy();
 			}
 		}
@@ -91,6 +116,16 @@ public class SpringCollection {
 		int currentY = this.activeSpring.getY();
 		int newY = (int) (currentY + hapkitPos);
 		this.activeSpring.hapkitUpdate(newY);	
+	}
+
+	public void delete(int value) {
+		springs.remove(value);
+		springs.add(value, null);
+		
+	}
+
+	public void add(int x_i, SpringInterface s) {
+			springs.add(x_i, s);
 	}
 	
 }

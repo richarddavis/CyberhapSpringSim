@@ -10,7 +10,7 @@ import shiffman.box2d.Box2DProcessing;
 
 public class Canvas extends Component {
 
-	Box2DProcessing box2d;
+	static Box2DProcessing box2d;
 	PApplet parent;
 	Hapkit hapkitData;
 	
@@ -48,12 +48,22 @@ public class Canvas extends Component {
 	
 	SpringCollection sc;
 	WeightCollection wc;
+	Button delete1;
+    Button delete2;
+	Button delete3;
 
-
+	static int X1, X2, X3, Y_ALL; 
+	
 	
 	public Canvas(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, ResearchData rData) {
 		
 		super(_x,_y,_w,_h);
+		
+		X1 = x+100;
+		X2 = x+250;
+		X3 = x+400;
+		Y_ALL = this.y+100;
+		
 		this.hapkitData = _hapkit;
 		this.numSprings = 3;
 		this.rData = rData;
@@ -86,9 +96,9 @@ public class Canvas extends Component {
 		
 		//s1 = new SerialSpring(this.x+50, this.y+100, 30, 200, "Spring A", this.parent, box2d, rData);
 		//s2 = new ParallelSpring(this.x+300, this.y+100, 30, 200, "Spring B",this.parent, box2d, rData);
-		s3 = new Spring(this.x+400, this.y+100, 15, 200, "Spring C",this.parent, box2d,rData);
-		s2 = new Spring(this.x+250, this.y+100, 55, 200, "Spring B",this.parent, box2d,rData);
-		s1 = new Spring(this.x+100, this.y+100, 35, 200, "Spring A",this.parent, box2d,rData);
+		s3 = new Spring(X3, this.y+100, 15, 200, "Spring C",this.parent, box2d,rData);
+		s2 = new ParallelSpring(X2, this.y+100, 55, 200, "Spring B",this.parent, box2d,rData);
+		s1 = new Spring(X1, this.y+100, 35, 200, "Spring A",this.parent, box2d,rData);
 		//s4 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d, rData);
 		
 		sc = new SpringCollection(rData);
@@ -106,6 +116,29 @@ public class Canvas extends Component {
 		floor = new Boundary(this.x + this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
 		ceiling = new Boundary(this.x+10, this.y+30, this.w - 20, 30, parent, box2d);
 		ruler = new Ruler(parent, cp5, this.x+20, this.y+100,40, 300, 7);
+		
+		delete1 = cp5.addButton("Delete1")
+			     .setValue(0)
+			     .setPosition(x+77,y+25)
+			     .setSize(55,20)
+			     .setCaptionLabel("Delete")
+			     .setId(1);
+		
+		delete2 = cp5.addButton("Delete2")
+			     .setValue(1)
+			     .setPosition(x+220,y+25)
+			     .setSize(55,20)
+			     .setCaptionLabel("Delete")
+			     .setId(1);
+		
+		delete3 = cp5.addButton("Delete3")
+			     .setValue(2)
+			     .setPosition(x+370,y+25)
+			     .setSize(55,20)
+			     .setCaptionLabel("Delete")
+			     .setId(1);
+		
+		cp5.addListener(this);
 		
 	}
 	
@@ -161,8 +194,15 @@ public class Canvas extends Component {
 	}
 
 	@Override
-	public void controlEvent(ControlEvent arg0) {
-		parent.println("handled");
+	public void controlEvent(ControlEvent event) {
+		System.out.println(event.getValue());
+		if(event.isFrom(delete1)){
+			sc.delete((int)event.getValue());
+		}else if(event.isFrom(delete2)){
+			sc.delete((int)event.getValue());
+		}else if(event.isFrom(delete3)){
+			sc.delete((int)event.getValue());
+		}
 	}
 
 }

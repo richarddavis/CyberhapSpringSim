@@ -1,10 +1,13 @@
 package springsim;
 
+import java.awt.Font;
+
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.DropdownList;
 import controlP5.Textfield;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PImage;
 
 public class ExperimentSettings extends Component {
@@ -15,7 +18,7 @@ public class ExperimentSettings extends Component {
 	DropdownList d1;
 	Textfield tf1;
 	PApplet parent;
-	int gravity_constant;
+	String gravity_constant;
 	PImage earth_img;
 	PImage moon_img;
 
@@ -52,13 +55,26 @@ public class ExperimentSettings extends Component {
 		parent.fill(255);
 		parent.rect(x, y, w, h);
 		parent.fill(0);
-		parent.text("Experiment Settings", x+10, y+15);
+		parent.text("Experiment Settings", x+10, y+25);
 		
 		if(d1.getValue() == EARTH){
 			parent.image(earth_img, this.x+100, this.y+80, 60,60);
+			gravity_constant = "9.807";
 		}else if(d1.getValue() == MOON){
 			parent.image(moon_img, this.x+100, this.y+80, 60, 60);
+			gravity_constant = "1.622";
 		}
+		
+		parent.pushMatrix();
+		Font p1 = parent.getFont();
+		PFont p2 = parent.createFont("Verdana",12);
+		parent.textFont(p2);
+		parent.text("Gravitational Constant: "+gravity_constant, x+10, y+h-15);
+		parent.setFont(p1);
+		parent.textSize(18);
+		parent.popMatrix();
+		
+		
 		
 	}
 

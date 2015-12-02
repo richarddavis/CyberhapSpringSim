@@ -17,6 +17,7 @@ public abstract class SpringInterface {
 	int k;
 	String label;
 	boolean display_forces;
+	boolean display_k;
 	
 	PApplet parent;
 	Hand hand;
@@ -35,6 +36,7 @@ public abstract class SpringInterface {
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
 		this.label = label;
 		this.display_forces = true;
+		this.display_k = false;
 	}
 	
 	public void mouseUpdate(int mx, int my, boolean pressed) {
@@ -73,6 +75,10 @@ public abstract class SpringInterface {
 		this.x = x;
 	}
 	
+	public void setLength(int value) {
+		this.originalLen = value;
+	}
+	
 	public void displayForce(boolean on) {
 		if (on == true) {
 			this.display_forces = true;
@@ -81,6 +87,10 @@ public abstract class SpringInterface {
 			this.display_forces = false;
 			System.out.println("Turning off force display under spring.");
 		}
+	}
+	
+	public void setLabel(String stringValue) {
+		this.label = stringValue;
 	}
 	
 	public abstract float getLength();

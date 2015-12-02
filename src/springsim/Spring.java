@@ -12,7 +12,6 @@ import shiffman.box2d.Box2DProcessing;
 public class Spring extends SpringInterface {
 
 	int spring_img_w = 35;
-	String label;
 	
 	//BOX2D
 	DistanceJointDef djd;
@@ -21,16 +20,15 @@ public class Spring extends SpringInterface {
 	Anchor anchor;
 	PImage spring_img;
 
-	public Spring(int _x, int _y, int _k, int _length,String label, PApplet p, Box2DProcessing b2, ResearchData rData){
+	public Spring(int _x, int _y, int _k, int _length,String label, PApplet p, Box2DProcessing box2d, ResearchData rData){
 
-		super(_x, _y, _k, _length, label, p, b2, rData);
+		super(_x, _y, _k, _length, label, p, box2d, rData);
 		
 		this.hand = new Hand(this.x, this.y + this.originalLen + 10, true, parent, box2d, rData);
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
 		
 		// Import photo
 		this.spring_img = parent.loadImage("spring.jpg");
-		this.label = label;
 		
 		// Define the joint
 		this.djd = new DistanceJointDef();
@@ -39,7 +37,7 @@ public class Spring extends SpringInterface {
 		// Body 2 is the Hand's object
 		djd.bodyB = this.hand.body;
 		// Get the mouse location in world coordinates
-		djd.collideConnected = true;
+		djd.collideConnected = false;
 		djd.length = box2d.scalarPixelsToWorld(this.originalLen);
 
 		// Some stuff about how strong and bouncy the spring should be
@@ -56,7 +54,7 @@ public class Spring extends SpringInterface {
 
 		
 		//parent.line(this.anchor.getX(), this.anchor.getY(), this.hand.getX(), this.hand.getY());
-		parent.text(label, this.x-30, 40);
+		parent.text(this.label, this.x-40, 40);
 		if (dj != null) {
 			// We can get the two anchor points
 			Vec2 v1 = new Vec2(0,0);
@@ -89,12 +87,20 @@ public class Spring extends SpringInterface {
 			
 			//System.out.println(this.getLength());
 			//System.out.println(this.getForce());
+			int dfx = this.x - this.hand.w/2-20;
+			int dfy = this.hand.y + this.hand.h + 5;
+			
 			if (this.display_forces == true) {
-				int dfx = this.hand.x - this.hand.w/2;
-				int dfy = this.hand.y + this.hand.h + 5;
 				parent.fill(100);
 				parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
+				if(this.display_k){
+					parent.text("K: " +  this.getK(), dfx, dfy+20);
+				}
 				//parent.rect(this.hand.x, this.hand.y + 100, 100, 100);
+			}else{
+				if(this.display_k){
+					parent.text("K: " +  this.getK(), dfx, dfy);
+				}
 			}
 		}
 
