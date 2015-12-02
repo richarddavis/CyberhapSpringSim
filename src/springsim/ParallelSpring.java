@@ -18,9 +18,9 @@ public class ParallelSpring extends SpringInterface {
 	Anchor anchor1;
 	Anchor anchor2;
 
-	public ParallelSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2, ResearchData rData){
+	public ParallelSpring(int _x, int _y, int _k, int _length, String label, PApplet p, Box2DProcessing b2, ResearchData rData){
 		
-		super(_x, _y, _k, _length, p, b2, rData);
+		super(_x, _y, _k, _length,label, p, b2, rData);
 		
 		this.x = _x;
 		this.y = _y;
@@ -114,6 +114,15 @@ public class ParallelSpring extends SpringInterface {
 			//System.out.println(this.getForce());
 			this.anchor2.draw();
 		}
+		
+		if (this.display_forces == true) {
+			int dfx = this.hand.x - this.hand.w/2;
+			int dfy = this.hand.y + this.hand.h + 5;
+			parent.fill(100);
+			parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
+			//parent.rect(this.hand.x, this.hand.y + 100, 100, 100);
+		}
+		
 		this.hand.draw();
 	}
 	

@@ -21,7 +21,7 @@ public class ForceDisplaySettings extends Component {
 		// buttons, etc. in main class so that listener can be handed
 		// all necessary instances of classes to handle input events appropriately. 
 		r2 = cp5.addRadioButton("displayForcesOnCanvasButton")
-		         .setPosition(x+10,y+25)
+		         .setPosition(x+10,y+35)
 		         .setSize(40,20)
 		         .setColorForeground(parent.color(120))
 		         .setColorActive(parent.color(200))
@@ -48,7 +48,7 @@ public class ForceDisplaySettings extends Component {
 		parent.fill(255);
 		parent.rect(x, y, w, h);
 		parent.fill(0);
-		parent.text("Display Forces", x+10, y+15);
+		parent.text("Display Forces", x+10, y+20);
 	}
 
 	public void displayForcesOnCanvasButton(int buttonValue) {

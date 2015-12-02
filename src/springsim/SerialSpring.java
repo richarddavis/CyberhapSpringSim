@@ -36,9 +36,11 @@ public class SerialSpring extends SpringInterface {
 	private Joint wj;
 	private PrismaticJointDef pjd;
 	private PrismaticJoint pj;
+	private PrismaticJointDef pjd1;
+	private PrismaticJoint pj1;
 
-	public SerialSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2, ResearchData rData){
-		super(_x, _y, _k, _length, p, b2, rData);
+	public SerialSpring(int _x, int _y, int _k, int _length, String label, PApplet p, Box2DProcessing b2, ResearchData rData){
+		super(_x, _y, _k, _length, label, p, b2, rData);
 		
 		this.hand = new Hand(this.x, this.y + this.originalLen * 2 + 20, false, parent, box2d, rData);
 		this.conn1 = new CircleConnector(this.x, this.y + this.originalLen + 10, true, parent, box2d);
@@ -64,26 +66,38 @@ public class SerialSpring extends SpringInterface {
 		djd1.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/(this.conn1.body.m_mass + this.hand.body.m_mass))));
 		djd1.dampingRatio = 0.01f;
 		
-		// Make the first spring distance joint
-		dj1 = (DistanceJoint) box2d.world.createJoint(djd1);
-	
-		// Define the second spring distance joint
-		this.djd2 = new DistanceJointDef();
+//		// Make the first spring distance joint
+//		dj1 = (DistanceJoint) box2d.world.createJoint(djd1);
+//	
+//		// Define the second spring distance joint
+//		this.djd2 = new DistanceJointDef();
+//		
+//		djd2.bodyA = this.conn2.body;
+//		// Body 2 is the Hand's object
+//		djd2.bodyB = this.hand.body;
+//		// Get the mouse location in world coordinates
+//		djd2.collideConnected = true;
+//		djd2.length = box2d.scalarPixelsToWorld(this.originalLen);
+//		
+//		// Some stuff about how strong and bouncy the spring should be
+//		//djd.maxForce = (float) (1000.0 * hand.body.m_mass);
+//		djd2.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/this.hand.body.m_mass)));
+//		djd2.dampingRatio = 0.01f;
+//		
+//		// Make the second spring distance joint
+//		dj2 = (DistanceJoint) box2d.world.createJoint(djd2);
 		
-		djd2.bodyA = this.conn2.body;
-		// Body 2 is the Hand's object
-		djd2.bodyB = this.hand.body;
-		// Get the mouse location in world coordinates
-		djd2.collideConnected = true;
-		djd2.length = box2d.scalarPixelsToWorld(this.originalLen);
+		pjd1 = new PrismaticJointDef();
+		pjd1.bodyA = conn2.body;
+		pjd1.bodyB = hand.body;
+		pjd1.collideConnected = true;
+		pj1 = (PrismaticJoint) box2d.world.createJoint(pjd1);
 		
-		// Some stuff about how strong and bouncy the spring should be
-		//djd.maxForce = (float) (1000.0 * hand.body.m_mass);
-		djd2.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k/this.hand.body.m_mass)));
-		djd2.dampingRatio = 0.01f;
+		float pjt = pj1.getJointTranslation();
+		float pjs = pj1.getJointSpeed();
 		
-		// Make the second spring distance joint
-		dj2 = (DistanceJoint) box2d.world.createJoint(djd2);
+		pj1.setMaxMotorForce(Math.abs((pjt * 100) + (pjs * 10))); // 100 is the spring constant, 10 is the damping constant.
+		pj1.setMotorSpeed(pjt > 0 ? -10000 : +10000); // Arbitrary humongous number.
 		
 //		// Define the revolute joint that connects the two springs
 //		rjd1 = new RevoluteJointDef();

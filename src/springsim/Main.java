@@ -35,13 +35,7 @@ public class Main extends PApplet {
 	int fFOX = spacing;
 	int fFOY = spacing;
 	int fFOW = leftColWidth;
-	int fFOH = 80;
-	
-	//participantSelection coordinates
-	int pSX = spacing;
-	int pSY = spacing;
-	int pSW = leftColWidth;
-	int pSH = 80;
+	int fFOH = 90;
 	
 	//forceDisplayOutput coord
 	int fDOX = (spacing*3)+leftColWidth+centerColWidth;
@@ -49,23 +43,29 @@ public class Main extends PApplet {
 	int fDOW = rightColWidth;
 	int fDOH = 500;
 	
+	//participantSelection coordinates
+	int pSX = (spacing*3)+leftColWidth+centerColWidth;
+	int pSY = fDOH+spacing;
+	int pSW = rightColWidth;
+	int pSH = 80;
+	
 	//hapkitFeedbackPanel coord
 	int hfx = spacing;
 	int hfy = (spacing*2)+fFOH;
 	int hfw = leftColWidth;
-	int hfh = 160;
+	int hfh = 140;
 	
 	//physicsPlayground coord
 	int pPX = spacing;
 	int pPY = (spacing*3)+fFOH+hfh;
 	int pPW = leftColWidth;
-	int pPH = 100;
+	int pPH = 130;
 	
 	//expSettings coord
 	int eSX = spacing;
 	int eSY = (spacing*4)+fFOH+hfh+pPH;
 	int eSW = leftColWidth;
-	int eSH = 160;
+	int eSH = 140;
 	
 	//Components
 	Hapkit hapkit;
@@ -130,7 +130,7 @@ public class Main extends PApplet {
 			hapkit = new Hapkit(this, Serial.list(), 7, researchData);
 		}
 		
-		participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
+		//participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
 		designCanvas = new Canvas(this, cp5, dPX, dPY, dPW, dPH, hapkit, researchData);
 		forceFeedbackOption = new ForceDisplaySettings(this, cp5, fFOX, fFOY, fFOW, fFOH,  designCanvas);
 		expSettings = new ExperimentSettings(this, cp5, eSX, eSY, eSW, eSH);
@@ -138,8 +138,8 @@ public class Main extends PApplet {
 		physicsPlayground = new PhysicsPlayground(this, cp5, designCanvas, pPX, pPY, pPW, pPH);
 		hapkitFeedbackPanel = new HapkitFeedbackSettings(this, cp5, hfx, hfy, hfw, hfh, hapkit, designCanvas.getSpringCollection());
 		
+		//components.add(participantSelection);
 		components.add(designCanvas);
-		components.add(participantSelection);
 		components.add(forceFeedbackOption);
 		components.add(expSettings);
 		components.add(forceDisplayOutput);

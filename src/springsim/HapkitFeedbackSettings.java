@@ -29,7 +29,7 @@ public class HapkitFeedbackSettings extends Component {
 		// buttons, etc. in main class so that listener can be handed
 		// all necessary instances of classes to handle input events appropriately. 
 		r = cp5.addRadioButton("feedbackButton")
-		         .setPosition(x+90,y+30)
+		         .setPosition(x+90,y+40)
 		         .setSize(40,20)
 		         .setColorForeground(parent.color(120))
 		         .setColorActive(parent.color(200))
@@ -41,7 +41,7 @@ public class HapkitFeedbackSettings extends Component {
 		         .activate(0);
 		
 		r2 = cp5.addRadioButton("gainOption")
-		         .setPosition(x+70,y+100)
+		         .setPosition(x+70,y+110)
 		         .setSize(20,20)
 		         .setColorForeground(parent.color(120))
 		         .setColorActive(parent.color(200))
@@ -66,9 +66,9 @@ public class HapkitFeedbackSettings extends Component {
 		parent.fill(255);
 		parent.rect(x, y, w, h);
 		parent.fill(0);
-		parent.text("Force Feedback", x+10, y+15);
-		parent.text("Gain", x+10, y+117);
-		parent.image(hand_img, x+40, y+50, hand_img.width / 6, hand_img.height / 6);
+		parent.text("Haptic Feedback", x+10, y+25);
+		parent.text("Gain", x+10, y+125);
+		parent.image(hand_img, x+40, y+60, hand_img.width / 6, hand_img.height / 6);
 	}
 
 	public void feedbackButton(int buttonValue) {

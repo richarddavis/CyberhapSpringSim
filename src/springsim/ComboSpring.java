@@ -28,7 +28,7 @@ public class ComboSpring extends SpringInterface {
 	PImage spring_img;
 
 	public ComboSpring(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2, ResearchData rData){
-		super(_x, _y, _k, _length, p, b2, rData);
+		super(_x, _y, _k, _length,"", p, b2, rData);
 		
 		this.hand = new Hand(this.x, this.y + this.originalLen * 2 + 20, false, parent, box2d, rData);
 		this.conn1 = new RectangleConnector(this.x-20, this.y + this.originalLen + 10, true, parent, box2d);

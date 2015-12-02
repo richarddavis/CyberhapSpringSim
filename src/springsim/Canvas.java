@@ -84,9 +84,9 @@ public class Canvas extends Component {
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new SerialSpring(this.x+50, this.y+100, 30, 100, this.parent, box2d, rData);
-		s2 = new ParallelSpring(this.x+300, this.y+100, 30, 100, this.parent, box2d, rData);
-		s3 = new Spring(this.x+400, this.y+100, 30, 100, this.parent, box2d,rData);
+		s1 = new SerialSpring(this.x+50, this.y+100, 30, 100, "Spring A", this.parent, box2d, rData);
+		s2 = new ParallelSpring(this.x+300, this.y+100, 30, 100, "Spring B",this.parent, box2d, rData);
+		s3 = new Spring(this.x+400, this.y+100, 30, 100, "Spring C",this.parent, box2d,rData);
 		//s4 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d, rData);
 		
 		sc = new SpringCollection(rData);
@@ -103,7 +103,7 @@ public class Canvas extends Component {
 		
 		floor = new Boundary(this.x + this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
 		ceiling = new Boundary(this.x+10, this.y+30, this.w - 20, 30, parent, box2d);
-		ruler = new Ruler(parent, this.x+20, this.y+80, 30, 400, 12);
+		ruler = new Ruler(parent, cp5, this.x+20, this.y+100,40, 300, 7);
 		
 	}
 	
@@ -134,6 +134,7 @@ public class Canvas extends Component {
 		}
 		
 		floor.draw();
+		ruler.draw();
 	}
 	
 	private void updateSpringPosition() {
