@@ -35,6 +35,7 @@ public class ForceDisplaySettings extends Component {
 		         .setSpacingColumn(50)
 		         .addItem("Display ON",1)
 		         .addItem("Display OFF",0)
+		         .setNoneSelectedAllowed(false)
 		         .activate(0);
 		
 		r = cp5.addRadioButton("displayStiffness")
@@ -47,6 +48,7 @@ public class ForceDisplaySettings extends Component {
 		         .setSpacingColumn(60)
 		         .addItem("On",1)
 				 .addItem("Off",0)
+				 .setNoneSelectedAllowed(false)
 		         .activate(0);
 		
 		
@@ -88,10 +90,12 @@ public class ForceDisplaySettings extends Component {
 	public void displayForcesOnCanvasButton(int buttonValue) {
 		if (buttonValue == 1) {
 			this.c.displayForces(true);
+			this.r2.activate(0);
 			// Tell spring collection to turn on force display
 		} else if (buttonValue == 0) {
 			// Tell spring collection to turn off force display
 			this.c.displayForces(false);
+			this.r2.activate(1);
 		} else {
 			// Bad value passed to the function.
 			System.out.println("Bad value sent from radiobutton.");

@@ -97,6 +97,7 @@ public class SpringFactory extends Component {
 				        .setSpacingColumn(50)
 				        .addItem("Regular Spring", REGULAR_SPRING)
 				        .addItem("Parallel Spring", PARALLEL_SPRING)
+				        .setNoneSelectedAllowed(false)
 				        //.addItem("Serial Spring",2)
 				        .activate(0);
 		

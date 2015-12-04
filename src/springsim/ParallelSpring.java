@@ -7,6 +7,7 @@ import org.jbox2d.dynamics.joints.DistanceJoint;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PFont;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
@@ -109,6 +110,7 @@ public class ParallelSpring extends SpringInterface {
 			
 			double angle = Math.atan2(v2.y-v1.y, v2.x-v1.x);
 			parent.pushMatrix();
+			parent.imageMode(PConstants.CENTER);
 			parent.translate(((hand.x+anchor.x)/2)-20, (hand.y+anchor.y)/2);
 			parent.rotate((float) (angle+(Math.PI/2)));
 			System.out.println(angle);
@@ -138,6 +140,7 @@ public class ParallelSpring extends SpringInterface {
 			
 			double angle = Math.atan2(v1.y-v2.y, v1.x-v2.x);
 			parent.pushMatrix();
+			parent.imageMode(PConstants.CENTER);
 			parent.translate(((hand.x+anchor.x)/2)+20, (hand.y+anchor.y)/2);
 			parent.rotate((float) (angle+(Math.PI/2)));
 			System.out.println(angle);

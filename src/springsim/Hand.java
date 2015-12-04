@@ -82,7 +82,10 @@ public class Hand implements PConstants {
 		fd.density = 0.3f; 
 		fd.friction = 0.01f;
 		fd.restitution = 0.9f;
+		fd.filter.categoryBits = Main.HAND_BITS;
+		fd.filter.maskBits = Main.ANCHOR_BITS;
 		//fd.setSensor(true);
+		
 
 		this.body.createFixture(fd);
 		this.body.resetMassData();

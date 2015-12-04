@@ -60,6 +60,8 @@ public class Anchor {
 	    fd.density = 1f;
 	    fd.friction = 0.3f;
 	    fd.restitution = 0.1f;
+	    fd.filter.categoryBits = Main.ANCHOR_BITS;
+	    fd.filter.maskBits = Main.HAND_BITS;
 	    
 	    this.body.createFixture(fd);
 	}

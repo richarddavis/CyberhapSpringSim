@@ -11,20 +11,22 @@ import processing.serial.Serial;
 
 public class Main extends PApplet {
 	
+	static int HAND_BITS = 1;
+	static int ANCHOR_BITS = 2;
 	static int MOUSE_MODE = 0;
 	static int HAPKIT_MODE = 1;
 	static int SCALE_FACTOR = 60;
 	int inputMode;
 
 	//Container properties, dynamic generated from overall width, height
-	int width = 1000;
+	int width = 1000+30;
 	int height = 600;
 	int spacing = (int) (width*0.02);
 	
 	//component widths
 	int leftColWidth = (int) (width*0.22);
 	int centerColWidth = (int) (width*0.45);
-	int rightColWidth = (int) (width*0.22);
+	int rightColWidth = (int) (width*0.22)+30;
 	
 	//designPalette coordinates
 	int dPX = leftColWidth+(2*spacing);

@@ -61,7 +61,7 @@ public class Canvas extends Component {
 		
 		X1 = x+100;
 		X2 = x+250;
-		X3 = x+400;
+		X3 = x+380;
 		Y_ALL = this.y+100;
 		
 		this.hapkitData = _hapkit;
