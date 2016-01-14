@@ -15,8 +15,9 @@ public abstract class SpringInterface {
 	int currentLen;
 	int originalLen;
 	int k;
-	String name;
+	String label;
 	boolean display_forces;
+	boolean display_k;
 	
 	PApplet parent;
 	Hand hand;
@@ -24,7 +25,7 @@ public abstract class SpringInterface {
 	PImage spring_img;
 	Box2DProcessing box2d;
 
-	public SpringInterface(int _x, int _y, int _k, int _length, PApplet p, Box2DProcessing b2, ResearchData rData){
+	public SpringInterface(int _x, int _y, int _k, int _length, String label, PApplet p, Box2DProcessing b2, ResearchData rData){
 		this.x = _x;
 		this.y = _y;
 		this.k = _k;
@@ -33,7 +34,9 @@ public abstract class SpringInterface {
 		this.box2d = b2;
 		this.hand = new Hand(this.x, this.y + this.originalLen + 10, true, parent, box2d, rData);
 		this.anchor = new Anchor(getX(), getY(), parent, box2d);
-		this.name = "";
+		this.label = label;
+		this.display_forces = true;
+		this.display_k = true;
 	}
 	
 	public void mouseUpdate(int mx, int my, boolean pressed) {
@@ -64,8 +67,16 @@ public abstract class SpringInterface {
 		this.k = k;
 	}
 	
-	public String getName(){
-		return this.name;
+	public String getLabel(){
+		return this.label;
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setLength(int value) {
+		this.originalLen = value;
 	}
 	
 	public void displayForce(boolean on) {
@@ -78,9 +89,24 @@ public abstract class SpringInterface {
 		}
 	}
 	
+	public void setLabel(String stringValue) {
+		this.label = stringValue;
+	}
+	
 	public abstract float getLength();
 	public abstract float getForce();
 	public abstract void draw();
+
+	public void setK2(int value) {
+		// TODO Auto-generated method stub
+	}
+
+	public void displayK(boolean b) {
+		this.display_k = b;
+		
+	}
+
+
 }
 
 

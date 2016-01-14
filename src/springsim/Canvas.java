@@ -1,15 +1,16 @@
 package springsim;
 
 import controlP5.Button;
+import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
-public class Canvas implements Component {
+public class Canvas extends Component {
 
-	Box2DProcessing box2d;
+	static Box2DProcessing box2d;
 	PApplet parent;
 	Hapkit hapkitData;
 	
@@ -30,11 +31,6 @@ public class Canvas implements Component {
 	
 	Button next, X, Y;
 	
-	int x;
-	int y;
-	int w;
-	int h;
-	
 	int springx_img_x;
 	int springx_img_y;
 	
@@ -48,22 +44,26 @@ public class Canvas implements Component {
 	private Ruler ruler;
 	ResearchData rData;
 	
-	SerialSpring s1;
-	ComboSpring s2;
-	ParallelSpring s3;
-	Spring s4;
+	SpringInterface s1, s2, s3, s4;
 	
 	SpringCollection sc;
 	WeightCollection wc;
+	Button delete1;
+    Button delete2;
+	Button delete3;
 
-
+	static int X1, X2, X3, Y_ALL; 
+	
 	
 	public Canvas(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, ResearchData rData) {
 		
-		this.x = _x;
-		this.y = _y;
-		this.w = _w;
-		this.h = _h;
+		super(_x,_y,_w,_h);
+		
+		X1 = x+100;
+		X2 = x+250;
+		X3 = x+380;
+		Y_ALL = this.y+100;
+		
 		this.hapkitData = _hapkit;
 		this.numSprings = 3;
 		this.rData = rData;
@@ -91,27 +91,22 @@ public class Canvas implements Component {
 		box2d.setScaleFactor(500);
 		box2d.setGravity(0, -2);
 		
-		next = cp5.addButton("Next Springs")
-			         .setValue(4)
-			         .setPosition(this.x+300,this.y+470)
-			         .setSize(130,50)
-			         .setId(2);
-		
-		
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
-		s1 = new SerialSpring(this.x+50, this.y+100, 30, 100, this.parent, box2d, rData);
-		s2 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d, rData);
-		s3 = new ParallelSpring(this.x+300, this.y+100, 30, 100, this.parent, box2d, rData);
-		s4 = new Spring(this.x+400, this.y+100, 30, 100, this.parent, box2d,rData);
+		//s1 = new SerialSpring(this.x+50, this.y+100, 30, 200, "Spring A", this.parent, box2d, rData);
+		//s2 = new ParallelSpring(this.x+300, this.y+100, 30, 200, "Spring B",this.parent, box2d, rData);
+		s3 = new Spring(X3, this.y+100, 15, 200, "Spring C",this.parent, box2d,rData);
+		s2 = new ParallelSpring(X2, this.y+100, 55, 35, 200, "Spring B",this.parent, box2d,rData);
+		s1 = new Spring(X1, this.y+100, 35, 200, "Spring A",this.parent, box2d,rData);
+		//s4 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d, rData);
 		
 		sc = new SpringCollection(rData);
 		sc.add(s1);
 		sc.add(s2);
 		sc.add(s3);
-		sc.add(s4);
-		sc.setActive(s1);
+		//sc.add(s4);
+		sc.setActive(s2);
 		
 		if(rData.isHapkitMode()){
 			rData.logEvent(-1, -1, "Initial K value sent to hapkit");
@@ -120,7 +115,30 @@ public class Canvas implements Component {
 		
 		floor = new Boundary(this.x + this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
 		ceiling = new Boundary(this.x+10, this.y+30, this.w - 20, 30, parent, box2d);
-		ruler = new Ruler(parent, this.x+20, this.y+80, 30, 400, 12);
+		ruler = new Ruler(parent, cp5, this.x+20, this.y+100,40, 300, 7);
+		
+		delete1 = cp5.addButton("Delete1")
+			     .setValue(0)
+			     .setPosition(x+77,y+25)
+			     .setSize(55,20)
+			     .setCaptionLabel("Delete")
+			     .setId(1);
+		
+		delete2 = cp5.addButton("Delete2")
+			     .setValue(1)
+			     .setPosition(x+220,y+25)
+			     .setSize(55,20)
+			     .setCaptionLabel("Delete")
+			     .setId(1);
+		
+		delete3 = cp5.addButton("Delete3")
+			     .setValue(2)
+			     .setPosition(x+370,y+25)
+			     .setSize(55,20)
+			     .setCaptionLabel("Delete")
+			     .setId(1);
+		
+		cp5.addListener(this);
 		
 	}
 	
@@ -141,11 +159,14 @@ public class Canvas implements Component {
 		parent.textSize(18); 
 		parent.fill(0);
 		
-		for(SpringInterface s : sc.springs){
-			s.draw();
-		}
+		parent.pushMatrix();
+		parent.imageMode(PConstants.CORNER);
+		parent.image(wood_plank_img, this.x+10, this.y+50, this.w-20, 30);
+		parent.popMatrix();
 		
+		sc.draw();
 		floor.draw();
+		ruler.draw();
 	}
 	
 	private void updateSpringPosition() {
@@ -170,6 +191,22 @@ public class Canvas implements Component {
 	
 	public SpringCollection getSpringCollection() {
 		return this.sc;
+	}
+
+	@Override
+	public void controlEvent(ControlEvent event) {
+		System.out.println(event.getValue());
+		if(event.isFrom(delete1)){
+			sc.delete((int)event.getValue());
+		}else if(event.isFrom(delete2)){
+			sc.delete((int)event.getValue());
+		}else if(event.isFrom(delete3)){
+			sc.delete((int)event.getValue());
+		}
+	}
+
+	public void displayStiffness(boolean b) {
+		this.sc.displayStiffness(b);
 	}
 
 }

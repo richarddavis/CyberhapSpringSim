@@ -82,7 +82,10 @@ public class Hand implements PConstants {
 		fd.density = 0.3f; 
 		fd.friction = 0.01f;
 		fd.restitution = 0.9f;
+		fd.filter.categoryBits = Main.HAND_BITS;
+		fd.filter.maskBits = Main.ANCHOR_BITS;
 		//fd.setSensor(true);
+		
 
 		this.body.createFixture(fd);
 		this.body.resetMassData();
@@ -92,11 +95,7 @@ public class Hand implements PConstants {
 		if (mj != null) {
 			
 			if(!rData.isHapkitMode()){
-				if (this.fixed == true) {
-					this.mousePosUpdate(this.fixed_x, parent.mouseY);
-				} else {
-					this.mousePosUpdate(parent.mouseX, parent.mouseY);
-				}
+				this.mousePosUpdate(this.fixed_x, parent.mouseY);
 			}
 			
 			// We can get the two anchor points
@@ -112,7 +111,7 @@ public class Hand implements PConstants {
 			parent.strokeWeight(1);
 			//parent.line(v1.x,v1.y,v2.x,v2.y);
 		}
-
+		
 		//parent.image(hand_img, this.x, this.y);
 		Vec2 pos = this.box2d.getBodyPixelCoord(this.body);
 		this.x = (int)pos.x;
@@ -120,9 +119,8 @@ public class Hand implements PConstants {
 		
 		parent.pushMatrix();
 		parent.imageMode(PConstants.CENTER);
-		parent.image(current_hand_img, this.x, this.y+10);
+		parent.image(current_hand_img, this.fixed_x, this.y+10);
 		parent.popMatrix();
-
 	}
 
 	public int getX() {
@@ -187,6 +185,17 @@ public class Hand implements PConstants {
 		}
 	}
 	
+	public void hapkitUpdate(int my, int originalLen) {
+		if(this.mj !=null){
+			//System.out.println(originalLen+my);
+			Vec2 mp = this.box2d.coordPixelsToWorld(this.fixed_x, originalLen+my);
+			this.mj.setTarget(mp);
+		}else{
+			this.bind(this.fixed_x, originalLen+my);
+		}
+		
+	}
+	
 	public void mousePosUpdate(int mx, int my) {
 		// Update the position
 		Vec2 mouseWorld = box2d.coordPixelsToWorld(mx,my);
@@ -224,5 +233,7 @@ public class Hand implements PConstants {
 		
 		
 	}
+
+
 
 }
