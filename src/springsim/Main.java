@@ -138,7 +138,7 @@ public class Main extends PApplet {
 		cp5.setColorActive(0xffff0000);
 		  
 		if(inputMode == HAPKIT_MODE){
-			hapkit = new Hapkit(this, Serial.list(), 7, researchData);
+			hapkit = new Hapkit(this, Serial.list(), 2, researchData);
 		}
 		
 		//participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
