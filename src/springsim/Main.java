@@ -101,7 +101,7 @@ public class Main extends PApplet {
 	}
 	
 	public void setup() {
-		size(width, height);
+		size(1030, 600);
 		background(255);
 		
 		String pID = JOptionPane.showInputDialog(null,
@@ -138,7 +138,21 @@ public class Main extends PApplet {
 		cp5.setColorActive(0xffff0000);
 		  
 		if(inputMode == HAPKIT_MODE){
-			hapkit = new Hapkit(this, Serial.list(), 2, researchData);
+			String serInput = (String) JOptionPane.showInputDialog(null, "Available serial devices:",
+			        "Serial Device", JOptionPane.QUESTION_MESSAGE, null,
+			        Serial.list(), Serial.list()[0]);
+			
+			if (serInput == null) {
+				JOptionPane.showMessageDialog(null, "No Hapkit Selected. Quitting now.");
+				System.exit(0);
+			}
+			
+			for(int i = 0; i < Serial.list().length; i++) {
+				if(Serial.list()[i].equals(serInput)) {
+					hapkit = new Hapkit(this, Serial.list(), i, researchData);
+				    break;
+				}
+			}
 		}
 		
 		//participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
