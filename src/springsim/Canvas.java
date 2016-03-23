@@ -12,7 +12,7 @@ public class Canvas extends Component {
 
 	static Box2DProcessing box2d;
 	PApplet parent;
-	Hapkit hapkitData;
+	Hapkit hapkit;
 	
 	double hapkitPos;
 	
@@ -64,7 +64,7 @@ public class Canvas extends Component {
 		X3 = x+380;
 		Y_ALL = this.y+100;
 		
-		this.hapkitData = _hapkit;
+		this.hapkit = _hapkit;
 		this.numSprings = 3;
 		this.rData = rData;
 		
@@ -101,16 +101,15 @@ public class Canvas extends Component {
 		s1 = new Spring(X1, this.y+100, 35, 200, "Spring A",this.parent, box2d,rData);
 		//s4 = new ComboSpring(this.x+150, this.y+100, 30, 100, this.parent, box2d, rData);
 		
-		sc = new SpringCollection(rData);
+		sc = new SpringCollection(rData, hapkit);
 		sc.add(s1);
 		sc.add(s2);
 		sc.add(s3);
-		//sc.add(s4);
-		sc.setActive(s2);
+		sc.setActive(s1);
 		
 		if(rData.isHapkitMode()){
 			rData.logEvent(-1, -1, "Initial K value sent to hapkit");
-			hapkitData.setKConstant(sc.activeSpring.getK());
+			//hapkit.setKConstant(sc.activeSpring.getK());
 		}
 		
 		floor = new Boundary(this.x + this.w/2, this.h - 20, this.w - 20, 20, parent, box2d);
@@ -145,6 +144,7 @@ public class Canvas extends Component {
 	public void step(){
 		this.box2d.step();
 		
+		// Why is this here?
 		if(rData.isHapkitMode()){
 		  updateSpringPosition();
 		  readHapkitPos();
@@ -174,7 +174,7 @@ public class Canvas extends Component {
 	}
 	
 	public void readHapkitPos() {
-		hapkitPos = this.hapkitData.getPos();
+		hapkitPos = this.hapkit.getPos();
 	}
 	
 	public void displayForces(boolean on) {
@@ -182,11 +182,11 @@ public class Canvas extends Component {
 	}
 	
 	public void mousePressed() {
-		sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, hapkitData);
+		sc.updateActiveSpring(parent.mouseX, parent.mouseY, true, hapkit);
 	}
 	
 	public void mouseReleased() {
-		sc.updateActiveSpring(parent.mouseX, parent.mouseY, false, hapkitData);
+		sc.updateActiveSpring(parent.mouseX, parent.mouseY, false, hapkit);
 	}
 	
 	public SpringCollection getSpringCollection() {

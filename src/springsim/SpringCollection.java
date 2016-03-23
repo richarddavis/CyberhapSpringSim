@@ -11,25 +11,16 @@ public class SpringCollection {
 	ArrayList<SpringInterface> springs;
 	SpringInterface activeSpring; 
 	ResearchData rData;
+	Hapkit hapkit;
 	
-	public SpringCollection(ResearchData rData){
+	public SpringCollection(ResearchData rData, Hapkit _hapkit){
 		this.springs = new ArrayList<SpringInterface>();
 		this.rData = rData;
+		this.hapkit = _hapkit;
 	}
 	
 	public boolean add(SpringInterface s){
 		return springs.add(s);
-	}
-
-	public void setActive(SpringInterface s){
-		if(activeSpring == null){
-			activeSpring = s;
-			activeSpring.getHand().swapIcon();
-		}else{
-			activeSpring.getHand().swapIcon();
-			s.hand.swapIcon();
-			activeSpring = s;
-		}
 	}
 	
 	public float getActiveForce() {
@@ -66,17 +57,28 @@ public class SpringCollection {
 		}
 	}
 	
+	public void setActive(SpringInterface s){
+		if(activeSpring == null){
+			activeSpring = s;
+			activeSpring.getHand().swapIcon();
+		}else{
+			activeSpring.getHand().swapIcon();
+			s.hand.swapIcon();
+			activeSpring = s;
+		}
+		if(rData.getInputMode() == ResearchData.HAPKIT_MODE){
+			System.out.println("Setting Hapkit k-constant to:");
+			System.out.println(s.getK());
+			this.hapkit.setKConstant(s.getK());
+			// MAKES ALL OTHER SPRING ACT NORMALLY AGAIN:
+			destroyOldHapkitJoints();
+		}
+	}
+	
 	public void updateActiveSpring(int mx, int my, boolean pressed, Hapkit hapkit) {
 		for (SpringInterface s : springs) {
 			if (s!= null && s.getHand().contains(mx, my)) {
 				this.setActive(s);
-				
-				if(rData.getInputMode() == ResearchData.HAPKIT_MODE){
-					hapkit.setKConstant(s.getK());
-					// MAKES ALL OTHER SPRING ACT NORMALLY AGAIN:
-					destroyOldHapkitJoints();
-				}
-				
 				rData.logEvent(s.getK(), -1, "SWITCHING BETWEEN SPRINGS");
 				break;
 			}
@@ -85,7 +87,8 @@ public class SpringCollection {
 		if(rData.getInputMode() == ResearchData.MOUSE_MODE){
 			this.activeSpring.mouseUpdate(mx, my, pressed);
 		}else{
-			this.activeSpring.hapkitUpdate(my);
+			// Why was the following line included?
+			//this.activeSpring.hapkitUpdate(my);
 		}
 	}
 	
@@ -100,20 +103,17 @@ public class SpringCollection {
 	public void updateActiveSpringYPosition(double hapkitPos) {
 		int currentY = (int) this.activeSpring.getY()+this.activeSpring.originalLen+10;
 		int newY = (int) (currentY + hapkitPos);
-		System.out.println(hapkitPos);
+		//System.out.println(hapkitPos);
 		this.activeSpring.hapkitUpdate(newY);	
 	}
 
 	public void delete(int value) {
 		springs.remove(value);
 		springs.add(value, null);
-		
 	}
 
 	public void add(int x_i, SpringInterface s) {
-			springs.add(x_i, s);
+		springs.add(x_i, s);
 	}
 
-
-	
 }

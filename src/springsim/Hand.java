@@ -176,7 +176,6 @@ public class Hand implements PConstants {
 	}
 	
 	public void hapkitUpdate(int my){
-		
 		if(this.mj !=null){
 			Vec2 mp = this.box2d.coordPixelsToWorld(this.fixed_x, my);
 			this.mj.setTarget(mp);
@@ -186,6 +185,7 @@ public class Hand implements PConstants {
 	}
 	
 	public void hapkitUpdate(int my, int originalLen) {
+		// Currently this method is never called.
 		if(this.mj !=null){
 			//System.out.println(originalLen+my);
 			Vec2 mp = this.box2d.coordPixelsToWorld(this.fixed_x, originalLen+my);
@@ -201,12 +201,6 @@ public class Hand implements PConstants {
 		Vec2 mouseWorld = box2d.coordPixelsToWorld(mx,my);
 		this.mj.setTarget(mouseWorld);
 	}
-	
-//	public void hapkitPosUpdate(int mx, int my) {
-//		// Update the position
-//		Vec2 mouseWorld = box2d.coordPixelsToWorld(mx,my);
-//		this.mj.setTarget(mouseWorld);
-//	}
 
 	public void destroy() {
 		// We can get rid of the joint when the mouse is released
@@ -230,10 +224,5 @@ public class Hand implements PConstants {
 		}else{
 			current_hand_img = inactive_hand_img;
 		}
-		
-		
 	}
-
-
-
 }

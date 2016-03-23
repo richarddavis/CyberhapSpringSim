@@ -113,7 +113,7 @@ public class ParallelSpring extends SpringInterface {
 			parent.imageMode(PConstants.CENTER);
 			parent.translate(((hand.x+anchor.x)/2)-20, (hand.y+anchor.y)/2);
 			parent.rotate((float) (angle+(Math.PI/2)));
-			System.out.println(angle);
+			//System.out.println(angle);
 //			parent.image(spring_img, v2.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
 			parent.image(spring_img, 0, 0, spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
 			parent.popMatrix();
@@ -143,7 +143,7 @@ public class ParallelSpring extends SpringInterface {
 			parent.imageMode(PConstants.CENTER);
 			parent.translate(((hand.x+anchor.x)/2)+20, (hand.y+anchor.y)/2);
 			parent.rotate((float) (angle+(Math.PI/2)));
-			System.out.println(angle);
+			//System.out.println(angle);
 //			parent.image(spring_img, v2.x, (float) (this.y + (0.5*(v2.y-v1.y))), spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
 			parent.image(spring_img, 0, 0, spring_img_w, v2.y-v1.y-(hand.current_hand_img.height/2));
 			parent.popMatrix();

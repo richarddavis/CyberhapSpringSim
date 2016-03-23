@@ -199,10 +199,10 @@ public class SpringFactory extends Component {
 			if(x_final != 0){
 				// TODO Auto-generated method stub
 				if(springType.getArrayValue(1) == REGULAR_SPRING){
-					System.out.println("reglar");
+					//System.out.println("reglar");
 					current_spring = new Spring(x_final, y, Integer.parseInt(stiffness.getText()), final_len, label.getText(), parent, Canvas.box2d, rData);
 				}else if(springType.getArrayValue(1) == PARALLEL_SPRING){
-					System.out.println("parallel");
+					//System.out.println("parallel");
 					current_spring = new ParallelSpring(x_final, y, Integer.parseInt(stiffness.getText()),Integer.parseInt(stiffness2.getText()) ,final_len, label.getText(), parent, Canvas.box2d, rData);
 				}
 				
@@ -210,19 +210,16 @@ public class SpringFactory extends Component {
 				canvas.sc.add(x_i,current_spring);
 				canvas.sc.setActive(current_spring);
 				
-				System.out.println(canvas.sc.springs.indexOf(current_spring));
+				//System.out.println(canvas.sc.springs.indexOf(current_spring));
 				
 				generateSpring(springType.getValue());
 			}
-		
-		
-		
 	}
 
 	private void generateSpring(float value) {
 		
 		int len = Integer.parseInt(length.getText());
-		System.out.println(len*Main.SCALE_FACTOR);
+		//System.out.println(len*Main.SCALE_FACTOR);
 		int final_len = len*Main.SCALE_FACTOR;
 		
 		if(value == REGULAR_SPRING){

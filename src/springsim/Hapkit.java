@@ -1,5 +1,7 @@
 package springsim;
 
+import java.util.Arrays;
+
 import processing.core.PApplet;
 import processing.serial.Serial;
 
@@ -13,7 +15,7 @@ public class Hapkit {
 	int gain_val; // legal values are 1, 2, and 3
 	int feedback_on; // 1 for on, 0 for off
 	int min_k = 0;
-	int max_k = 10000;
+	int max_k = 255;
 	double current_pos;
 	ResearchData researchData;
 	
@@ -29,14 +31,15 @@ public class Hapkit {
 		System.out.println("The selected device is: " + serialPorts[index]);
 		
 		myPort = new Serial(this.p, serialPorts[index], 9600);
-		
-		//nolonger applies -> not using Serial.println on arduino
-		//myPort.bufferUntil('\n');
+		myPort.bufferUntil(225);
 		
 		// Initialize Hapkit with sensible values
-		this.k_constant = 10;
+		this.k_constant = 100;
 		this.gain_val = 1;
 		this.feedback_on = 1;
+		
+		// This delay is needed to ensure that the Hapkit is ready to receive the serial data.
+		this.p.delay(100);
 		
 		this.writeToArduino();
 	}
@@ -102,13 +105,19 @@ public class Hapkit {
 	}
 	
 	public int getForce() {
+		// Placeholder
 		return 10;
 	}
 	
 	public void writeToArduino(){
-		myPort.write(this.k_constant);
+		if (this.k_constant <= this.max_k) {
+			myPort.write(this.k_constant);
+		} else {
+			System.out.println("k_constant must be between " + this.min_k + " and " + this.max_k + ".");
+		}
 		myPort.write(this.feedback_on);
 		myPort.write(this.gain_val);
+		myPort.write(225);
 		
 		researchData.logEvent(k_constant, current_pos, "request sent to arduino to update values");
 	}
@@ -137,15 +146,9 @@ public class Hapkit {
 		
 		try{
 			if(inBytes != null && inBytes.length > 5){
-
-				int x_bits; 
-						
-				x_bits = (inBytes[1] & 0xFF) 
-			            | ((inBytes[2] & 0xFF) << 8)
-			            |  ((inBytes[3] & 0xFF) << 16) 
-			            | ((inBytes[4] & 0xFF) << 24);
-
-				float X = Float.intBitsToFloat(x_bits);
+				byte[] cutBytes = Arrays.copyOfRange(inBytes, 0, inBytes.length-1);
+				
+				float X = Float.parseFloat(new String(cutBytes));
 				
 				// check for rogue numbers...
 				if((Math.abs(X-current_pos) > 1000)){
@@ -154,10 +157,12 @@ public class Hapkit {
 					current_pos = (double) X * 2000;
 				}
 				
-			}else if(inBytes != null && inBytes.length > 3){
+			}else if(inBytes != null && inBytes.length > 2){
 				int k_bits;
-				k_bits = ((inBytes[1] & 0xFF));
-					
+				k_bits = (inBytes[0] & 0xFF) | (inBytes[1] & 0xFF) << 8;
+				
+				System.out.println("Hapkit confirmed updated K-constant is rendering");
+				System.out.println(k_bits);
 				researchData.logEvent(k_bits, current_pos, "Hapkit confirmed updated K-constant is rendering");
 			}
 			

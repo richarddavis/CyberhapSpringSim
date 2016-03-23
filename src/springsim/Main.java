@@ -102,6 +102,7 @@ public class Main extends PApplet {
 	
 	public void setup() {
 		size(1030, 600);
+		//frame.setResizable(false);
 		background(255);
 		
 		String pID = JOptionPane.showInputDialog(null,
@@ -163,17 +164,16 @@ public class Main extends PApplet {
 		physicsPlayground = new PhysicsPlayground(this, cp5, designCanvas, pPX, pPY, pPW, pPH);
 		
 		if(inputMode == HAPKIT_MODE){
-		hapkitFeedbackPanel = new HapkitFeedbackSettings(this, cp5, hfx, hfy, hfw, hfh, hapkit, designCanvas.getSpringCollection());
-		components.add(hapkitFeedbackPanel);
+			hapkitFeedbackPanel = new HapkitFeedbackSettings(this, cp5, hfx, hfy, hfw, hfh, hapkit, designCanvas.getSpringCollection());
+			components.add(hapkitFeedbackPanel);
 		}
 		
 		//components.add(participantSelection);
 		components.add(designCanvas);
-		components.add(forceFeedbackOption);
 		//components.add(expSettings);
 		components.add(springFactory);
 		components.add(physicsPlayground);
-		
+		components.add(forceFeedbackOption);
 	}
 
 	public void draw() {
@@ -204,12 +204,12 @@ public class Main extends PApplet {
 	 * 
 	 */
 	public void stop() {
-		System.out.println("GENERATING LOG");
+		System.out.println("stop: GENERATING LOG");
 		researchData.generateCSVLog();
 	} 
 	
 	public static void endProcedure(){
-		System.out.println("GENERATING LOG");
+		System.out.println("endProcedure: GENERATING LOG");
 		researchData.generateCSVLog();
 	}
 	

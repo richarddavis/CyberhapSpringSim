@@ -10,17 +10,18 @@ import processing.core.PImage;
 public class ForceDisplaySettings extends Component {
 
 	Canvas c;
-	PApplet parent;
+	PApplet p;
 	RadioButton r2, r;
 	PImage numerical_img, stiff_img;
+	
 	
 	public ForceDisplaySettings(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Canvas _c) {
 		super(_x,_y,_w,_h);
 		this.c = _c;
-		parent = main;
+		this.p = main;
 		
-		this.numerical_img = parent.loadImage("numerical_force.png");
-		this.stiff_img = parent.loadImage("stiffness.png");
+		this.numerical_img = this.p.loadImage("numerical_force.png");
+		this.stiff_img = this.p.loadImage("stiffness.png");
 		
 		// if we need to implement listeners, consider constructing radio
 		// buttons, etc. in main class so that listener can be handed
@@ -28,9 +29,9 @@ public class ForceDisplaySettings extends Component {
 		r2 = cp5.addRadioButton("displayForcesOnCanvasButton")
 		         .setPosition(x+85,y+35)
 		         .setSize(40,20)
-		         .setColorForeground(parent.color(120))
-		         .setColorActive(parent.color(200))
-		         .setColorLabel(parent.color(0))
+		         .setColorForeground(this.p.color(120))
+		         .setColorActive(this.p.color(200))
+		         .setColorLabel(this.p.color(0))
 		         .setItemsPerRow(1)
 		         .setSpacingColumn(50)
 		         .addItem("Display ON",1)
@@ -41,9 +42,9 @@ public class ForceDisplaySettings extends Component {
 		r = cp5.addRadioButton("displayStiffness")
 		         .setPosition(x+100,y+135)
 		         .setSize(40,20)
-		         .setColorForeground(parent.color(120))
-		         .setColorActive(parent.color(200))
-		         .setColorLabel(parent.color(0))
+		         .setColorForeground(this.p.color(120))
+		         .setColorActive(this.p.color(200))
+		         .setColorLabel(this.p.color(0))
 		         .setItemsPerRow(1)
 		         .setSpacingColumn(60)
 		         .addItem("On",1)
@@ -55,7 +56,6 @@ public class ForceDisplaySettings extends Component {
 		
 		r.plugTo(this);
 		r2.plugTo(this);
-
 	}
 	
 	@Override
@@ -67,15 +67,15 @@ public class ForceDisplaySettings extends Component {
 	@Override
 	public void draw() {
 		
-		parent.fill(255);
-		parent.rect(x, y, w, h);
-		parent.fill(0);
-		parent.text("Numerical Forces", x+10, y+20);
+		this.p.fill(255);
+		this.p.rect(x, y, w, h);
+		this.p.fill(0);
+		this.p.text("Numerical Forces", x+10, y+20);
 		
-		parent.text("Spring Stiffness", x+10, y+110);
+		this.p.text("Spring Stiffness", x+10, y+110);
 		
-		parent.image(numerical_img, x+45, y+60, (int) (numerical_img.width/1.5), (int) (numerical_img.height/1.5));
-		parent.image(stiff_img, x+50, y+150, (int) (stiff_img.width), (int) (stiff_img.height));
+		this.p.image(numerical_img, x+45, y+60, (int) (numerical_img.width/1.5), (int) (numerical_img.height/1.5));
+		this.p.image(stiff_img, x+50, y+150, (int) (stiff_img.width), (int) (stiff_img.height));
 		
 	}
 	
@@ -104,7 +104,7 @@ public class ForceDisplaySettings extends Component {
 
 	@Override
 	public void controlEvent(ControlEvent arg0) {
-		parent.println("handled radiobutton locally");
+		this.p.println("handled radiobutton locally");
 	}
 
 

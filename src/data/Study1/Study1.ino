@@ -46,9 +46,10 @@ double OFFSET_NEG = 15;
 double b;
 double m =  0.0133;
 
-int k_spring = 25; // define the stiffness of a virtual spring in N/m
-int feedback_on = 1;
-int gain_multiplier = 1;
+uint8_t k_spring = 0; // define the stiffness of a virtual spring in N/m
+uint8_t feedback_on = 1;
+uint8_t gain_multiplier = 1;
+
 const int lengthInputBuffer = 4; //need to flush out the ENTIRE transmission! Otherwise it gets super confused
 char serialInputBuffer[lengthInputBuffer]; 
 int sendInterval = 0;
@@ -199,7 +200,6 @@ void loop()
   
   unsigned long start, finished, elapsed;
   
-  
   if(sendInterval > 6){
     start=millis();
     sendInterval = 0;
@@ -217,17 +217,27 @@ void loop()
   
 }
 
+// This converts the handle position float to a string and sends it across the serial connection.
+// This is preferred to the commented-out function below because it does not accidentally send
+// control characters like 225.
+void send_data (data_hapkit tx) {
+  char str_temp[7];
+  dtostrf(tx.x, 1, 6, str_temp);
+  Serial.print(str_temp);
+  Serial.write(225);
+}
+
 //************************************************************
 // courtesy of http://stackoverflow.com/questions/3270967/how-to-send-float-over-serial
 //************************************************************
-void send_data (data_hapkit tx) {
-  
-  // get access to the float as a byte-array:
-  byte * data = (byte *) &tx; 
-
-  // write the data to the serial
-  Serial.write (data, (sizeof (tx)));
-}
+//void send_data (data_hapkit tx) {
+//  
+//  // get access to the float as a byte-array:
+//  byte * data = (byte *) &tx; 
+//
+//  // write the data to the serial
+//  Serial.write (data, (sizeof (tx)));
+//}
 
 //************************************************************
 // courtesy of http://stackoverflow.com/questions/3270967/how-to-send-float-over-serial
@@ -240,19 +250,6 @@ void send_data (data_hapkit_k tx) {
   // write the data to the serial
   Serial.write (data, (sizeof (tx)));
 }
-
-//************************************************************
-// courtesy ofhttp://stackoverflow.com/questions/24420246/c-function-to-convert-float-to-byte-array
-//************************************************************
-void float2Bytes(byte* bytes_temp[4],float float_variable) { 
-  union {
-    float a;
-    unsigned char bytes[4];
-  } thing;
-  thing.a = float_variable;
-  memcpy(bytes_temp, thing.bytes, 4);
-}
-
 
 //*************************************************************
 //*** Section 6. Send data to Processing      *****************
