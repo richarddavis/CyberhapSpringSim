@@ -3,6 +3,8 @@
 #include <math.h>
 #include "structDefs.h"
 
+#define SENDINTERVAL 10
+
 data_hapkit hapkit_tx;
 
 // Pin declares
@@ -39,7 +41,6 @@ double vh = 0;         //velocity of the handle
 double lastVh = 0;     //last velocity of the handle
 double lastLastVh = 0; //last last velocity of the handle
 
-int counterMort = 0;
 double OFFSET = 980;
 double OFFSET_NEG = 15;
 
@@ -200,7 +201,7 @@ void loop()
   
   unsigned long start, finished, elapsed;
   
-  if(sendInterval > 6){
+  if(sendInterval > SENDINTERVAL){
     start=millis();
     sendInterval = 0;
 
@@ -262,6 +263,7 @@ void serialEvent() {
       feedback_on = serialInputBuffer[1];
       gain_multiplier = serialInputBuffer[2];
   }
+  
   //Handshake back
   data_hapkit_k confirm_tx;
   confirm_tx.k = k_spring;
